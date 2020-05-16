@@ -1,0 +1,14 @@
+*.iml
+.gradle
+/local.properties
+/login.properties
+/.idea
+.DS_Store
+/build
+/buildSrc/build
+/captures
+.externalNativeBuild
+.cxx
+*.xcuserstate
+*.xcbkptlist
+
