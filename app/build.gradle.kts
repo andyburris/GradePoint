@@ -49,8 +49,10 @@ android {
     buildFeatures {
         compose = true
     }
+    buildToolsVersion = "30.0.0 rc2"
 
     composeOptions {
+        kotlinCompilerVersion = "1.3.70-dev-withExperimentalGoogleExtensions-20200424"
         kotlinCompilerExtensionVersion = Versions.jetpackCompose
     }
 
@@ -61,11 +63,10 @@ android {
         exclude("META-INF/LICENSE.txt")
         exclude("META-INF/NOTICE.txt")
     }
-
 }
 
 dependencies {
-    implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk7:1.3.72")
+    implementation(Deps.kotlin)
     implementation(project(":shared"))
     implementation("androidx.recyclerview:recyclerview:1.1.0")
     implementation(Deps.material_x)
@@ -81,15 +82,14 @@ dependencies {
     implementation(Deps.koinCore)
     testImplementation(Deps.junit)
     implementation(Deps.JetpackCompose.runtime)
-    implementation(Deps.JetpackCompose.framework)
+    implementation(Deps.JetpackCompose.core)
     implementation(Deps.JetpackCompose.tooling)
     implementation(Deps.JetpackCompose.layout)
     implementation(Deps.JetpackCompose.material)
     implementation(Deps.JetpackCompose.foundation)
     implementation(Deps.JetpackCompose.animation)
-    implementation(Deps.JetpackCompose.platform)
     implementation(Deps.JetpackCompose.test)
     implementation(Deps.JetpackCompose.icons)
     implementation(Deps.Klock.android)
-    implementation(Deps.skrapeit)
+    implementation(Deps.composeShimmer)
 }

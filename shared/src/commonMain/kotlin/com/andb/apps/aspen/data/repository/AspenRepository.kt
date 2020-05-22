@@ -1,6 +1,6 @@
 package com.andb.apps.aspen.data.repository
 
-class LoginRepository {
+class AspenRepository {
     fun attemptLogin(username: String, password: String){
 
     }

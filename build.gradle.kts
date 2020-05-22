@@ -13,7 +13,7 @@ buildscript {
         classpath("org.jetbrains.kotlin:kotlin-serialization:${Versions.kotlin}")
 
         classpath(kotlin("gradle-plugin", Versions.kotlin))
-        classpath("com.android.tools.build:gradle:4.1.0-alpha08")
+        classpath("com.android.tools.build:gradle:4.1.0-alpha09")
         // NOTE: Do not place your application dependencies here; they belong
         // in the individual module build gradle files
     }
@@ -26,6 +26,7 @@ allprojects {
         jcenter()
         maven(url = "https://kotlin.bintray.com/kotlinx")
         maven(url = "https://dl.bintray.com/touchlabpublic/kotlin")
+        maven(url = "https://dl.bintray.com/netguru/maven/")
         maven(url = "https://oss.sonatype.org/content/repositories/snapshots/")
         maven(url = "https://www.jitpack.io")
     }

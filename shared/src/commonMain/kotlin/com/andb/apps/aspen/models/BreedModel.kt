@@ -1,11 +1,11 @@
 package com.andb.apps.aspen.models
 
+import co.touchlab.stately.ensureNeverFrozen
 import com.andb.apps.aspen.DatabaseHelper
 import com.andb.apps.aspen.currentTimeMillis
 import com.andb.apps.aspen.db.Breed
 import com.andb.apps.aspen.ktor.DogApi
-import com.andb.apps.aspen.sqldelight.asFlow
-import co.touchlab.stately.ensureNeverFrozen
+import com.andb.apps.aspen.util.sqldelight.asFlow
 import com.russhwolf.settings.Settings
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job

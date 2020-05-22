@@ -1,4 +1,4 @@
-package com.andb.apps.aspen.sqldelight
+package com.andb.apps.aspen.util.sqldelight
 
 import co.touchlab.stately.freeze
 import com.squareup.sqldelight.Query
