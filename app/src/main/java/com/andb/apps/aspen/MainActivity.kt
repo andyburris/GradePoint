@@ -12,14 +12,15 @@ import androidx.ui.material.MaterialTheme
 import androidx.ui.material.Surface
 import androidx.ui.material.lightColorPalette
 import androidx.ui.text.TextStyle
-import androidx.ui.tooling.preview.Preview
 import androidx.ui.unit.sp
 import com.andb.apps.aspen.models.Screen
 import com.andb.apps.aspen.state.AppState
-import com.andb.apps.aspen.ui.assignments.AssignmentsScreen
+import com.andb.apps.aspen.ui.assignment.AssignmentScreen
+import com.andb.apps.aspen.ui.home.HomeScreen
+import com.andb.apps.aspen.ui.home.LoadingScreen
 import com.andb.apps.aspen.ui.login.LoginScreen
-import com.andb.apps.aspen.ui.subjects.SubjectsScreen
-import com.andb.apps.aspen.ui.subjects.SubjectsScreenLoading
+import com.andb.apps.aspen.ui.subject.SubjectScreen
+import com.andb.apps.aspen.ui.test.TestScreen
 
 class MainActivity : AppCompatActivity() {
     companion object {
@@ -42,7 +43,6 @@ class MainActivity : AppCompatActivity() {
     }
 }
 
-@Preview
 @Composable
 fun AppContent() {
     val currentScreen = AppState.currentScreen.collectAsState()
@@ -51,9 +51,11 @@ fun AppContent() {
             Crossfade(current = currentScreen.value) { screen ->
                 when(screen){
                     is Screen.Login -> LoginScreen()
-                    is Screen.Subjects.Loading -> SubjectsScreenLoading()
-                    is Screen.Subjects.List -> SubjectsScreen(subjects = screen.subjects)
-                    is Screen.Assignments -> AssignmentsScreen(subject = screen.subject)
+                    is Screen.Loading -> LoadingScreen()
+                    is Screen.Home -> HomeScreen(screen)
+                    is Screen.Subject -> SubjectScreen(subject = screen.subject)
+                    is Screen.Assignment -> AssignmentScreen(assignment = screen.assignment)
+                    is Screen.Test -> TestScreen()
                 }
             }
         }

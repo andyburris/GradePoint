@@ -1,9 +1,8 @@
 package com.andb.apps.aspen
 
-import com.andb.apps.aspen.ktor.AspenApi
-import com.andb.apps.aspen.ktor.AspenApiImpl
-import com.andb.apps.aspen.ktor.DogApi
-import com.andb.apps.aspen.ktor.DogApiImpl
+import com.andb.apps.aspen.data.remote.AspenApi
+import com.andb.apps.aspen.data.remote.AspenApiImpl
+import com.andb.apps.aspen.data.repository.AspenRepository
 import com.netguru.kissme.Kissme
 import org.koin.core.context.startKoin
 import org.koin.core.module.Module
@@ -18,8 +17,8 @@ fun initKoin(appDeclaration: KoinAppDeclaration = {}) = startKoin {
 private val coreModule = module {
     single { Kissme("aspenStorage") }
     single { DatabaseHelper(get()) }
-    single<DogApi> { DogApiImpl() }
     single<AspenApi> { AspenApiImpl() }
+    single<AspenRepository> { AspenRepository() }
 }
 
 expect val platformModule: Module

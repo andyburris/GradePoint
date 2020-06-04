@@ -1,13 +1,12 @@
 package com.andb.apps.aspen.state
 
-import com.andb.apps.aspen.ktor.AspenApi
+import com.andb.apps.aspen.data.repository.AspenRepository
+import com.andb.apps.aspen.models.Assignment
+import com.andb.apps.aspen.models.HomeTab
 import com.andb.apps.aspen.models.Screen
 import com.andb.apps.aspen.models.Subject
+import com.andb.apps.aspen.newIOThread
 import com.andb.apps.aspen.printThrowable
-import com.andb.apps.aspen.response.AspenResponse
-import com.andb.apps.aspen.response.toSubjectList
-import com.andb.apps.aspen.util.newIOThread
-import com.netguru.kissme.Kissme
 import io.ktor.client.features.ClientRequestException
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.map
@@ -15,55 +14,88 @@ import org.koin.core.KoinComponent
 import org.koin.core.inject
 
 object AppState : KoinComponent {
-    private val aspenApi: AspenApi by inject()
-    private val storage: Kissme by inject()
 
-    private var screens: MutableStateFlow<List<Screen>> = MutableStateFlow(
-        when(loggedIn()){
-            true -> {
-                login(storage.getString("username", "")!!, storage.getString("password", "")!!)
-                listOf(Screen.Subjects.Loading)
-            }
-            false -> listOf(Screen.Login)
-        }
-    )
+    private val aspenRepository: AspenRepository by inject()
+
+    private var screens: MutableStateFlow<List<Screen>> = MutableStateFlow(listOf())
     val currentScreen get() = screens.map { it.last() }
 
-    fun openSubject(subject: Subject){
-        screens.value += Screen.Assignments(subject)
-    }
 
-    fun goBack(): Boolean {
-        println("goBack - screen = $screens")
-        return when {
-            screens.value.isNotEmpty() -> {
-                screens.value = screens.value.dropLast(1)
-                true
-            }
-            else -> false
+    init {
+        when (aspenRepository.loggedIn) {
+            true -> navigateHome()
+            false -> navigateLogin()
         }
     }
 
-    private fun loggedIn(): Boolean = storage.contains("username") && storage.contains("password")
+    fun openSubject(subject: Subject) {
+        screens.value += Screen.Subject(subject)
+    }
+
+    fun openAssignment(assignment: Assignment) {
+        screens.value += Screen.Assignment(assignment)
+    }
+
+    fun openTest() {
+        screens.value += Screen.Test
+    }
+
+    fun goBack(): Boolean = when {
+        screens.value.size > 1 -> {
+            screens.value = screens.value.dropLast(1); true
+        }
+        else -> false
+    }
+
+    private fun navigateHome() {
+        if (screens.value.lastOrNull() !is Screen.Loading) screens.value += Screen.Loading
+        newIOThread {
+            val (subjects, recents) = aspenRepository.getResponse()
+            screens.value =
+                listOf(Screen.Home(subjects, recents, MutableStateFlow(HomeTab.SUBJECTS)))
+        }
+    }
+
+    private fun navigateLogin() {
+        screens.value = listOf(Screen.Login)
+    }
+
+    fun updateSubjectConfig(newConfig: Subject.Config) {
+        screens.value = screens.value.map { screen ->
+            when (screen) {
+                is Screen.Home -> {
+                    val updatedSubjects = screen.subjects.map { subject ->
+                        if (subject.id == newConfig.id) {
+                            subject.copy(config = newConfig)
+                        } else {
+                            subject
+                        }
+                    }
+                    screen.copy(subjects = updatedSubjects)
+                }
+                else -> screen
+            }
+        }
+        aspenRepository.updateSubjectConfig(newConfig)
+    }
 
     fun login(username: String, password: String) {
+        screens.value += Screen.Loading
         newIOThread {
             try {
-                val response: AspenResponse = aspenApi.request(username, password)
-                if (response.errors.title == null) {
-                    storage.putString("username", username)
-                    storage.putString("password", password)
+                when (aspenRepository.attemptLogin(username, password)) {
+                    true -> navigateHome()
+                    false -> navigateLogin()
                 }
-                screens.value = screens.value.filter { it !is Screen.Subjects.Loading } + Screen.Subjects.List(response.toSubjectList())
             } catch (e: ClientRequestException) {
                 printThrowable(e)
+                navigateLogin()
             }
         }
     }
 
     fun logout() {
-        storage.remove("username")
-        storage.remove("password")
-        screens.value = listOf(Screen.Login)
+        aspenRepository.logout()
+        navigateLogin()
     }
 }

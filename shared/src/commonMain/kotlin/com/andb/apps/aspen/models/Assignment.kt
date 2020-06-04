@@ -8,13 +8,12 @@ public data class Assignment(
     val category: String,
     val due: Date,
     val grade: Grade,
-    val scoreLetter: String
-)
-
-sealed class Grade {
-    class Empty(val message: String) : Grade()
-    class Missing(val possibleScore: Double) : Grade()
-    object Ungraded : Grade()
-    class Score(val score: Double, val possibleScore: Double) : Grade()
-    class Letter(val number: Double, val letter: String?) : Grade()
+    val subjectName: String,
+    val statistics: Statistics
+){
+    sealed class Statistics{
+        object Ungraded : Statistics()
+        object Hidden : Statistics()
+        class Available(val low: SubjectGrade, val high: SubjectGrade, val average: SubjectGrade, val median: SubjectGrade) : Statistics()
+    }
 }

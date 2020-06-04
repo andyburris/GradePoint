@@ -1,64 +1,58 @@
 package com.andb.apps.aspen
 
-import kotlin.test.BeforeTest
-import kotlin.test.Test
-import kotlin.test.assertNotNull
-import kotlin.test.assertTrue
+import com.andb.apps.aspen.models.Subject
+import com.andb.apps.aspen.models.toConfig
+import kotlin.test.*
 
-class SqlDelightTest:BaseTest() {
+class SqlDelightTest : BaseTest() {
 
     private lateinit var dbHelper: DatabaseHelper
 
-    private suspend fun DatabaseHelper.insertBreed(name: String) {
-        insertBreeds(listOf(name))
-    }
 
     @BeforeTest
     fun setup() = runTest {
         dbHelper = DatabaseHelper(testDbConnection())
         dbHelper.deleteAll()
-        dbHelper.insertBreed("Beagle")
+        dbHelper.upsertSubjectConfig(Subject.Config("id", Subject.Icon.BOOK, 0xFFAAABAC.toInt()))
     }
 
     @Test
     fun `Select All Items Success`() = runTest {
-        val breeds = dbHelper.selectAllItems().executeAsList()
+        val configs = dbHelper.selectAllItems().executeAsList()
         assertNotNull(
-            breeds.find { it.name == "Beagle" },
-            "Could not retrieve Breed"
+            configs.find { it.id == "id" },
+            "Could not retrieve Config"
         )
     }
 
     @Test
     fun `Select Item by Id Success`() = runTest {
-        val breeds = dbHelper.selectAllItems().executeAsList()
-        val firstBreed = breeds.first()
+        val configs = dbHelper.selectAllItems().executeAsList()
+        val firstConfig = configs.first()
         assertNotNull(
-            dbHelper.selectById(firstBreed.id).executeAsOneOrNull(),
-            "Could not retrieve Breed by Id"
+            dbHelper.selectById(firstConfig.id).executeAsOneOrNull(),
+            "Could not retrieve Config by Id"
         )
     }
 
     @Test
-    fun `Update Favorite Success`() = runTest {
-        val breeds = dbHelper.selectAllItems().executeAsList()
-        val firstBreed = breeds.first()
-        dbHelper.updateFavorite(firstBreed.id, true)
-        val newBreed = dbHelper.selectById(firstBreed.id).executeAsOneOrNull()
+    fun `Update Item Success`() = runTest {
+        val configs = dbHelper.selectAllItems().executeAsList()
+        val firstConfig = configs.first().toConfig()
+        dbHelper.upsertSubjectConfig(firstConfig.copy(icon = Subject.Icon.COMPASS, color = 0xFFABCDEF.toInt()))
+        val newConfig = dbHelper.selectById(firstConfig.id).executeAsOneOrNull()
         assertNotNull(
-            newBreed,
-            "Could not retrieve Breed by Id"
+            newConfig,
+            "Could not retrieve Config by Id"
         )
-        assertTrue(
-            newBreed.isFavorited(),
-            "Favorite Did Not Save"
-        )
+        assertEquals(newConfig.iconName, Subject.Icon.COMPASS.name, "Favorite Did Not Save")
+        assertEquals(newConfig.color, 0xFFABCDEF)
     }
 
     @Test
     fun `Delete All Success`() = runTest {
-        dbHelper.insertBreed("Poodle")
-        dbHelper.insertBreed("Schnauzer")
+        dbHelper.upsertSubjectConfig(Subject.Config("id", Subject.Icon.BOOK, 0xFFAAABAC.toInt()))
+        dbHelper.upsertSubjectConfig(Subject.Config("id2", Subject.Icon.FLASK, 0xFFABCDEF.toInt()))
         assertTrue(dbHelper.selectAllItems().executeAsList().isNotEmpty())
         dbHelper.deleteAll()
         assertTrue(

@@ -1,7 +1,8 @@
 package com.andb.apps.aspen
 
-import com.andb.apps.aspen.db.Breed
 import com.andb.apps.aspen.db.KampstarterDb
+import com.andb.apps.aspen.db.SubjectConfig
+import com.andb.apps.aspen.models.Subject
 import com.squareup.sqldelight.Query
 import com.squareup.sqldelight.db.SqlDriver
 import kotlinx.coroutines.Dispatchers
@@ -10,27 +11,27 @@ import kotlinx.coroutines.withContext
 class DatabaseHelper(sqlDriver: SqlDriver) {
     private val dbRef: KampstarterDb = KampstarterDb(sqlDriver)
 
-    fun selectAllItems(): Query<Breed> = dbRef.tableQueries.selectAll()
+    fun selectAllItems(): Query<SubjectConfig> = dbRef.tableQueries.selectAll()
 
-    suspend fun insertBreeds(breedNames: List<String>) = withContext(Dispatchers.Default) {
+    fun selectAllItemsByIds(ids: List<String>): Query<SubjectConfig> = dbRef.tableQueries.selectAllByIds(ids)
+
+    suspend fun insertSubjectConfigs(configs: List<Subject.Config>) = withContext(Dispatchers.Default) {
         dbRef.transaction {
-            breedNames.forEach { name ->
-                dbRef.tableQueries.insertBreed(null, name, 0)
+            configs.forEach { config ->
+                dbRef.tableQueries.insertSubjectConfig(config.id, config.icon.name, config.color.toLong())
             }
         }
     }
 
-    suspend fun selectById(id: Long): Query<Breed> =
+    suspend fun upsertSubjectConfig(config: Subject.Config) = withContext(Dispatchers.Default) {
+        dbRef.tableQueries.insertSubjectConfig(config.id, config.icon.name, config.color.toLong())
+    }
+
+    suspend fun selectById(id: String): Query<SubjectConfig> =
         withContext(Dispatchers.Default) { dbRef.tableQueries.selectById(id) }
 
-    suspend fun deleteAll() = withContext(Dispatchers.Default) {
-        dbRef.tableQueries.deleteAll()
-    }
+    suspend fun deleteAll() = withContext(Dispatchers.Default) { dbRef.tableQueries.deleteAll() }
 
-    suspend fun updateFavorite(breedId: Long, favorite: Boolean) = withContext(Dispatchers.Default) {
-        dbRef.tableQueries.updateFavorite(favorite.toLong(), breedId)
-    }
 }
 
-fun Breed.isFavorited(): Boolean = this.favorite != 0L
 internal fun Boolean.toLong(): Long = if (this) 1L else 0L

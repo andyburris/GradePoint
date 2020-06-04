@@ -1,106 +1,112 @@
 object Versions {
-    val min_sdk = 21
-    val target_sdk = 29
-    val compile_sdk = 29
+    const val min_sdk = 23
+    const val target_sdk = 29
+    const val compile_sdk = 29
 
-    val kotlin = "1.3.70"
-    val android_x = "1.1.0"
-    val android_gradle_plugin = "4.1.0-alpha08"
-    val junit = "4.12"
-    val sqlDelight = "1.3.0"
-    val ktor = "1.3.2"
-    val stately = "1.0.2"
-    val multiplatformSettings = "0.6"
-    val coroutines = "1.3.5-native-mt"
-    val koin = "3.0.0-alpha-9"
-    val serialization = "0.20.0"
-    val cocoapodsext = "0.6"
-    val jetpackCompose = "0.1.0-dev09"
-    val klock = "1.10.3"
-    val skrapeit = "master-SNAPSHOT"
-    val slf4j = "1.7.30"
+    const val kotlin = "1.3.70"
+    const val android_x = "1.1.0"
+    const val android_gradle_plugin = "4.1.0-alpha09"
+    const val junit = "4.12"
+    const val sqlDelight = "1.3.0"
+    const val ktor = "1.3.2"
+    const val stately = "1.0.2"
+    const val multiplatformSettings = "0.6"
+    const val coroutines = "1.3.7"
+    const val koin = "3.0.0-alpha-9"
+    const val serialization = "0.20.0"
+    const val cocoapodsext = "0.6"
+    const val jetpackCompose = "0.1.0-dev12"
+    const val klock = "1.10.3"
+    const val slf4j = "1.7.30"
+    const val kissme = "0.2.5"
+    const val composeShimmer = "1.0.1"
 }
 
 object Deps {
-    val app_compat_x = "androidx.appcompat:appcompat:${Versions.android_x}"
-    val material_x = "com.google.android.material:material:${Versions.android_x}"
-    val core_ktx = "androidx.core:core-ktx:${Versions.android_x}"
-    val constraintlayout = "androidx.constraintlayout:constraintlayout:${Versions.android_x}"
-    val android_gradle_plugin = "com.android.tools.build:gradle:${Versions.android_gradle_plugin}"
-    val junit = "junit:junit:${Versions.junit}"
-    val stately = "co.touchlab:stately-common:${Versions.stately}"
-    val multiplatformSettings =
-        "com.russhwolf:multiplatform-settings:${Versions.multiplatformSettings}"
-    val multiplatformSettingsTest =
-        "com.russhwolf:multiplatform-settings-test:${Versions.multiplatformSettings}"
-    val koinCore = "org.koin:koin-core:${Versions.koin}"
-    val cocoapodsext = "co.touchlab:kotlinnativecocoapods:${Versions.cocoapodsext}"
-    val skrapeit = "com.github.skrapeit:skrape.it:${Versions.skrapeit}"
-    val slf4j = "org.slf4j:slf4j-simple:${Versions.slf4j}"
+    const val kotlin = "org.jetbrains.kotlin:kotlin-stdlib-jdk7:${Versions.kotlin}"
+    const val app_compat_x = "androidx.appcompat:appcompat:${Versions.android_x}"
+    const val material_x = "com.google.android.material:material:${Versions.android_x}"
+    const val core_ktx = "androidx.core:core-ktx:${Versions.android_x}"
+    const val constraintlayout = "androidx.constraintlayout:constraintlayout:${Versions.android_x}"
+    const val android_gradle_plugin = "com.android.tools.build:gradle:${Versions.android_gradle_plugin}"
+    const val junit = "junit:junit:${Versions.junit}"
+    const val stately = "co.touchlab:stately-common:${Versions.stately}"
+    const val multiplatformSettings = "com.russhwolf:multiplatform-settings:${Versions.multiplatformSettings}"
+    const val multiplatformSettingsTest = "com.russhwolf:multiplatform-settings-test:${Versions.multiplatformSettings}"
+    const val koinCore = "org.koin:koin-core:${Versions.koin}"
+    const val cocoapodsext = "co.touchlab:kotlinnativecocoapods:${Versions.cocoapodsext}"
+    const val slf4j = "org.slf4j:slf4j-simple:${Versions.slf4j}"
+    const val composeShimmer = "com.github.kazemihabib:compose-shimmer:${Versions.composeShimmer}"
+
 
     object Klock {
-        val common = "com.soywiz.korlibs.klock:klock:${Versions.klock}"
-        val android = "com.soywiz.korlibs.klock:klock-android:${Versions.klock}"
+        const val common = "com.soywiz.korlibs.klock:klock:${Versions.klock}"
+        const val android = "com.soywiz.korlibs.klock:klock-android:${Versions.klock}"
     }
 
     object JetpackCompose {
-        val runtime = "androidx.compose:compose-runtime:${Versions.jetpackCompose}"
-        val framework = "androidx.ui:ui-framework:${Versions.jetpackCompose}"
-        val tooling = "androidx.ui:ui-tooling:${Versions.jetpackCompose}"
-        val layout = "androidx.ui:ui-layout:${Versions.jetpackCompose}"
-        val material = "androidx.ui:ui-material:${Versions.jetpackCompose}"
-        val foundation = "androidx.ui:ui-foundation:${Versions.jetpackCompose}"
-        val animation = "androidx.ui:ui-animation:${Versions.jetpackCompose}"
-        val platform = "androidx.ui:ui-platform:${Versions.jetpackCompose}"
-        val test = "androidx.ui:ui-test:${Versions.jetpackCompose}"
-        val icons = "androidx.ui:ui-material-icons-extended:${Versions.jetpackCompose}"
+        const val runtime = "androidx.compose:compose-runtime:${Versions.jetpackCompose}"
+        const val core = "androidx.ui:ui-core:${Versions.jetpackCompose}"
+        const val tooling = "androidx.ui:ui-tooling:${Versions.jetpackCompose}"
+        const val layout = "androidx.ui:ui-layout:${Versions.jetpackCompose}"
+        const val material = "androidx.ui:ui-material:${Versions.jetpackCompose}"
+        const val foundation = "androidx.ui:ui-foundation:${Versions.jetpackCompose}"
+        const val animation = "androidx.ui:ui-animation:${Versions.jetpackCompose}"
+        const val test = "androidx.ui:ui-test:${Versions.jetpackCompose}"
+        const val icons = "androidx.ui:ui-material-icons-extended:${Versions.jetpackCompose}"
     }
 
     object AndroidXTest {
-        val core = "androidx.test:core:${Versions.android_x}"
-        val junit = "androidx.test.ext:junit:${Versions.android_x}"
-        val runner = "androidx.test:runner:${Versions.android_x}"
-        val rules = "androidx.test:rules:${Versions.android_x}"
+        const val core = "androidx.test:core:${Versions.android_x}"
+        const val junit = "androidx.test.ext:junit:${Versions.android_x}"
+        const val runner = "androidx.test:runner:${Versions.android_x}"
+        const val rules = "androidx.test:rules:${Versions.android_x}"
     }
 
     object KotlinTest {
-        val common = "org.jetbrains.kotlin:kotlin-test-common:${Versions.kotlin}"
-        val annotations = "org.jetbrains.kotlin:kotlin-test-annotations-common:${Versions.kotlin}"
-        val jvm = "org.jetbrains.kotlin:kotlin-test:${Versions.kotlin}"
-        val junit = "org.jetbrains.kotlin:kotlin-test-junit:${Versions.kotlin}"
-        val reflect = "org.jetbrains.kotlin:kotlin-reflect:${Versions.kotlin}"
+        const val common = "org.jetbrains.kotlin:kotlin-test-common:${Versions.kotlin}"
+        const val annotations = "org.jetbrains.kotlin:kotlin-test-annotations-common:${Versions.kotlin}"
+        const val jvm = "org.jetbrains.kotlin:kotlin-test:${Versions.kotlin}"
+        const val junit = "org.jetbrains.kotlin:kotlin-test-junit:${Versions.kotlin}"
+        const val reflect = "org.jetbrains.kotlin:kotlin-reflect:${Versions.kotlin}"
     }
 
     object Coroutines {
-        val common = "org.jetbrains.kotlinx:kotlinx-coroutines-core-common:${Versions.coroutines}"
-        val jdk = "org.jetbrains.kotlinx:kotlinx-coroutines-core:${Versions.coroutines}"
-        val native = "org.jetbrains.kotlinx:kotlinx-coroutines-core-native:${Versions.coroutines}"
-        val android = "org.jetbrains.kotlinx:kotlinx-coroutines-android:${Versions.coroutines}"
-        val test = "org.jetbrains.kotlinx:kotlinx-coroutines-test:${Versions.coroutines}"
+        const val common = "org.jetbrains.kotlinx:kotlinx-coroutines-core-common:${Versions.coroutines}"
+        const val jdk = "org.jetbrains.kotlinx:kotlinx-coroutines-core:${Versions.coroutines}"
+        const val native = "org.jetbrains.kotlinx:kotlinx-coroutines-core-native:${Versions.coroutines}"
+        const val android = "org.jetbrains.kotlinx:kotlinx-coroutines-android:${Versions.coroutines}"
+        const val test = "org.jetbrains.kotlinx:kotlinx-coroutines-test:${Versions.coroutines}"
     }
 
     object SqlDelight {
-        val gradle = "com.squareup.sqldelight:gradle-plugin:${Versions.sqlDelight}"
-        val runtime = "com.squareup.sqldelight:runtime:${Versions.sqlDelight}"
-        val runtimeJdk = "com.squareup.sqldelight:runtime-jvm:${Versions.sqlDelight}"
-        val driverIos = "com.squareup.sqldelight:native-driver:${Versions.sqlDelight}"
-        val driverAndroid = "com.squareup.sqldelight:android-driver:${Versions.sqlDelight}"
+        const val gradle = "com.squareup.sqldelight:gradle-plugin:${Versions.sqlDelight}"
+        const val runtime = "com.squareup.sqldelight:runtime:${Versions.sqlDelight}"
+        const val runtimeJdk = "com.squareup.sqldelight:runtime-jvm:${Versions.sqlDelight}"
+        const val driverIos = "com.squareup.sqldelight:native-driver:${Versions.sqlDelight}"
+        const val driverAndroid = "com.squareup.sqldelight:android-driver:${Versions.sqlDelight}"
     }
 
     object Ktor {
-        val commonCore = "io.ktor:ktor-client-core:${Versions.ktor}"
-        val commonJson = "io.ktor:ktor-client-json:${Versions.ktor}"
-        val commonSerialization = "io.ktor:ktor-client-serialization:${Versions.ktor}"
-        val commonLogging = "io.ktor:ktor-client-logging:${Versions.ktor}"
-        val jvmCore = "io.ktor:ktor-client-core-jvm:${Versions.ktor}"
-        val jvmJson = "io.ktor:ktor-client-json-jvm:${Versions.ktor}"
-        val jvmLogging = "io.ktor:ktor-client-logging-jvm:${Versions.ktor}"
-        val androidCore = "io.ktor:ktor-client-okhttp:${Versions.ktor}"
-        val androidSerialization = "io.ktor:ktor-client-serialization-jvm:${Versions.ktor}"
-        val ios = "io.ktor:ktor-client-ios:${Versions.ktor}"
-        val iosCore = "io.ktor:ktor-client-core-native:${Versions.ktor}"
-        val iosJson = "io.ktor:ktor-client-json-native:${Versions.ktor}"
-        val iosSerialization = "io.ktor:ktor-client-serialization-native:${Versions.ktor}"
-        val iosLogging = "io.ktor:ktor-client-logging-native:${Versions.ktor}"
+        const val commonCore = "io.ktor:ktor-client-core:${Versions.ktor}"
+        const val commonJson = "io.ktor:ktor-client-json:${Versions.ktor}"
+        const val commonSerialization = "io.ktor:ktor-client-serialization:${Versions.ktor}"
+        const val commonLogging = "io.ktor:ktor-client-logging:${Versions.ktor}"
+        const val jvmCore = "io.ktor:ktor-client-core-jvm:${Versions.ktor}"
+        const val jvmJson = "io.ktor:ktor-client-json-jvm:${Versions.ktor}"
+        const val jvmLogging = "io.ktor:ktor-client-logging-jvm:${Versions.ktor}"
+        const val androidCore = "io.ktor:ktor-client-okhttp:${Versions.ktor}"
+        const val androidSerialization = "io.ktor:ktor-client-serialization-jvm:${Versions.ktor}"
+        const val ios = "io.ktor:ktor-client-ios:${Versions.ktor}"
+        const val iosCore = "io.ktor:ktor-client-core-native:${Versions.ktor}"
+        const val iosJson = "io.ktor:ktor-client-json-native:${Versions.ktor}"
+        const val iosSerialization = "io.ktor:ktor-client-serialization-native:${Versions.ktor}"
+        const val iosLogging = "io.ktor:ktor-client-logging-native:${Versions.ktor}"
+    }
+
+    object Kissme {
+        const val common = "com.netguru.kissme:common:${Versions.kissme}"
+        const val android = "com.netguru.kissme:android:${Versions.kissme}"
+        const val ios = "com.netguru.kissme:ios:${Versions.kissme}"
     }
 }

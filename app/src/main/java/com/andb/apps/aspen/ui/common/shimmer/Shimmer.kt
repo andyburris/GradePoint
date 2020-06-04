@@ -6,7 +6,7 @@ import androidx.ui.animation.asDisposableClock
 import androidx.ui.core.*
 import androidx.ui.geometry.Rect
 import androidx.ui.graphics.Paint
-import androidx.ui.graphics.painter.drawCanvas
+import androidx.ui.graphics.drawscope.drawCanvas
 import androidx.ui.graphics.withSaveLayer
 import androidx.ui.unit.PxSize
 import androidx.ui.unit.ipx

@@ -57,7 +57,7 @@ kotlin {
         implementation(Deps.koinCore)
         implementation(Deps.Ktor.commonSerialization)
         implementation(Deps.Klock.common)
-        implementation(Deps.skrapeit)
+        implementation(Deps.Kissme.common)
     }
 
     sourceSets["commonTest"].dependencies {
@@ -77,6 +77,7 @@ kotlin {
         implementation(Deps.slf4j)
         implementation(Deps.Coroutines.jdk)
         implementation(Deps.Coroutines.android)
+        implementation(Deps.Kissme.android)
     }
 
     sourceSets["androidTest"].dependencies {
@@ -102,6 +103,7 @@ kotlin {
             }
         }
         implementation(Deps.Ktor.iosSerialization)
+        implementation(Deps.Kissme.ios)
     }
 
     cocoapodsext {
