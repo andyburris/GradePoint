@@ -30,7 +30,7 @@ fun EditSubjectDialog(subject: Subject, onClose: () -> Unit) {
         },
         confirmButton = {
             Button(
-                text = { Text("Done") },
+                text = { Text("Done".toUpperCase()) },
                 onClick = { onClose.invoke(); AppState.updateSubjectConfig(currentConfig.value) },
                 backgroundColor = Color.Unset,
                 elevation = 0.dp
@@ -38,7 +38,7 @@ fun EditSubjectDialog(subject: Subject, onClose: () -> Unit) {
         },
         dismissButton = {
             Button(
-                text = { Text("Cancel") },
+                text = { Text("Cancel".toUpperCase()) },
                 onClick = { onClose.invoke() },
                 backgroundColor = Color.Unset,
                 elevation = 0.dp

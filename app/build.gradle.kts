@@ -19,11 +19,11 @@ android {
         applicationId = "com.andb.apps.aspen"
         minSdkVersion(Versions.min_sdk)
         targetSdkVersion(Versions.target_sdk)
-        versionCode = 1
-        versionName = "1.0"
+        versionCode = 3
+        versionName = "0.1.1-internal02"
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
-        buildConfigField("String", "TEST_USERNAME", loginProperties["USERNAME"] as String)
-        buildConfigField("String", "TEST_PASSWORD", loginProperties["PASSWORD"] as String)
+
+        resValue("string", "app_name", "GradePoint")
     }
     packagingOptions {
         exclude("META-INF/*.kotlin_module")
@@ -31,10 +31,18 @@ android {
     buildTypes {
         getByName("release") {
             isMinifyEnabled = false
+            buildConfigField("String", "TEST_USERNAME", "")
+            buildConfigField("String", "TEST_PASSWORD", "")
             proguardFiles(
                 getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro"
             )
+        }
+        getByName("debug") {
+            resValue("string", "app_name", "GradePoint Beta")
+            buildConfigField("String", "TEST_USERNAME", loginProperties["USERNAME"] as String)
+            buildConfigField("String", "TEST_PASSWORD", loginProperties["PASSWORD"] as String)
+            applicationIdSuffix = ".debug"
         }
     }
     compileOptions {

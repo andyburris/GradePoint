@@ -41,7 +41,7 @@ private data class Scale(private val x: Float, private val y: Float) : LayoutMod
             maxHeight = constraints.maxHeight * y
         )
         val placeable: Placeable = measurable.measure(scaledConstraints, layoutDirection)
-        Log.d("scaleModifier", "constraints = $constraints, scaledConstraints = $scaledConstraints; placeable - width = ${placeable.width}, height = ${placeable.height}")
+        //Log.d("scaleModifier", "constraints = $constraints, scaledConstraints = $scaledConstraints; placeable - width = ${placeable.width}, height = ${placeable.height}")
         return layout(width = placeable.width * x, height = placeable.height * y){
             placeable.place(-placeable.width / 2 * (1-x), -placeable.height / 2 * (1-y))
         }

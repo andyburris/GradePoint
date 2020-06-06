@@ -1,7 +1,6 @@
 package com.andb.apps.aspen.ui.home
 
 import androidx.compose.Composable
-import androidx.compose.state
 import androidx.ui.core.Layout
 import androidx.ui.core.Modifier
 import androidx.ui.foundation.Box
@@ -24,12 +23,12 @@ import com.andb.apps.aspen.models.HomeTab
 
 @Composable
 fun HomeAppBar(
+    selectedTab: HomeTab,
     fabConfig: BottomAppBar.FabConfiguration?,
     fab: @Composable() (() -> Unit),
     modifier: Modifier = Modifier,
     onItemSelected: (HomeTab) -> Unit
 ) {
-    val selected = state { HomeTab.SUBJECTS }
     BottomAppBar(
         fabConfiguration = fabConfig,
         cutoutShape = RoundedCornerShape(32.dp),
@@ -40,33 +39,24 @@ fun HomeAppBar(
             modifier = Modifier.weight(1f),
             icon = { Icon(asset = Icons.Default.School) },
             text = { Text(text = "Subjects") },
-            selected = selected.value == HomeTab.SUBJECTS,
-            onSelected = {
-                selected.value = HomeTab.SUBJECTS
-                onItemSelected.invoke(HomeTab.SUBJECTS)
-            },
+            selected = selectedTab == HomeTab.SUBJECTS,
+            onSelected = { onItemSelected.invoke(HomeTab.SUBJECTS) },
             alwaysShowLabels = false
         )
         BottomNavigationItem(
             modifier = Modifier.weight(1f),
             icon = { Icon(asset = Icons.Default.AccessTime) },
             text = { Text(text = "Recents") },
-            selected = selected.value == HomeTab.RECENTS,
-            onSelected = {
-                selected.value = HomeTab.RECENTS
-                onItemSelected.invoke(HomeTab.RECENTS)
-            },
+            selected = selectedTab == HomeTab.RECENTS,
+            onSelected = { onItemSelected.invoke(HomeTab.RECENTS) },
             alwaysShowLabels = false
         )
         BottomNavigationItem(
             modifier = Modifier.weight(1f),
             icon = { Icon(asset = Icons.Default.Settings) },
             text = { Text(text = "Settings") },
-            selected = selected.value == HomeTab.SETTINGS,
-            onSelected = {
-                selected.value = HomeTab.SETTINGS
-                onItemSelected.invoke(HomeTab.SETTINGS)
-            },
+            selected = selectedTab == HomeTab.SETTINGS,
+            onSelected = { onItemSelected.invoke(HomeTab.SETTINGS) },
             alwaysShowLabels = false
         )
 

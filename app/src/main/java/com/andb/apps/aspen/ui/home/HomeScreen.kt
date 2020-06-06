@@ -69,7 +69,6 @@ fun HomeScreen(homeScreen: Screen.Home) {
 
     val fab: @Composable() () -> Unit = {
         Transition(definition = definition, toState = fabState.value) { transitionState ->
-            println("currentTab = ${currentTab.value}, fabState = ${fabState.value}, transitionState changed termExpansion to ${transitionState[termExpansion]}")
             ExtendedFloatingActionButton(
                 icon = {
                     Icon(asset = Icons.Default.FilterList)
@@ -98,6 +97,7 @@ fun HomeScreen(homeScreen: Screen.Home) {
         bottomAppBar = { fabConfig ->
             Transition(definition = definition, toState = fabState.value) { state ->
                 HomeAppBar(
+                    selectedTab = currentTab.value,
                     fabConfig = if (fabState.value == FabState.HIDDEN) null else fabConfig,
                     fab = fab,
                     modifier = Modifier.offset(y = state[appBarOffsetKey])

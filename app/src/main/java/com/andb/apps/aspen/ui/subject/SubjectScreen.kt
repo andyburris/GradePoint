@@ -8,7 +8,10 @@ import androidx.ui.core.Modifier
 import androidx.ui.foundation.*
 import androidx.ui.graphics.toArgb
 import androidx.ui.layout.*
-import androidx.ui.material.*
+import androidx.ui.material.Card
+import androidx.ui.material.FloatingActionButton
+import androidx.ui.material.MaterialTheme
+import androidx.ui.material.Scaffold
 import androidx.ui.material.icons.Icons
 import androidx.ui.material.icons.filled.Add
 import androidx.ui.material.icons.filled.Clear
@@ -29,10 +32,9 @@ fun SubjectScreen(subject: Subject) {
         topAppBar = {
             TopAppBarWithStatusBar(
                 navigationIcon = {
-                    Box(Modifier.clickable(onClick = { AppState.goBack() })) {
+                    Box(Modifier.padding(start = 12.dp).clickable(onClick = { AppState.goBack() })) {
                         Icon(
-                            asset = Icons.Default.Clear,
-                            modifier = Modifier.padding(start = 12.dp)
+                            asset = Icons.Default.Clear
                         )
                     }
                 },

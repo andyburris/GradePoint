@@ -29,6 +29,7 @@ fun LoginScreen() {
 
     val username = mutableStateOf(BuildConfig.TEST_USERNAME)
     val password = mutableStateOf(BuildConfig.TEST_PASSWORD)
+    val titleText = mutableStateOf("GradePoint")
 
     Column(
         horizontalGravity = Alignment.CenterHorizontally,
@@ -42,7 +43,7 @@ fun LoginScreen() {
             )
         }
         Text(
-            text = "GradePoint",
+            text = titleText.value,
             style = TextStyle(fontWeight = FontWeight.Medium, fontSize = 36.sp),
             modifier = Modifier.padding(top = 32.dp)
         )
@@ -60,6 +61,7 @@ fun LoginScreen() {
         )
         Button(
             onClick = {
+                titleText.value = "Clicked"
                 AppState.login(username.value, password.value)
             },
             modifier = Modifier.padding(top = 32.dp),

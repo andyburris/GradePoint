@@ -1,10 +1,9 @@
 package com.andb.apps.aspen
 
-import com.andb.apps.aspen.data.remote.AspenApi
+import com.andb.apps.aspen.data.remote.AspenApiMock
 import com.andb.apps.aspen.data.repository.AspenRepository
 import com.andb.apps.aspen.models.Subject
 import com.andb.apps.aspen.models.toConfig
-import com.andb.apps.aspen.response.*
 import com.russhwolf.settings.MockSettings
 import kotlin.test.AfterTest
 import kotlin.test.BeforeTest
@@ -61,7 +60,7 @@ class AspenRepsitoryTest : BaseTest() {
 
     @Test
     fun notifyErrorOnException() = runTest {
-        aspenApi.thowOnRequest = true
+        aspenApi.throwOnRequest = true
         repository.getResponse()
         //TODO implement kotlin-result when it becomes multiplatform and check that error
     }
@@ -73,42 +72,3 @@ class AspenRepsitoryTest : BaseTest() {
     }
 }
 
-class AspenApiMock : AspenApi {
-    var jsonRequested = false
-    var thowOnRequest = false
-
-    override suspend fun checkLogin(username: String, password: String): CheckLoginResponse {
-        if (thowOnRequest) throw Exception()
-        jsonRequested = true
-        return CheckLoginResponse(
-            errors = ErrorResponse(0, null, null),
-            data = username == "username" && password == "password",
-            asOf = 0
-        )
-    }
-
-    override suspend fun getSubjects(username: String, password: String): CourseListResponse {
-        if (thowOnRequest) throw Exception()
-        jsonRequested = true
-        return CourseListResponse(
-            errors = ErrorResponse(0, null, null),
-            data = listOf(
-                CourseResponse("id", "Course", "Name, Teacher", "FY", "A123", "92.35 A-", "ABC-123", hashMapOf(), mapOf(), listOf())
-            ),
-            asOf = 0
-        )
-    }
-
-    override suspend fun getRecentAssignments(username: String, password: String): RecentResponse {
-        if (thowOnRequest) throw Exception()
-        jsonRequested = true
-        return RecentResponse(
-            errors = ErrorResponse(0, null, null),
-            data = listOf(
-                RecentAssignmentResponse("id", "Assignment", "Course", "4")
-            ),
-            asOf = 0
-        )
-    }
-
-}

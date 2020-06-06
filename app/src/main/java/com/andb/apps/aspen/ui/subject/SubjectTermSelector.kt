@@ -48,7 +48,6 @@ fun SubjectTermSelector(modifier: Modifier = Modifier, onSelect: (term: Int) -> 
             }
 
             Transition(definition = definition, toState = currentTerm.value) {
-                println("transitionState changed padding to ${it[termKey]}dp")
                 Box(
                     shape = RoundedCornerShape(12.dp),
                     backgroundColor = MaterialTheme.colors.primaryVariant,
