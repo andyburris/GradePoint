@@ -11,4 +11,6 @@
 .cxx
 *.xcuserstate
 *.xcbkptlist
-
+*.hprof
+response.json
+/app/release
