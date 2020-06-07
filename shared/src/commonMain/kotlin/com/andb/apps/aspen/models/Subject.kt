@@ -16,6 +16,19 @@ data class Subject(
     }
 
     data class Config(val id: String, val icon: Icon, val color: Int)
+
+    companion object {
+        val COLOR_PRESETS = listOf(
+            0xFFEF5350,
+            0xFFFB8C00,
+            0xFFFFCA28,
+            0xFF4CAF50,
+            0xFF26C6DA,
+            0xFF42A5F5,
+            0xFF7E57C2,
+            0xFFEC407A
+        ).map { it.toInt() }
+    }
 }
 
 fun SubjectConfig.toConfig() = Subject.Config(id, Subject.Icon.valueOf(iconName), color.toInt())

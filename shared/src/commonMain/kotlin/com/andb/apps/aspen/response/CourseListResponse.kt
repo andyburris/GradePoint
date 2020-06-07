@@ -14,7 +14,7 @@ data class CourseListResponse(
 fun CourseListResponse.toSubjectList(savedConfigs: List<Subject.Config>): List<Subject> {
     return data.map { courseResponse ->
         val (last, first) = courseResponse.teacher.split(", ")
-        val config = savedConfigs.find { it.id == courseResponse.id } ?: Subject.Config(courseResponse.id, courseResponse.name.toIcon(), 0xFF388E3C.toInt())
+        val config = savedConfigs.find { it.id == courseResponse.id } ?: Subject.Config(courseResponse.id, courseResponse.name.toIcon(), 0xFF4CAF50.toInt())
         Subject(
             id = courseResponse.id,
             name = courseResponse.name,

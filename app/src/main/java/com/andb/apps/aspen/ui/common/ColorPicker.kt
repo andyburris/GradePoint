@@ -29,17 +29,8 @@ import androidx.ui.text.font.FontWeight
 import androidx.ui.unit.Px
 import androidx.ui.unit.dp
 import androidx.ui.util.toHexString
+import com.andb.apps.aspen.models.Subject
 
-private val colorPresets = listOf(
-    0xFFEF5350,
-    0xFFFB8C00,
-    0xFFFFCA28,
-    0xFF4CAF50,
-    0xFF26C6DA,
-    0xFF42A5F5,
-    0xFF7E57C2,
-    0xFFEC407A
-).map { it.toInt() }
 
 @Composable
 fun ColorPicker(selected: Int, modifier: Modifier = Modifier, onSelect: (color: Int) -> Unit) {
@@ -57,7 +48,7 @@ fun ColorPicker(selected: Int, modifier: Modifier = Modifier, onSelect: (color: 
             modifier = Modifier.fillMaxWidth()
         ) {
             if (!expanded.value) {
-                for (color in colorPresets) {
+                for (color in Subject.COLOR_PRESETS) {
                     Box(shape = CircleShape,
                         backgroundColor = Color(color),
                         border = Border(1.dp, Color.Black),
@@ -80,7 +71,7 @@ fun ColorPicker(selected: Int, modifier: Modifier = Modifier, onSelect: (color: 
                         drawOutline(
                             Outline.Rounded(RRect(size.toRect(), Radius.circular(16.dp.toPx().value))),
                             HorizontalGradient(
-                                colors = colorPresets.map { Color(it) },
+                                colors = Subject.COLOR_PRESETS.map { Color(it) },
                                 startX = Px.Zero.value,
                                 endX = size.width
                             )
