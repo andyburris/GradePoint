@@ -1,4 +1,4 @@
-package com.andb.apps.aspen.ui.assignment
+package com.andb.apps.aspen.ui.common
 
 import androidx.compose.Composable
 import androidx.ui.core.Modifier
@@ -12,7 +12,6 @@ import androidx.ui.layout.height
 import androidx.ui.material.MaterialTheme
 import androidx.ui.material.TopAppBar
 import androidx.ui.material.contentColorFor
-import androidx.ui.material.primarySurface
 import androidx.ui.unit.Dp
 import androidx.ui.unit.dp
 
@@ -22,8 +21,7 @@ fun TopAppBarWithStatusBar(
     modifier: Modifier = Modifier,
     navigationIcon: @Composable() (() -> Unit)? = null,
     actions: @Composable() RowScope.() -> Unit = {},
-    backgroundColor: Color = MaterialTheme.colors.primarySurface,
-    statusBarColor: Color = MaterialTheme.colors.primaryVariant,
+    backgroundColor: Color = MaterialTheme.colors.primary,
     contentColor: Color = contentColorFor(backgroundColor),
     elevation: Dp = 4.dp
 ) {

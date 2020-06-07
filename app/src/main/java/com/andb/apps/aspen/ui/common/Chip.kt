@@ -9,6 +9,8 @@ import androidx.ui.foundation.shape.corner.RoundedCornerShape
 import androidx.ui.graphics.Color
 import androidx.ui.graphics.vector.VectorAsset
 import androidx.ui.layout.*
+import androidx.ui.material.MaterialTheme
+import androidx.ui.material.contentColorFor
 import androidx.ui.material.icons.Icons
 import androidx.ui.material.icons.filled.Done
 import androidx.ui.unit.dp
@@ -18,7 +20,7 @@ import androidx.ui.unit.dp
 fun Chip(
     icon: VectorAsset,
     text: String,
-    backgroundColor: Color = Color(0xFFE0E0E0),
+    backgroundColor: Color = MaterialTheme.colors.onBackground.copy(alpha = .12f),
     selected: Boolean,
     modifier: Modifier = Modifier,
     onClick: () -> Unit = {}
@@ -33,7 +35,7 @@ fun Chip(
             verticalGravity = Alignment.CenterVertically
         ) {
             Icon(asset = icon, modifier = Modifier.padding(end = 8.dp))
-            Text(text = text)
+            Text(text = text, color = contentColorFor(color = backgroundColor))
             if (selected) {
                 Box(
                     shape = CircleShape,

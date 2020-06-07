@@ -21,8 +21,8 @@ import androidx.ui.tooling.preview.Preview
 import androidx.ui.unit.dp
 import com.andb.apps.aspen.models.*
 import com.andb.apps.aspen.state.AppState
-import com.andb.apps.aspen.ui.assignment.TopAppBarWithStatusBar
 import com.andb.apps.aspen.ui.common.AssignmentItem
+import com.andb.apps.aspen.ui.common.TopAppBarWithStatusBar
 import com.andb.apps.aspen.util.icon
 import com.soywiz.klock.Date
 
@@ -32,7 +32,9 @@ fun SubjectScreen(subject: Subject) {
         topAppBar = {
             TopAppBarWithStatusBar(
                 navigationIcon = {
-                    Box(Modifier.padding(start = 12.dp).clickable(onClick = { AppState.goBack() })) {
+                    Box(
+                        Modifier.padding(start = 12.dp).clickable(onClick = { AppState.goBack() })
+                    ) {
                         Icon(
                             asset = Icons.Default.Clear
                         )
@@ -62,7 +64,7 @@ fun CategoriesCard(terms: Map<String, List<Category>>) {
     val term = mutableStateOf(4)
     Card(
         elevation = 4.dp,
-        modifier = Modifier.fillMaxWidth().padding(start = 8.dp, end = 8.dp, top = 12.dp)
+        modifier = Modifier.fillMaxWidth().padding(start = 8.dp, end = 8.dp, top = 12.dp, bottom = 4.dp)
     ) {
         Column(modifier = Modifier.padding(top = 16.dp, bottom = 12.dp)) {
             Row(
@@ -124,7 +126,6 @@ fun AssignmentTable(assignments: List<Assignment>) {
     }
 }
 
-@Preview
 @Composable
 fun AssignmentHeader() {
     Row(

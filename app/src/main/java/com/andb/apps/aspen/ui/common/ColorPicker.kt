@@ -47,7 +47,7 @@ fun ColorPicker(selected: Int, modifier: Modifier = Modifier, onSelect: (color: 
     Column(modifier) {
         Text(
             text = "Color",
-            style = TextStyle(color = Color.Black, fontWeight = FontWeight.Medium),
+            style = TextStyle(fontWeight = FontWeight.Medium),
             modifier = Modifier.padding(top = 24.dp, bottom = 16.dp)
         )
 

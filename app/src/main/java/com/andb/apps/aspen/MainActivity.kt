@@ -19,6 +19,7 @@ import androidx.ui.layout.height
 import androidx.ui.layout.size
 import androidx.ui.material.MaterialTheme
 import androidx.ui.material.Surface
+import androidx.ui.material.darkColorPalette
 import androidx.ui.material.lightColorPalette
 import androidx.ui.text.TextStyle
 import androidx.ui.unit.dp
@@ -32,6 +33,7 @@ import com.andb.apps.aspen.ui.home.LoadingScreen
 import com.andb.apps.aspen.ui.login.LoginScreen
 import com.andb.apps.aspen.ui.subject.SubjectScreen
 import com.andb.apps.aspen.ui.test.TestScreen
+import com.andb.apps.aspen.util.isDark
 
 class MainActivity : AppCompatActivity() {
     companion object {
@@ -48,7 +50,7 @@ class MainActivity : AppCompatActivity() {
     override fun onBackPressed() {
         val goBack = AppState.goBack()
         Log.d("onBackPressed", "goBack = $goBack")
-        if (!goBack){
+        if (!goBack) {
             super.onBackPressed()
         }
     }
@@ -61,7 +63,7 @@ fun AppContent() {
         Surface(color = MaterialTheme.colors.background) {
             Stack {
                 Crossfade(current = currentScreen.value) { screen ->
-                    when(screen){
+                    when (screen) {
                         is Screen.Login -> LoginScreen()
                         is Screen.Loading -> LoadingScreen()
                         is Screen.Home -> HomeScreen(screen)
@@ -70,7 +72,7 @@ fun AppContent() {
                         is Screen.Test -> TestScreen()
                     }
                 }
-                if (BuildConfig.DEBUG){
+                if (BuildConfig.DEBUG) {
                     VersionRibbon(Modifier.gravity(Alignment.TopEnd))
                 }
             }
@@ -79,21 +81,40 @@ fun AppContent() {
 }
 
 @Composable
-fun AppTheme(content: @Composable() () -> Unit){
+fun AppTheme(content: @Composable() () -> Unit) {
+    val darkMode = AndroidSettings.darkModeFlow.collectAsState()
     MaterialTheme(
-        colors = lightColorPalette(
-            primary = Color(0xFF388E3C),
-            primaryVariant = Color(0xFF1B5E20)
-        ),
+        colors = when (darkMode.value.isDark()) {
+            false -> lightColorPalette(
+                primary = Color(0xFF388E3C),
+                primaryVariant = Color(0xFF1B5E20)
+            )
+            true -> darkColorPalette(
+                primary = Color(0xFF388E3C),
+                primaryVariant = Color(0xFF1B5E20),
+                onPrimary = Color.White
+            )
+        },
         typography = MaterialTheme.typography.copy(body1 = TextStyle(fontSize = 14.sp)),
         content = content
     )
 }
 
+
 @Composable
-fun VersionRibbon(modifier: Modifier = Modifier){
-    Stack(modifier = modifier.size(108.dp).drawLayer(rotationZ = 45f, translationX = 75f, translationY = -75f)){
-        Box(modifier = Modifier.height(24.dp).fillMaxWidth().gravity(Alignment.Center), backgroundColor = MaterialTheme.colors.primary)
-        Text(text = BuildConfig.VERSION_NAME, modifier = Modifier.gravity(Alignment.Center), style = TextStyle(color = MaterialTheme.colors.onPrimary, fontSize = 10.sp))
+fun VersionRibbon(modifier: Modifier = Modifier) {
+    Stack(
+        modifier = modifier.size(108.dp)
+            .drawLayer(rotationZ = 45f, translationX = 75f, translationY = -75f)
+    ) {
+        Box(
+            modifier = Modifier.height(24.dp).fillMaxWidth().gravity(Alignment.Center),
+            backgroundColor = MaterialTheme.colors.primary
+        )
+        Text(
+            text = BuildConfig.VERSION_NAME,
+            modifier = Modifier.gravity(Alignment.Center),
+            style = TextStyle(color = MaterialTheme.colors.onPrimary, fontSize = 10.sp)
+        )
     }
 }

@@ -9,10 +9,12 @@ import androidx.compose.Composable
 import androidx.compose.MutableState
 import androidx.compose.State
 import androidx.compose.collectAsState
+import androidx.ui.foundation.isSystemInDarkTheme
 import androidx.ui.material.icons.Icons
 import androidx.ui.material.icons.filled.*
 import androidx.ui.res.vectorResource
 import com.andb.apps.aspen.android.R
+import com.andb.apps.aspen.model.DarkMode
 import com.andb.apps.aspen.models.Category
 import com.andb.apps.aspen.models.Subject
 import kotlinx.coroutines.flow.Flow
@@ -58,4 +60,13 @@ fun Subject.Icon.toVectorAsset() = when (this) {
 
 fun MutableState<Boolean>.toggle(){
     this.value = !this.value
+}
+
+@Composable
+fun DarkMode.isDark(): Boolean{
+    return when(this){
+        DarkMode.LIGHT -> false
+        DarkMode.DARK -> true
+        DarkMode.SYSTEM -> isSystemInDarkTheme()
+    }
 }

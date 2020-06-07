@@ -62,7 +62,7 @@ fun LoginScreen() {
         Button(
             onClick = {
                 titleText.value = "Clicked"
-                AppState.login(username.value, password.value)
+                AppState.login(username.value.trim(), password.value.trim())
             },
             modifier = Modifier.padding(top = 32.dp),
             shape = RoundedCornerShape(32.dp),

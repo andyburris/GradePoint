@@ -19,8 +19,8 @@ android {
         applicationId = "com.andb.apps.aspen"
         minSdkVersion(Versions.min_sdk)
         targetSdkVersion(Versions.target_sdk)
-        versionCode = 3
-        versionName = "0.1.1-internal02"
+        versionCode = 4
+        versionName = "0.1.1-internal03"
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
 
         resValue("string", "app_name", "GradePoint")

@@ -3,7 +3,6 @@ package com.andb.apps.aspen.ui.common
 import androidx.compose.Composable
 import androidx.ui.core.Modifier
 import androidx.ui.foundation.Text
-import androidx.ui.graphics.Color
 import androidx.ui.layout.Column
 import androidx.ui.layout.padding
 import androidx.ui.text.TextStyle
@@ -17,7 +16,7 @@ fun IconPicker(selected: Subject.Icon, modifier: Modifier = Modifier, onSelect: 
     Column(modifier) {
         Text(
             text = "Icon",
-            style = TextStyle(color = Color.Black, fontWeight = FontWeight.Medium),
+            style = TextStyle(fontWeight = FontWeight.Medium),
             modifier = Modifier.padding(bottom = 16.dp)
         )
         Flexbox {

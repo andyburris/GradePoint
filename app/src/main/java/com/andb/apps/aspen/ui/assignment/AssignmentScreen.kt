@@ -7,7 +7,6 @@ import androidx.ui.foundation.Icon
 import androidx.ui.foundation.Text
 import androidx.ui.foundation.clickable
 import androidx.ui.foundation.contentColor
-import androidx.ui.graphics.Color
 import androidx.ui.graphics.vector.VectorAsset
 import androidx.ui.layout.*
 import androidx.ui.material.CircularProgressIndicator
@@ -43,7 +42,7 @@ fun AssignmentScreen(assignment: Assignment) {
             Text(
                 text = assignment.subjectName,
                 style = TextStyle(
-                    color = Color.Unset.copy(alpha = .54f),
+                    color = MaterialTheme.colors.onBackground.copy(alpha = .54f),
                     fontSize = 20.sp,
                     fontWeight = FontWeight.Medium
                 ),
