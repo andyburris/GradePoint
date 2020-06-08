@@ -18,7 +18,7 @@ import androidx.ui.unit.dp
 
 @Composable
 fun Chip(
-    icon: VectorAsset,
+    icon: VectorAsset? = null,
     text: String,
     backgroundColor: Color = MaterialTheme.colors.onBackground.copy(alpha = .12f),
     selected: Boolean,
@@ -34,7 +34,9 @@ fun Chip(
             modifier = Modifier.fillMaxHeight().padding(horizontal = 8.dp),
             verticalGravity = Alignment.CenterVertically
         ) {
-            Icon(asset = icon, modifier = Modifier.padding(end = 8.dp))
+            if (icon != null){
+                Icon(asset = icon, modifier = Modifier.padding(end = 8.dp))
+            }
             Text(text = text, style = MaterialTheme.typography.body2, color = contentColorFor(color = backgroundColor))
             if (selected) {
                 Box(

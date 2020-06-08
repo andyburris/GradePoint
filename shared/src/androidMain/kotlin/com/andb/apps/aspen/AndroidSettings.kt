@@ -17,4 +17,13 @@ object AndroidSettings : KoinComponent{
         }
 
     val darkModeFlow = MutableStateFlow(darkMode)
+
+    var fontSize: Int
+        get() = storage.getInt("fontSize", 14)
+        set(value) {
+            storage.putInt("fontSize", value)
+            fontSizeFlow.value = fontSize
+        }
+
+    val fontSizeFlow = MutableStateFlow(fontSize)
 }

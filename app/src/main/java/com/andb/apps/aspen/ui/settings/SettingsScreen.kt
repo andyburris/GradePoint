@@ -16,6 +16,7 @@ import androidx.ui.material.Button
 import androidx.ui.material.MaterialTheme
 import androidx.ui.material.RadioGroup
 import androidx.ui.material.icons.Icons
+import androidx.ui.material.icons.filled.FormatSize
 import androidx.ui.material.icons.filled.Settings
 import androidx.ui.res.vectorResource
 import androidx.ui.unit.dp
@@ -24,6 +25,7 @@ import com.andb.apps.aspen.android.BuildConfig
 import com.andb.apps.aspen.android.R
 import com.andb.apps.aspen.model.DarkMode
 import com.andb.apps.aspen.state.AppState
+import com.andb.apps.aspen.ui.common.Chip
 import com.andb.apps.aspen.ui.home.HomeHeader
 
 @Composable
@@ -50,6 +52,23 @@ fun SettingsScreen() {
             showing = darkModeDialogShown.value,
             onClose = { darkModeDialogShown.value = false }
         )
+
+        SettingsItem(
+            title = "Font Size",
+            icon = Icons.Default.FormatSize,
+            modifier = Modifier.fillMaxWidth().padding(24.dp)
+        ) {
+            Chip(
+                text = "14 (default)",
+                selected = AndroidSettings.fontSize == 14,
+                onClick = { AndroidSettings.fontSize = 14 },
+                modifier = Modifier.padding(end = 4.dp)
+            )
+            Chip(
+                text = "16",
+                selected = AndroidSettings.fontSize == 16,
+                onClick = { AndroidSettings.fontSize = 16 })
+        }
     }
 }
 

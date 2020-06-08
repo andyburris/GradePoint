@@ -84,6 +84,7 @@ fun AppContent() {
 @Composable
 fun AppTheme(content: @Composable() () -> Unit) {
     val darkMode = AndroidSettings.darkModeFlow.collectAsState()
+    val fontSize = AndroidSettings.fontSizeFlow.collectAsState()
     val colors = when (darkMode.value.isDark()) {
         false -> lightColorPalette(
             primary = Color(0xFF388E3C),
@@ -99,8 +100,8 @@ fun AppTheme(content: @Composable() () -> Unit) {
     }
 
     val typography = MaterialTheme.typography.copy(
-        body1 = MaterialTheme.typography.body1.copy(color = colors.onSecondary),
-        subtitle1 = MaterialTheme.typography.subtitle1.copy(fontWeight = FontWeight.Medium),
+        body1 = MaterialTheme.typography.body1.copy(color = colors.onSecondary, fontSize = fontSize.value.sp),
+        subtitle1 = MaterialTheme.typography.subtitle1.copy(fontWeight = FontWeight.Medium, fontSize = fontSize.value.sp),
         h3 = MaterialTheme.typography.h3.copy(fontWeight = FontWeight.Bold),
         h4 = MaterialTheme.typography.h4.copy(fontWeight = FontWeight.Medium),
         h5 = MaterialTheme.typography.h5.copy(fontWeight = FontWeight.Medium)
