@@ -6,7 +6,6 @@ import androidx.ui.core.Modifier
 import androidx.ui.foundation.AdapterList
 import androidx.ui.layout.Column
 import com.andb.apps.aspen.ui.common.shimmer.*
-import com.andb.apps.aspen.ui.home.subjectlist.HomeHeader
 import com.andb.apps.aspen.ui.home.subjectlist.LoadingSubjectsItem
 
 @Composable

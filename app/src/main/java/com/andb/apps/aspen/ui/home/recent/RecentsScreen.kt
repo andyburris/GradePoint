@@ -10,7 +10,7 @@ import androidx.ui.unit.dp
 import com.andb.apps.aspen.models.Assignment
 import com.andb.apps.aspen.state.AppState
 import com.andb.apps.aspen.ui.common.AssignmentItem
-import com.andb.apps.aspen.ui.home.subjectlist.HomeHeader
+import com.andb.apps.aspen.ui.home.HomeHeader
 
 @Composable
 fun RecentsScreen(recents: List<Assignment>) {

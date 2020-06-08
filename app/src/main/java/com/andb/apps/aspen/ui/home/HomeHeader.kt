@@ -1,4 +1,4 @@
-package com.andb.apps.aspen.ui.home.subjectlist
+package com.andb.apps.aspen.ui.home
 
 import androidx.compose.Composable
 import androidx.ui.core.Alignment

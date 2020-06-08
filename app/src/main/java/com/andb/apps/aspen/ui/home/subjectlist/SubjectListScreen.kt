@@ -23,6 +23,7 @@ import com.andb.apps.aspen.models.Subject
 import com.andb.apps.aspen.state.AppState
 import com.andb.apps.aspen.ui.common.SwipeStep
 import com.andb.apps.aspen.ui.common.swipeable
+import com.andb.apps.aspen.ui.home.HomeHeader
 
 @Composable
 fun SubjectsScreen(subjects: List<Subject>) {

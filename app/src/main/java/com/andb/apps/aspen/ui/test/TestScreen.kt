@@ -21,11 +21,7 @@ import androidx.ui.material.icons.filled.Settings
 import androidx.ui.tooling.preview.Preview
 import androidx.ui.unit.dp
 import com.andb.apps.aspen.models.Subject
-import com.andb.apps.aspen.ui.common.TopAppBarWithStatusBar
-import com.andb.apps.aspen.ui.common.ColorPicker
-import com.andb.apps.aspen.ui.common.IconPicker
-import com.andb.apps.aspen.ui.common.SwipeStep
-import com.andb.apps.aspen.ui.common.swipeable
+import com.andb.apps.aspen.ui.common.*
 import com.andb.apps.aspen.ui.settings.SettingsItem
 
 @Composable
@@ -72,6 +68,7 @@ private fun TestIconPicker() {
 @Composable
 private fun TestDropdown() {
     val expanded = state { false }
+    val onClick = { println("Test 1 clicked"); expanded.value = false }
     DropdownMenu(
         toggle = {
             Icon(
@@ -81,10 +78,10 @@ private fun TestDropdown() {
         },
         expanded = expanded.value, onDismissRequest = { expanded.value = false }
     ) {
-        DropdownMenuItem(onClick = { println("Test 1 clicked"); expanded.value = false }) {
+        DropdownMenuItem(onClick = onClick) {
             Text(text = "Test 1")
         }
-        DropdownMenuItem(onClick = { println("Test 2 clicked"); expanded.value = false }) {
+        DropdownMenuItem(onClick = onClick) {
             Text(text = "Test 2")
         }
     }

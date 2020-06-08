@@ -26,7 +26,7 @@ import com.andb.apps.aspen.android.BuildConfig
 import com.andb.apps.aspen.android.R
 import com.andb.apps.aspen.model.DarkMode
 import com.andb.apps.aspen.state.AppState
-import com.andb.apps.aspen.ui.home.subjectlist.HomeHeader
+import com.andb.apps.aspen.ui.home.HomeHeader
 
 @Composable
 fun SettingsScreen() {

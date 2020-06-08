@@ -42,18 +42,14 @@ fun ColorPicker(selected: Int, modifier: Modifier = Modifier, onSelect: (color: 
             modifier = Modifier.padding(top = 24.dp, bottom = 16.dp)
         )
 
-        Row(
-            verticalGravity = Alignment.CenterVertically,
-            horizontalArrangement = Arrangement.SpaceBetween,
-            modifier = Modifier.fillMaxWidth()
-        ) {
+        Flexbox(verticalGravity = Alignment.CenterVertically) {
             if (!expanded.value) {
                 for (color in Subject.COLOR_PRESETS) {
                     Box(shape = CircleShape,
                         backgroundColor = Color(color),
                         border = Border(1.dp, Color.Black),
                         gravity = ContentGravity.Center,
-                        modifier = Modifier.padding(end = 4.dp).size(32.dp).clickable(
+                        modifier = Modifier.padding(end = 4.dp, bottom = 4.dp).size(32.dp).clickable(
                             onClick = {
                                 onSelect.invoke(color)
                             }
