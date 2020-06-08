@@ -5,8 +5,7 @@ import androidx.ui.core.Modifier
 import androidx.ui.foundation.Text
 import androidx.ui.layout.Column
 import androidx.ui.layout.padding
-import androidx.ui.text.TextStyle
-import androidx.ui.text.font.FontWeight
+import androidx.ui.material.MaterialTheme
 import androidx.ui.unit.dp
 import com.andb.apps.aspen.models.Subject
 import com.andb.apps.aspen.util.toVectorAsset
@@ -16,7 +15,7 @@ fun IconPicker(selected: Subject.Icon, modifier: Modifier = Modifier, onSelect: 
     Column(modifier) {
         Text(
             text = "Icon",
-            style = TextStyle(fontWeight = FontWeight.Medium),
+            style = MaterialTheme.typography.subtitle1,
             modifier = Modifier.padding(bottom = 16.dp)
         )
         Flexbox {

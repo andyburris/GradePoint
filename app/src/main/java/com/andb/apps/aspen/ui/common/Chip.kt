@@ -35,7 +35,7 @@ fun Chip(
             verticalGravity = Alignment.CenterVertically
         ) {
             Icon(asset = icon, modifier = Modifier.padding(end = 8.dp))
-            Text(text = text, color = contentColorFor(color = backgroundColor))
+            Text(text = text, style = MaterialTheme.typography.body2, color = contentColorFor(color = backgroundColor))
             if (selected) {
                 Box(
                     shape = CircleShape,

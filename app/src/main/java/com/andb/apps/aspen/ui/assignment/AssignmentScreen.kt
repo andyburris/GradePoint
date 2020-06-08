@@ -10,17 +10,15 @@ import androidx.ui.foundation.contentColor
 import androidx.ui.graphics.vector.VectorAsset
 import androidx.ui.layout.*
 import androidx.ui.material.CircularProgressIndicator
+import androidx.ui.material.LinearProgressIndicator
 import androidx.ui.material.MaterialTheme
 import androidx.ui.material.icons.Icons
 import androidx.ui.material.icons.filled.BorderClear
 import androidx.ui.material.icons.filled.Clear
 import androidx.ui.material.icons.filled.Event
-import androidx.ui.text.TextStyle
-import androidx.ui.text.font.FontWeight
 import androidx.ui.text.style.TextOverflow
 import androidx.ui.tooling.preview.Preview
 import androidx.ui.unit.dp
-import androidx.ui.unit.sp
 import com.andb.apps.aspen.models.Assignment
 import com.andb.apps.aspen.models.Grade
 import com.andb.apps.aspen.models.SubjectGrade
@@ -41,11 +39,8 @@ fun AssignmentScreen(assignment: Assignment) {
             )
             Text(
                 text = assignment.subjectName,
-                style = TextStyle(
-                    color = MaterialTheme.colors.onBackground.copy(alpha = .54f),
-                    fontSize = 20.sp,
-                    fontWeight = FontWeight.Medium
-                ),
+                style = MaterialTheme.typography.h6,
+                color = MaterialTheme.colors.onSecondary,
                 modifier = Modifier.padding(start = 24.dp),
                 maxLines = 1,
                 overflow = TextOverflow.Ellipsis
@@ -53,19 +48,19 @@ fun AssignmentScreen(assignment: Assignment) {
         }
         Text(
             text = assignment.title,
-            style = TextStyle(fontWeight = FontWeight.Medium, fontSize = 36.sp),
+            style = MaterialTheme.typography.h4,
             modifier = Modifier.padding(top = 24.dp)
         )
         Stack(modifier = Modifier.padding(top = 32.dp)) {
             when (assignment.grade) {
-                is Grade.Score -> ScoreItem(grade = (assignment.grade as Grade.Score))
+                is Grade.Score -> ExtendedScoreItem(score = (assignment.grade as Grade.Score))
                 else -> EmptyGradeItem(grade = assignment.grade)
             }
         }
         DetailItem(
             text = assignment.category,
             icon = getIconFromCategory(assignment.category),
-            modifier = Modifier.padding(top = 24.dp)
+            modifier = Modifier.padding(top = 16.dp)
         )
 
         DetailItem(
@@ -76,23 +71,20 @@ fun AssignmentScreen(assignment: Assignment) {
 
         Text(
             text = "Class Scores".toUpperCase(),
-            style = TextStyle(
-                color = MaterialTheme.colors.primary,
-                fontSize = 18.sp,
-                fontWeight = FontWeight.Medium
-            ),
-            modifier = Modifier.padding(top = 32.dp)
+            style = MaterialTheme.typography.subtitle1,
+            color = MaterialTheme.colors.primary,
+            modifier = Modifier.padding(top = 48.dp)
         )
 
         when (assignment.statistics) {
             is Assignment.Statistics.Hidden -> Text(
                 text = "Hidden by teacher",
-                style = TextStyle(fontWeight = FontWeight.Medium, fontSize = 18.sp),
+                style = MaterialTheme.typography.subtitle1,
                 modifier = Modifier.padding(top = 24.dp)
             )
             is Assignment.Statistics.Ungraded -> Text(
                 text = "Ungraded",
-                style = TextStyle(fontWeight = FontWeight.Medium, fontSize = 18.sp),
+                style = MaterialTheme.typography.subtitle1,
                 modifier = Modifier.padding(top = 24.dp)
             )
             is Assignment.Statistics.Available -> {
@@ -123,25 +115,53 @@ fun AssignmentScreen(assignment: Assignment) {
 }
 
 @Composable
+private fun ExtendedScoreItem(score: Grade.Score, modifier: Modifier = Modifier){
+    Column(modifier = modifier) {
+        Row {
+            Text(
+                text = "${score.score.trimTrailingZeroes()}/${score.possibleScore.trimTrailingZeroes()}",
+                style = MaterialTheme.typography.h5
+            )
+            Text(
+                text = score.letter,
+                style = MaterialTheme.typography.h5,
+                color = MaterialTheme.colors.onSecondary,
+                modifier = Modifier.padding(start = 8.dp)
+            )
+        }
+        Row(Modifier.fillMaxWidth().padding(top = 8.dp), verticalGravity = Alignment.CenterVertically) {
+            LinearProgressIndicator(
+                progress = (score.score/score.possibleScore).toFloat(),
+                modifier = Modifier.weight(1f)
+            )
+            Text(
+                text = "${(score.score / score.possibleScore * 100).toDecimalString(2).trimTrailingZeroes()}%",
+                modifier = Modifier.padding(start = 16.dp)
+            )
+        }
+    }
+}
+
+@Composable
 private fun ScoreItem(grade: Grade.Score, modifier: Modifier = Modifier) {
     Row(verticalGravity = Alignment.CenterVertically, modifier = modifier) {
         Stack {
             CircularProgressIndicator(progress = (grade.score / grade.possibleScore).toFloat())
             Text(
                 text = grade.letter,
-                style = TextStyle(fontWeight = FontWeight.Medium, fontSize = 18.sp),
+                style = MaterialTheme.typography.subtitle1,
                 modifier = Modifier.gravity(Alignment.Center)
             )
         }
         Column(modifier = Modifier.padding(start = 16.dp)) {
             Text(
                 text = "${grade.score}/${grade.possibleScore}",
-                style = TextStyle(fontWeight = FontWeight.Medium, fontSize = 18.sp)
+                style = MaterialTheme.typography.subtitle1
             )
             Text(
                 text = "${(grade.score / grade.possibleScore * 100).toDecimalString(2)
                     .trimTrailingZeroes()}%",
-                style = TextStyle(fontSize = 18.sp)
+                style = MaterialTheme.typography.body1
             )
         }
     }
@@ -156,7 +176,7 @@ private fun EmptyGradeItem(grade: Grade, modifier: Modifier = Modifier) {
         )
         Text(
             text = grade.toString(),
-            style = TextStyle(fontWeight = FontWeight.Medium, fontSize = 18.sp),
+            style = MaterialTheme.typography.subtitle1,
             modifier = Modifier.padding(start = 16.dp)
         )
     }
@@ -166,12 +186,12 @@ private fun EmptyGradeItem(grade: Grade, modifier: Modifier = Modifier) {
 private fun DetailItem(text: String, icon: VectorAsset, modifier: Modifier) {
     Row(verticalGravity = Alignment.CenterVertically, modifier = modifier) {
         Icon(
-            asset = icon.copy(defaultWidth = 36.dp, defaultHeight = 36.dp),
+            asset = icon,
             tint = MaterialTheme.colors.onSurface.copy(alpha = .54f)
         )
         Text(
             text = text,
-            style = TextStyle(fontWeight = FontWeight.Medium, fontSize = 18.sp),
+            style = MaterialTheme.typography.subtitle1,
             modifier = Modifier.padding(start = 16.dp)
         )
     }
@@ -184,11 +204,11 @@ private fun StatisticItem(type: String, value: SubjectGrade, modifier: Modifier 
         horizontalArrangement = Arrangement.SpaceBetween,
         modifier = modifier.fillMaxWidth()
     ) {
-        Text(text = type, style = TextStyle(fontWeight = FontWeight.Medium, fontSize = 18.sp))
+        Text(text = type, style = MaterialTheme.typography.subtitle1)
         when (value) {
             is SubjectGrade.Letter -> Text(
                 text = "${value.number} ${value.letter}",
-                style = TextStyle(fontSize = 18.sp)
+                style = MaterialTheme.typography.body1
             )
             else -> {
             }

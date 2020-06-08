@@ -12,13 +12,11 @@ import androidx.ui.foundation.shape.corner.RoundedCornerShape
 import androidx.ui.layout.*
 import androidx.ui.material.Button
 import androidx.ui.material.FilledTextField
+import androidx.ui.material.MaterialTheme
 import androidx.ui.material.Surface
 import androidx.ui.res.vectorResource
-import androidx.ui.text.TextStyle
-import androidx.ui.text.font.FontWeight
 import androidx.ui.tooling.preview.Preview
 import androidx.ui.unit.dp
-import androidx.ui.unit.sp
 import com.andb.apps.aspen.android.BuildConfig
 import com.andb.apps.aspen.android.R
 import com.andb.apps.aspen.state.AppState
@@ -44,7 +42,7 @@ fun LoginScreen() {
         }
         Text(
             text = titleText.value,
-            style = TextStyle(fontWeight = FontWeight.Medium, fontSize = 36.sp),
+            style = MaterialTheme.typography.h4,
             modifier = Modifier.padding(top = 32.dp)
         )
         FilledTextField(

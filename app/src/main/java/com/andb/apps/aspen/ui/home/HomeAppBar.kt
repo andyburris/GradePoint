@@ -38,7 +38,7 @@ fun HomeAppBar(
         BottomNavigationItem(
             modifier = Modifier.weight(1f),
             icon = { Icon(asset = Icons.Default.School) },
-            text = { Text(text = "Subjects") },
+            text = { Text(text = "Subjects", color = MaterialTheme.colors.onPrimary) },
             selected = selectedTab == HomeTab.SUBJECTS,
             onSelected = { onItemSelected.invoke(HomeTab.SUBJECTS) },
             alwaysShowLabels = false
@@ -46,7 +46,7 @@ fun HomeAppBar(
         BottomNavigationItem(
             modifier = Modifier.weight(1f),
             icon = { Icon(asset = Icons.Default.AccessTime) },
-            text = { Text(text = "Recents") },
+            text = { Text(text = "Recents", color = MaterialTheme.colors.onPrimary) },
             selected = selectedTab == HomeTab.RECENTS,
             onSelected = { onItemSelected.invoke(HomeTab.RECENTS) },
             alwaysShowLabels = false
@@ -54,7 +54,7 @@ fun HomeAppBar(
         BottomNavigationItem(
             modifier = Modifier.weight(1f),
             icon = { Icon(asset = Icons.Default.Settings) },
-            text = { Text(text = "Settings") },
+            text = { Text(text = "Settings", color = MaterialTheme.colors.onPrimary) },
             selected = selectedTab == HomeTab.SETTINGS,
             onSelected = { onItemSelected.invoke(HomeTab.SETTINGS) },
             alwaysShowLabels = false

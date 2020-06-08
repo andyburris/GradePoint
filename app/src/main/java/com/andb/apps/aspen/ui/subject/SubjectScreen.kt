@@ -1,6 +1,5 @@
 package com.andb.apps.aspen.ui.subject
 
-import android.util.Log
 import androidx.compose.Composable
 import androidx.compose.mutableStateOf
 import androidx.ui.core.Alignment
@@ -9,14 +8,11 @@ import androidx.ui.foundation.*
 import androidx.ui.graphics.toArgb
 import androidx.ui.layout.*
 import androidx.ui.material.Card
-import androidx.ui.material.FloatingActionButton
 import androidx.ui.material.MaterialTheme
 import androidx.ui.material.Scaffold
 import androidx.ui.material.icons.Icons
-import androidx.ui.material.icons.filled.Add
 import androidx.ui.material.icons.filled.Clear
-import androidx.ui.text.TextStyle
-import androidx.ui.text.font.FontWeight
+import androidx.ui.text.style.TextOverflow
 import androidx.ui.tooling.preview.Preview
 import androidx.ui.unit.dp
 import com.andb.apps.aspen.models.*
@@ -24,6 +20,7 @@ import com.andb.apps.aspen.state.AppState
 import com.andb.apps.aspen.ui.common.AssignmentItem
 import com.andb.apps.aspen.ui.common.TopAppBarWithStatusBar
 import com.andb.apps.aspen.util.icon
+import com.andb.apps.aspen.util.trimTrailingZeroes
 import com.soywiz.klock.Date
 
 @Composable
@@ -40,14 +37,14 @@ fun SubjectScreen(subject: Subject) {
                         )
                     }
                 },
-                title = { Text(text = subject.name) }
-            )
-        },
-        floatingActionButton = {
-            FloatingActionButton(
-                onClick = { Log.d("jetpackCompose", "FAB clicked") },
-                icon = { Icon(asset = Icons.Default.Add) },
-                backgroundColor = MaterialTheme.colors.primary
+                title = {
+                    Text(
+                        text = subject.name,
+                        style = MaterialTheme.typography.h6,
+                        maxLines = 1,
+                        overflow = TextOverflow.Ellipsis
+                    )
+                }
             )
         },
         bodyContent = {
@@ -64,7 +61,8 @@ fun CategoriesCard(terms: Map<String, List<Category>>) {
     val term = mutableStateOf(4)
     Card(
         elevation = 4.dp,
-        modifier = Modifier.fillMaxWidth().padding(start = 8.dp, end = 8.dp, top = 12.dp, bottom = 4.dp)
+        modifier = Modifier.fillMaxWidth()
+            .padding(start = 8.dp, end = 8.dp, top = 12.dp, bottom = 4.dp)
     ) {
         Column(modifier = Modifier.padding(top = 16.dp, bottom = 12.dp)) {
             Row(
@@ -75,10 +73,8 @@ fun CategoriesCard(terms: Map<String, List<Category>>) {
             ) {
                 Text(
                     text = "Categories".toUpperCase(),
-                    style = TextStyle(
-                        color = MaterialTheme.colors.primary,
-                        fontWeight = FontWeight.Medium
-                    )
+                    style = MaterialTheme.typography.subtitle1,
+                    color = MaterialTheme.colors.primary
                 )
                 SubjectTermSelector { term.value = it }
             }
@@ -102,14 +98,19 @@ fun CategoryItem(category: Category) {
             Icon(asset = category.icon(), tint = MaterialTheme.colors.onSurface.copy(alpha = .54f))
             Text(
                 text = category.name,
-                style = TextStyle(fontWeight = FontWeight.Medium),
+                style = MaterialTheme.typography.subtitle1,
                 modifier = Modifier.padding(start = 8.dp)
             )
-            Text(text = "(${category.weight}%)", modifier = Modifier.padding(start = 8.dp))
+            Text(
+                text = "(${category.weight.trimTrailingZeroes()}%)",
+                style = MaterialTheme.typography.body2,
+                color = MaterialTheme.colors.onSecondary,
+                modifier = Modifier.padding(start = 8.dp)
+            )
         }
         Text(
             text = category.average + " " + category.letter,
-            style = TextStyle(fontWeight = FontWeight.Medium)
+            style = MaterialTheme.typography.subtitle1
         )
     }
 }
@@ -135,27 +136,25 @@ fun AssignmentHeader() {
         Text(
             text = "Assignment".toUpperCase(),
             modifier = Modifier.padding(top = 24.dp, bottom = 24.dp),
-            style = TextStyle(
-                color = MaterialTheme.colors.primary,
-                fontWeight = FontWeight.Medium
-            )
+            style = MaterialTheme.typography.subtitle1,
+            color = MaterialTheme.colors.primary
         )
-        Text(
+/*        Text(
             text = "Due".toUpperCase(),
             modifier = Modifier.padding(top = 24.dp, bottom = 24.dp),
-            style = TextStyle(fontWeight = FontWeight.Medium)
-        )
+            style = MaterialTheme.typography.subtitle1
+        )*/
         Text(
             text = "Grade".toUpperCase(),
             modifier = Modifier.padding(top = 24.dp, bottom = 24.dp),
-            style = TextStyle(fontWeight = FontWeight.Medium)
+            style = MaterialTheme.typography.subtitle1
         )
     }
 }
 
 @Preview
 @Composable
-private fun Preview(){
+private fun Preview() {
     SubjectScreen(
         subject = Subject(
             "0",

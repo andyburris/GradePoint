@@ -11,11 +11,9 @@ import androidx.ui.foundation.shape.corner.CircleShape
 import androidx.ui.foundation.shape.corner.RoundedCornerShape
 import androidx.ui.graphics.Color
 import androidx.ui.layout.*
-import androidx.ui.text.TextStyle
-import androidx.ui.text.font.FontWeight
+import androidx.ui.material.MaterialTheme
 import androidx.ui.text.style.TextOverflow
 import androidx.ui.unit.dp
-import androidx.ui.unit.sp
 import com.andb.apps.aspen.models.Subject
 import com.andb.apps.aspen.models.SubjectGrade
 import com.andb.apps.aspen.state.AppState
@@ -47,7 +45,7 @@ fun SubjectItem(subject: Subject, modifier: Modifier = Modifier) {
                     Column {
                         Text(
                             text = subject.name,
-                                style = TextStyle(fontWeight = FontWeight.Bold),
+                                style = MaterialTheme.typography.subtitle1,
                                 maxLines = 1,
                                 overflow = TextOverflow.Ellipsis,
                                 modifier = Modifier.padding(end = 16.dp)
@@ -56,7 +54,8 @@ fun SubjectItem(subject: Subject, modifier: Modifier = Modifier) {
                                 text = subject.teacher,
                                 maxLines = 1,
                                 overflow = TextOverflow.Ellipsis,
-                                modifier = Modifier.padding(end = 16.dp)
+                                modifier = Modifier.padding(end = 16.dp),
+                                color = MaterialTheme.colors.onSecondary
                             )
                         }
                     }
@@ -67,7 +66,7 @@ fun SubjectItem(subject: Subject, modifier: Modifier = Modifier) {
                             grade.letter == null -> "${grade.number}"
                             else -> "${grade.number} ${grade.letter}"
                         },
-                        style = TextStyle(fontWeight = FontWeight.Bold, fontSize = 16.sp)
+                        style = MaterialTheme.typography.subtitle1
                     )
                 }
             }

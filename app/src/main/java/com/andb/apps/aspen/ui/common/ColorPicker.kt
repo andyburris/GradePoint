@@ -20,12 +20,11 @@ import androidx.ui.graphics.Outline
 import androidx.ui.graphics.drawOutline
 import androidx.ui.layout.*
 import androidx.ui.material.FilledTextField
+import androidx.ui.material.MaterialTheme
 import androidx.ui.material.icons.Icons
 import androidx.ui.material.icons.filled.Colorize
 import androidx.ui.material.icons.filled.Done
 import androidx.ui.material.icons.filled.KeyboardArrowDown
-import androidx.ui.text.TextStyle
-import androidx.ui.text.font.FontWeight
 import androidx.ui.unit.Px
 import androidx.ui.unit.dp
 import androidx.ui.util.toHexString
@@ -38,7 +37,7 @@ fun ColorPicker(selected: Int, modifier: Modifier = Modifier, onSelect: (color: 
     Column(modifier) {
         Text(
             text = "Color",
-            style = TextStyle(fontWeight = FontWeight.Medium),
+            style = MaterialTheme.typography.subtitle1,
             modifier = Modifier.padding(top = 24.dp, bottom = 16.dp)
         )
 

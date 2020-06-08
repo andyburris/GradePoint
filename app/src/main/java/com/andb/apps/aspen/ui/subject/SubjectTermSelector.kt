@@ -11,7 +11,6 @@ import androidx.ui.foundation.*
 import androidx.ui.foundation.shape.corner.RoundedCornerShape
 import androidx.ui.layout.*
 import androidx.ui.material.MaterialTheme
-import androidx.ui.text.TextStyle
 import androidx.ui.text.font.FontWeight
 import androidx.ui.text.style.TextAlign
 import androidx.ui.tooling.preview.Preview
@@ -27,7 +26,8 @@ fun SubjectTermSelector(modifier: Modifier = Modifier, onSelect: (term: Int) -> 
     Row(verticalGravity = Alignment.CenterVertically) {
             Text(
                 text = "TERM",
-                style = TextStyle(fontWeight = FontWeight.Medium, fontSize = 14.sp),
+                style = MaterialTheme.typography.subtitle1,
+                color = MaterialTheme.colors.onSecondary,
                 modifier = Modifier.padding(end = 8.dp)
             )
 

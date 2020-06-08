@@ -65,6 +65,10 @@ fun HomeScreen(homeScreen: Screen.Home) {
             this[fabSize] = 0f
             this[termExpansion] = 0f
         }
+
+        transition {
+            fabSize using tween { duration = 200 }
+        }
     }
 
     val fab: @Composable() () -> Unit = {
@@ -74,7 +78,7 @@ fun HomeScreen(homeScreen: Screen.Home) {
                     Icon(asset = Icons.Default.FilterList)
                 },
                 text = {
-                    Text(text = "Term".toUpperCase(), maxLines = 1)
+                    Text(text = "Term".toUpperCase(), maxLines = 1, color = MaterialTheme.colors.onPrimary)
                     HomeTermSwitcher(
                         Modifier
                         .scale(x = transitionState[termExpansion])

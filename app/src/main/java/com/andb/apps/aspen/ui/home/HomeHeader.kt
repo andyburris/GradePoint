@@ -5,10 +5,8 @@ import androidx.ui.core.Alignment
 import androidx.ui.core.Modifier
 import androidx.ui.foundation.Text
 import androidx.ui.layout.*
-import androidx.ui.text.TextStyle
-import androidx.ui.text.font.FontWeight
+import androidx.ui.material.MaterialTheme
 import androidx.ui.unit.dp
-import androidx.ui.unit.sp
 
 @Composable
 fun HomeHeader(title: String, actions: @Composable() RowScope.() -> Unit = {}) {
@@ -20,7 +18,7 @@ fun HomeHeader(title: String, actions: @Composable() RowScope.() -> Unit = {}) {
     ) {
         Text(
             text = title,
-            style = TextStyle(fontSize = 48.sp, fontWeight = FontWeight.Bold)
+            style = MaterialTheme.typography.h3
         )
         Row(verticalGravity = Alignment.CenterVertically, children = actions)
     }

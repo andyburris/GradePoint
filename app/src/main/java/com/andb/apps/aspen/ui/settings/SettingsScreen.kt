@@ -18,8 +18,6 @@ import androidx.ui.material.RadioGroup
 import androidx.ui.material.icons.Icons
 import androidx.ui.material.icons.filled.Settings
 import androidx.ui.res.vectorResource
-import androidx.ui.text.TextStyle
-import androidx.ui.text.font.FontWeight
 import androidx.ui.unit.dp
 import com.andb.apps.aspen.AndroidSettings
 import com.andb.apps.aspen.android.BuildConfig
@@ -71,7 +69,7 @@ fun SettingsItem(
         Row(verticalGravity = Alignment.CenterVertically) {
             Icon(asset = icon)
             Column(Modifier.padding(start = 16.dp)) {
-                Text(text = title, style = TextStyle(fontWeight = FontWeight.Medium))
+                Text(text = title, style = MaterialTheme.typography.subtitle1)
                 if (summary != null) Text(text = summary)
             }
         }
