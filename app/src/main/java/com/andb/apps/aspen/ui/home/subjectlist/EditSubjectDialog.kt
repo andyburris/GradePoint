@@ -24,11 +24,11 @@ fun EditSubjectDialog(subject: Subject, onClose: () -> Unit) {
         title = { Text(text = "Edit Subject: ${subject.name}") },
         text = {
             VerticalScroller(modifier = Modifier.weight(1f)) {
-                IconPicker(selected = currentConfig.value.icon, modifier = Modifier.fillMaxWidth()) {
-                    currentConfig.value = currentConfig.value.copy(icon = it)
-                }
                 ColorPicker(selected = currentConfig.value.color) {
                     currentConfig.value = currentConfig.value.copy(color = it)
+                }
+                IconPicker(selected = currentConfig.value.icon, modifier = Modifier.fillMaxWidth()) {
+                    currentConfig.value = currentConfig.value.copy(icon = it)
                 }
             }
             Row(Modifier.fillMaxWidth().padding(vertical = 8.dp).offset(x = 8.dp), horizontalArrangement = Arrangement.End) {

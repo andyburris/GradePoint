@@ -15,7 +15,7 @@ fun Flexbox(
     verticalGravity: Alignment.Vertical = Alignment.Top,
     children: @Composable() () -> Unit
 ) {
-    Layout(children = children, modifier = modifier) { measurables, constraints, _ ->
+    Layout( modifier = modifier, children = children) { measurables, constraints, _ ->
         val placeables = measurables.map { it.measure(constraints) }
 
         var placedWidth = 0.ipx

@@ -41,7 +41,7 @@ fun ColorPicker(selected: Int, modifier: Modifier = Modifier, onSelect: (color: 
             modifier = Modifier.padding(top = 24.dp, bottom = 16.dp)
         )
 
-        Flexbox(verticalGravity = Alignment.CenterVertically) {
+        Flexbox(verticalGravity = Alignment.CenterVertically, modifier = Modifier.fillMaxWidth()) {
             if (!expanded.value) {
                 for (color in Subject.COLOR_PRESETS) {
                     Box(shape = CircleShape,
