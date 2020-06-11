@@ -20,6 +20,7 @@ import androidx.ui.material.icons.Icons
 import androidx.ui.material.icons.filled.FormatSize
 import androidx.ui.material.icons.filled.Settings
 import androidx.ui.material.icons.filled.UnfoldMore
+import androidx.ui.material.icons.outlined.Info
 import androidx.ui.res.vectorResource
 import androidx.ui.unit.dp
 import com.andb.apps.aspen.AndroidSettings
@@ -89,6 +90,13 @@ fun SettingsScreen() {
                 selected = spacing.value == 12,
                 onClick = { AndroidSettings.assignmentSpacing = 12 })
         }
+
+        SettingsItem(
+            title = "About",
+            icon = Icons.Outlined.Info,
+            summary = "v" + BuildConfig.VERSION_NAME,
+            modifier = Modifier.fillMaxWidth().padding(horizontal = 24.dp, vertical = 16.dp)
+        )
     }
 }
 
