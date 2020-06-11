@@ -4,8 +4,10 @@ import androidx.compose.Composable
 import androidx.compose.state
 import androidx.ui.core.Modifier
 import androidx.ui.foundation.Text
+import androidx.ui.foundation.VerticalScroller
 import androidx.ui.graphics.Color
-import androidx.ui.layout.fillMaxWidth
+import androidx.ui.layout.*
+import androidx.ui.layout.ColumnScope.weight
 import androidx.ui.material.AlertDialog
 import androidx.ui.material.Button
 import androidx.ui.unit.dp
@@ -21,29 +23,31 @@ fun EditSubjectDialog(subject: Subject, onClose: () -> Unit) {
         onCloseRequest = { onClose.invoke() },
         title = { Text(text = "Edit Subject: ${subject.name}") },
         text = {
-            IconPicker(selected = currentConfig.value.icon, modifier = Modifier.fillMaxWidth()) {
-                currentConfig.value = currentConfig.value.copy(icon = it)
+            VerticalScroller(modifier = Modifier.weight(1f)) {
+                IconPicker(selected = currentConfig.value.icon, modifier = Modifier.fillMaxWidth()) {
+                    currentConfig.value = currentConfig.value.copy(icon = it)
+                }
+                ColorPicker(selected = currentConfig.value.color) {
+                    currentConfig.value = currentConfig.value.copy(color = it)
+                }
             }
-            ColorPicker(selected = currentConfig.value.color) {
-                currentConfig.value = currentConfig.value.copy(color = it)
+            Row(Modifier.fillMaxWidth().padding(vertical = 8.dp).offset(x = 8.dp), horizontalArrangement = Arrangement.End) {
+                Button(
+                    text = { Text("Cancel".toUpperCase()) },
+                    onClick = { onClose.invoke() },
+                    backgroundColor = Color.Unset,
+                    elevation = 0.dp
+                )
+                Button(
+                    text = { Text("Done".toUpperCase()) },
+                    onClick = { onClose.invoke(); AppState.updateSubjectConfig(currentConfig.value) },
+                    backgroundColor = Color.Unset,
+                    elevation = 0.dp
+                )
             }
         },
-        confirmButton = {
-            Button(
-                text = { Text("Done".toUpperCase()) },
-                onClick = { onClose.invoke(); AppState.updateSubjectConfig(currentConfig.value) },
-                backgroundColor = Color.Unset,
-                elevation = 0.dp
-            )
-        },
-        dismissButton = {
-            Button(
-                text = { Text("Cancel".toUpperCase()) },
-                onClick = { onClose.invoke() },
-                backgroundColor = Color.Unset,
-                elevation = 0.dp
-            )
-        }
+        confirmButton = {},
+        dismissButton = {}
     )
 }
 

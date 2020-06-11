@@ -19,7 +19,7 @@ import androidx.ui.unit.dp
 @Composable
 fun Chip(
     icon: VectorAsset? = null,
-    text: String,
+    text: String? = null,
     backgroundColor: Color = MaterialTheme.colors.onBackground.copy(alpha = .12f),
     selected: Boolean,
     modifier: Modifier = Modifier,
@@ -35,9 +35,11 @@ fun Chip(
             verticalGravity = Alignment.CenterVertically
         ) {
             if (icon != null){
-                Icon(asset = icon, modifier = Modifier.padding(end = 8.dp))
+                Icon(asset = icon.copy(defaultWidth = 20.dp, defaultHeight = 20.dp), modifier = Modifier.padding(end = 8.dp))
             }
-            Text(text = text, style = MaterialTheme.typography.body2, color = contentColorFor(color = backgroundColor))
+            if (text != null){
+                Text(text = text, style = MaterialTheme.typography.body2, color = contentColorFor(color = backgroundColor))
+            }
             if (selected) {
                 Box(
                     shape = CircleShape,

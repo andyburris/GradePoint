@@ -2,6 +2,7 @@ package com.andb.apps.aspen.ui.settings
 
 import android.os.Build
 import androidx.compose.Composable
+import androidx.compose.collectAsState
 import androidx.compose.state
 import androidx.ui.core.Alignment
 import androidx.ui.core.Modifier
@@ -18,6 +19,7 @@ import androidx.ui.material.RadioGroup
 import androidx.ui.material.icons.Icons
 import androidx.ui.material.icons.filled.FormatSize
 import androidx.ui.material.icons.filled.Settings
+import androidx.ui.material.icons.filled.UnfoldMore
 import androidx.ui.res.vectorResource
 import androidx.ui.unit.dp
 import com.andb.apps.aspen.AndroidSettings
@@ -56,18 +58,36 @@ fun SettingsScreen() {
         SettingsItem(
             title = "Font Size",
             icon = Icons.Default.FormatSize,
-            modifier = Modifier.fillMaxWidth().padding(24.dp)
+            modifier = Modifier.fillMaxWidth().padding(horizontal = 24.dp, vertical = 16.dp)
         ) {
             Chip(
-                text = "14 (default)",
+                text = "14sp (default)",
                 selected = AndroidSettings.fontSize == 14,
                 onClick = { AndroidSettings.fontSize = 14 },
                 modifier = Modifier.padding(end = 4.dp)
             )
             Chip(
-                text = "16",
+                text = "16sp",
                 selected = AndroidSettings.fontSize == 16,
                 onClick = { AndroidSettings.fontSize = 16 })
+        }
+
+        val spacing = AndroidSettings.assignmentSpacingFlow.collectAsState()
+        SettingsItem(
+            title = "Assignment List Spacing",
+            icon = Icons.Default.UnfoldMore,
+            modifier = Modifier.fillMaxWidth().padding(horizontal = 24.dp, vertical = 16.dp)
+        ) {
+            Chip(
+                text = "8dp (default)",
+                selected = spacing.value == 8,
+                onClick = { AndroidSettings.assignmentSpacing = 8 },
+                modifier = Modifier.padding(end = 4.dp)
+            )
+            Chip(
+                text = "12dp",
+                selected = spacing.value == 12,
+                onClick = { AndroidSettings.assignmentSpacing = 12 })
         }
     }
 }
@@ -85,7 +105,7 @@ fun SettingsItem(
         verticalGravity = Alignment.CenterVertically,
         modifier = modifier.fillMaxWidth()
     ) {
-        Row(verticalGravity = Alignment.CenterVertically) {
+        Row(verticalGravity = Alignment.CenterVertically, modifier = Modifier.weight(1f)) {
             Icon(asset = icon)
             Column(Modifier.padding(start = 16.dp)) {
                 Text(text = title, style = MaterialTheme.typography.subtitle1)

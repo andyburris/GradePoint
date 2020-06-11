@@ -6,7 +6,6 @@ import androidx.compose.*
 import androidx.ui.animation.DpPropKey
 import androidx.ui.animation.Transition
 import androidx.ui.core.Modifier
-import androidx.ui.core.clipToBounds
 import androidx.ui.foundation.Icon
 import androidx.ui.foundation.Text
 import androidx.ui.layout.offset
@@ -20,6 +19,7 @@ import androidx.ui.unit.dp
 import com.andb.apps.aspen.models.HomeTab
 import com.andb.apps.aspen.models.Screen
 import com.andb.apps.aspen.ui.common.scale
+import com.andb.apps.aspen.ui.common.scaleConstraints
 import com.andb.apps.aspen.ui.home.recent.RecentsScreen
 import com.andb.apps.aspen.ui.home.subjectlist.SubjectsScreen
 import com.andb.apps.aspen.ui.settings.SettingsScreen
@@ -67,7 +67,8 @@ fun HomeScreen(homeScreen: Screen.Home) {
         }
 
         transition {
-            fabSize using tween { duration = 200 }
+            fabSize using tween { duration = 199 }
+            termExpansion using tween { duration = 199 }
         }
     }
 
@@ -83,14 +84,14 @@ fun HomeScreen(homeScreen: Screen.Home) {
                         Modifier
                         .scale(x = transitionState[termExpansion])
                         .padding(start = 24.dp)
-                        .clipToBounds()
+                        //.clipToBounds()
                     )
                 },
                 backgroundColor = MaterialTheme.colors.primary,
                 onClick = {
                     fabExpanded.value = !fabExpanded.value
                 },
-                modifier = Modifier.scale(transitionState[fabSize], transitionState[fabSize]).padding(top = transitionState[fabOffsetKey])
+                modifier = Modifier.padding(top = transitionState[fabOffsetKey]).scaleConstraints(transitionState[fabSize], transitionState[fabSize])
             )
 
         }

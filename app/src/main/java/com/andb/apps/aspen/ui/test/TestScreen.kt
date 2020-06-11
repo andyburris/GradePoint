@@ -1,5 +1,6 @@
 package com.andb.apps.aspen.ui.test
 
+import androidx.animation.FastOutSlowInEasing
 import androidx.animation.FloatPropKey
 import androidx.animation.transitionDefinition
 import androidx.compose.Composable
@@ -8,10 +9,11 @@ import androidx.ui.animation.Transition
 import androidx.ui.core.Alignment
 import androidx.ui.core.DensityAmbient
 import androidx.ui.core.Modifier
+import androidx.ui.core.drawLayer
 import androidx.ui.foundation.Icon
 import androidx.ui.foundation.Text
+import androidx.ui.foundation.VerticalScroller
 import androidx.ui.foundation.clickable
-import androidx.ui.foundation.drawBackground
 import androidx.ui.foundation.gestures.DragDirection
 import androidx.ui.graphics.Color
 import androidx.ui.layout.*
@@ -24,7 +26,9 @@ import androidx.ui.material.icons.filled.Settings
 import androidx.ui.material.icons.filled.UnfoldLess
 import androidx.ui.material.icons.filled.UnfoldMore
 import androidx.ui.tooling.preview.Preview
+import androidx.ui.unit.IntPxSize
 import androidx.ui.unit.dp
+import androidx.ui.unit.ipx
 import com.andb.apps.aspen.models.Subject
 import com.andb.apps.aspen.ui.common.*
 import com.andb.apps.aspen.ui.settings.SettingsItem
@@ -32,7 +36,7 @@ import com.andb.apps.aspen.util.toggle
 
 @Composable
 fun TestScreen() {
-    Column(Modifier.fillMaxSize()) {
+    VerticalScroller(modifier = Modifier.fillMaxSize()) {
         TopAppBarWithStatusBar(title = { Text(text = "Test", style = MaterialTheme.typography.h6) })
         SettingsItem(
             title = "Title",
@@ -101,18 +105,28 @@ private fun TestInboxItem() {
     val expanded = state { false }
 
     val percentExpanded = FloatPropKey()
+    val oldAlpha = FloatPropKey()
+    val newAlpha = FloatPropKey()
     val transitionDefinition = transitionDefinition {
-        state(false) { this[percentExpanded] = 0f }
-        state(true) { this[percentExpanded] = 1f }
+        state(false) { this[percentExpanded] = 0f; this[oldAlpha] = 1f; this[newAlpha] = 0f }
+        state(true) { this[percentExpanded] = 1f; this[oldAlpha] = 0f; this[newAlpha] = 1f }
         transition {
-            percentExpanded using tween<Float> { duration = 200 }
+            percentExpanded using tween<Float> { duration = 1000 }
+            oldAlpha using keyframes<Float> {
+                duration = 1000
+                0f at 500 with FastOutSlowInEasing
+            }
+            newAlpha using keyframes<Float> {
+                duration = 1000
+                0f at 500 with FastOutSlowInEasing
+            }
         }
     }
 
     Stack(Modifier.fillMaxWidth().clickable(onClick = { expanded.toggle() })) {
         Transition(definition = transitionDefinition, toState = expanded.value) { transition ->
             Row(
-                modifier = Modifier.drawBackground(Color.Blue),
+                modifier = Modifier.drawLayer(alpha = transition[oldAlpha]),
                 verticalGravity = Alignment.CenterVertically
             ) {
                 Icon(asset = Icons.Default.UnfoldMore, modifier = Modifier.padding(24.dp))
@@ -122,8 +136,13 @@ private fun TestInboxItem() {
             if (transition[percentExpanded] != 0f) {
                 Row(
                     modifier = Modifier
-                        .drawBackground(Color.Red)
-                        .scale(y = transition[percentExpanded]).fillMaxHeight(),
+                        .scale(
+                            y = transition[percentExpanded],
+                            //y = 0f,
+                            minSize = IntPxSize(48.ipx, with(DensityAmbient.current) { 48.dp.toIntPx() })
+                        )
+                        .drawLayer(alpha = transition[newAlpha])
+                        .fillMaxHeight(),
                     verticalGravity = Alignment.CenterVertically
                 ) {
                     Icon(asset = Icons.Default.UnfoldLess, modifier = Modifier.padding(24.dp))

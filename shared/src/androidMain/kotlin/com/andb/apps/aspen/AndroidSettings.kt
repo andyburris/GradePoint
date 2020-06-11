@@ -26,4 +26,13 @@ object AndroidSettings : KoinComponent{
         }
 
     val fontSizeFlow = MutableStateFlow(fontSize)
+
+    var assignmentSpacing: Int
+        get() = storage.getInt("assignmentSpacing", 8)
+        set(value) {
+            storage.putInt("assignmentSpacing", value)
+            assignmentSpacingFlow.value = assignmentSpacing
+        }
+
+    val assignmentSpacingFlow = MutableStateFlow(assignmentSpacing)
 }

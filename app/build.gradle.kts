@@ -20,7 +20,7 @@ android {
         minSdkVersion(Versions.min_sdk)
         targetSdkVersion(Versions.target_sdk)
         versionCode = 7
-        versionName = "0.1.2-internal03"
+        versionName = "0.1.2-internal04"
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
 
         resValue("string", "app_name", "GradePoint")

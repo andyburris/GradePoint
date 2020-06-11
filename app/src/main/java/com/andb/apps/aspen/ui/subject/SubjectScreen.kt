@@ -131,11 +131,11 @@ fun AssignmentTable(assignments: List<Assignment>) {
 fun AssignmentHeader() {
     Row(
         horizontalArrangement = Arrangement.SpaceBetween,
-        modifier = Modifier.fillMaxWidth().padding(horizontal = 24.dp)
+        verticalGravity = Alignment.CenterVertically,
+        modifier = Modifier.fillMaxWidth().padding(start = 24.dp, end = 24.dp, top = 24.dp, bottom = 12.dp)
     ) {
         Text(
             text = "Assignment".toUpperCase(),
-            modifier = Modifier.padding(top = 24.dp, bottom = 24.dp),
             style = MaterialTheme.typography.subtitle1,
             color = MaterialTheme.colors.primary
         )
@@ -146,7 +146,6 @@ fun AssignmentHeader() {
         )*/
         Text(
             text = "Grade".toUpperCase(),
-            modifier = Modifier.padding(top = 24.dp, bottom = 24.dp),
             style = MaterialTheme.typography.subtitle1
         )
     }

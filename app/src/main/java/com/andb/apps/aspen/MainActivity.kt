@@ -4,6 +4,8 @@ import android.os.Bundle
 import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
 import androidx.compose.Composable
+import androidx.compose.ProvidedValue
+import androidx.compose.Providers
 import androidx.compose.collectAsState
 import androidx.ui.animation.Crossfade
 import androidx.ui.core.Alignment
@@ -85,6 +87,7 @@ fun AppContent() {
 fun AppTheme(content: @Composable() () -> Unit) {
     val darkMode = AndroidSettings.darkModeFlow.collectAsState()
     val fontSize = AndroidSettings.fontSizeFlow.collectAsState()
+
     val colors = when (darkMode.value.isDark()) {
         false -> lightColorPalette(
             primary = Color(0xFF388E3C),
@@ -113,7 +116,6 @@ fun AppTheme(content: @Composable() () -> Unit) {
         content = content
     )
 }
-
 
 @Composable
 fun VersionRibbon(modifier: Modifier = Modifier) {

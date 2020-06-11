@@ -56,6 +56,27 @@ fun Subject.Icon.toVectorAsset() = when (this) {
     Subject.Icon.MUSIC -> Icons.Default.MusicNote
     Subject.Icon.PE -> Icons.Default.DirectionsRun
     Subject.Icon.SCHOOL -> Icons.Default.School
+    Subject.Icon.BIOLOGY -> vectorResource(id = R.drawable.ic_biology)
+    Subject.Icon.CAMERA -> Icons.Default.CameraAlt
+    Subject.Icon.DICE -> Icons.Default.Casino
+    Subject.Icon.ECONOMICS -> Icons.Default.TrendingUp
+    Subject.Icon.ENGINEERING -> Icons.Default.Build
+    Subject.Icon.FILM -> Icons.Default.Movie
+    Subject.Icon.FINANCE -> Icons.Default.AttachMoney
+    Subject.Icon.FRENCH -> Icons.Default.OutlinedFlag
+    Subject.Icon.GLOBE -> Icons.Default.Public
+    Subject.Icon.GOVERNMENT -> Icons.Default.AccountBalance
+    Subject.Icon.HEALTH -> Icons.Default.LocalHospital
+    Subject.Icon.HISTORY -> vectorResource(id = R.drawable.ic_history)
+    Subject.Icon.LAW -> Icons.Default.Gavel
+    Subject.Icon.NEWS -> vectorResource(id = R.drawable.ic_newspaper)
+    Subject.Icon.PSYCHOLOGY -> vectorResource(id = R.drawable.ic_brain)
+    Subject.Icon.SOCIOLOGY -> Icons.Default.People
+    Subject.Icon.SPEAKING -> vectorResource(id = R.drawable.ic_podium)
+    Subject.Icon.STATISTICS -> Icons.Default.BarChart
+    Subject.Icon.THEATER -> vectorResource(id = R.drawable.ic_theater)
+    Subject.Icon.TRANSLATE -> Icons.Default.Translate
+    Subject.Icon.WRITING -> Icons.Default.Edit
 }
 
 fun MutableState<Boolean>.toggle(){

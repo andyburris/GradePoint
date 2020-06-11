@@ -12,7 +12,38 @@ data class Subject(
     val assignments: List<Assignment>
 ) {
     enum class Icon() {
-        ART, ATOM, BOOK, CALCULUS, COMPASS, COMPUTER, FLASK, LANGUAGE, MUSIC, PE, SCHOOL
+        ART,
+        ATOM,
+        BIOLOGY,
+        BOOK,
+        CALCULUS,
+        CAMERA,
+        COMPASS,
+        COMPUTER,
+        DICE,
+        ECONOMICS,
+        ENGINEERING,
+        FILM,
+        FINANCE,
+        FLASK,
+        FRENCH,
+        GLOBE,
+        GOVERNMENT,
+        HEALTH,
+        HISTORY,
+        LANGUAGE,
+        LAW,
+        MUSIC,
+        NEWS,
+        PE,
+        PSYCHOLOGY,
+        SCHOOL,
+        SOCIOLOGY,
+        SPEAKING,
+        STATISTICS,
+        THEATER,
+        TRANSLATE,
+        WRITING,
     }
 
     data class Config(val id: String, val icon: Icon, val color: Int)

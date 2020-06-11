@@ -12,6 +12,7 @@ import androidx.ui.layout.*
 import androidx.ui.material.MaterialTheme
 import androidx.ui.text.style.TextAlign
 import androidx.ui.unit.dp
+import androidx.ui.unit.sp
 
 @Composable
 fun HomeTermSwitcher(modifier: Modifier = Modifier) {
@@ -26,7 +27,7 @@ fun HomeTermSwitcher(modifier: Modifier = Modifier) {
             horizontalArrangement = Arrangement.SpaceBetween,
             modifier = Modifier.gravity(Alignment.Center)
         ) {
-            val numberStyle = MaterialTheme.typography.subtitle1.copy(textAlign = TextAlign.Center)
+            val numberStyle = MaterialTheme.typography.subtitle1.copy(textAlign = TextAlign.Center, fontSize = 16.sp)
             Text(text = "1",
                 style = numberStyle,
                 modifier = Modifier.padding(end = 16.dp).width(36.dp).clickable(onClick = { currentTerm.value = 1 })

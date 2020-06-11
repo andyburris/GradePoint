@@ -42,14 +42,32 @@ private fun String.toIcon(): Subject.Icon {
 }
 
 private val iconStrings: List<Pair<Subject.Icon, List<String>>> = listOf(
-    Subject.Icon.ART to listOf("art"),
-    Subject.Icon.ATOM to listOf("chem"),
-    Subject.Icon.BOOK to listOf("english"),
+    Subject.Icon.ART to listOf("art", "draw", "paint", "print", "sculpt", "ceramic"),
+    Subject.Icon.ATOM to listOf("chem", "physics"),
+    Subject.Icon.BIOLOGY to listOf("bio"),
+    Subject.Icon.BOOK to listOf("english", "literature"),
     Subject.Icon.CALCULUS to listOf("calc"),
-    Subject.Icon.COMPASS to listOf("engineer"),
+    Subject.Icon.CAMERA to listOf("photo", "imag", "camera"),
+    Subject.Icon.COMPASS to listOf("geom"),
     Subject.Icon.COMPUTER to listOf("computer"),
+    Subject.Icon.ECONOMICS to listOf("econ"),
+    Subject.Icon.ENGINEERING to listOf("engineer", "mech", "robot"),
+    Subject.Icon.FILM to listOf("film", "movie"),
+    Subject.Icon.FINANCE to listOf("financ"),
     Subject.Icon.FLASK to listOf("lab"),
-    Subject.Icon.LANGUAGE to listOf("language", "french", "spanish", "chinese", "german", "latin"),
+    Subject.Icon.GLOBE to listOf("geo", "enviro", "world"),
+    Subject.Icon.GOVERNMENT to listOf("gov"),
+    Subject.Icon.HEALTH to listOf("health", "med", "safe"),
+    Subject.Icon.HISTORY to listOf("history"),
+    Subject.Icon.LAW to listOf("law"),
     Subject.Icon.MUSIC to listOf("music", "band", "orchestra"),
-    Subject.Icon.PE to listOf("phys")
+    Subject.Icon.NEWS to listOf("news", "journal"),
+    Subject.Icon.PE to listOf("physical"),
+    Subject.Icon.PSYCHOLOGY to listOf("psych"),
+    Subject.Icon.SOCIOLOGY to listOf("soci"),
+    Subject.Icon.SPEAKING to listOf("speak", "speech", "debate"),
+    Subject.Icon.STATISTICS to listOf("stat", "prob"),
+    Subject.Icon.THEATER to listOf("theater", "drama", "stage"),
+    Subject.Icon.TRANSLATE to listOf("language", "french", "spanish", "chinese", "german", "latin", "arabic", "italian", "russian"),
+    Subject.Icon.WRITING to listOf("writ", "poet")
 )

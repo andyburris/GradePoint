@@ -3,10 +3,9 @@ package com.andb.apps.aspen.ui.assignment
 import androidx.compose.Composable
 import androidx.ui.core.Alignment
 import androidx.ui.core.Modifier
-import androidx.ui.foundation.Icon
-import androidx.ui.foundation.Text
-import androidx.ui.foundation.clickable
-import androidx.ui.foundation.contentColor
+import androidx.ui.foundation.*
+import androidx.ui.foundation.shape.corner.CircleShape
+import androidx.ui.graphics.Color
 import androidx.ui.graphics.vector.VectorAsset
 import androidx.ui.layout.*
 import androidx.ui.material.CircularProgressIndicator
@@ -58,15 +57,17 @@ fun AssignmentScreen(assignment: Assignment) {
             }
         }
         DetailItem(
+            title = "Category",
             text = assignment.category,
             icon = getIconFromCategory(assignment.category),
-            modifier = Modifier.padding(top = 16.dp)
+            modifier = Modifier.padding(top = 16.dp).fillMaxWidth()
         )
 
         DetailItem(
+            title = "Due",
             text = assignment.due.format("MMM d"),
             icon = Icons.Default.Event,
-            modifier = Modifier.padding(top = 24.dp)
+            modifier = Modifier.padding(top = 16.dp).fillMaxWidth()
         )
 
         Text(
@@ -183,17 +184,25 @@ private fun EmptyGradeItem(grade: Grade, modifier: Modifier = Modifier) {
 }
 
 @Composable
-private fun DetailItem(text: String, icon: VectorAsset, modifier: Modifier) {
-    Row(verticalGravity = Alignment.CenterVertically, modifier = modifier) {
-        Icon(
-            asset = icon,
-            tint = MaterialTheme.colors.onSurface.copy(alpha = .54f)
-        )
-        Text(
-            text = text,
-            style = MaterialTheme.typography.subtitle1,
-            modifier = Modifier.padding(start = 16.dp)
-        )
+private fun DetailItem(title: String, text: String, icon: VectorAsset, modifier: Modifier) {
+    Row(verticalGravity = Alignment.CenterVertically, horizontalArrangement = Arrangement.SpaceBetween, modifier = modifier) {
+        Row(verticalGravity = Alignment.CenterVertically) {
+            Stack(
+                modifier = Modifier.size(32.dp).drawBackground(MaterialTheme.colors.primary, shape = CircleShape)
+            ) {
+                Icon(
+                    asset = icon.copy(defaultHeight = 20.dp, defaultWidth = 20.dp),
+                    tint = Color.Black.copy(alpha = .54f),
+                    modifier = Modifier.gravity(Alignment.Center)
+                )
+            }
+            Text(
+                text = title,
+                style = MaterialTheme.typography.subtitle1,
+                modifier = Modifier.padding(start = 16.dp)
+            )
+        }
+        Text(text = text, style = MaterialTheme.typography.body1)
     }
 }
 
