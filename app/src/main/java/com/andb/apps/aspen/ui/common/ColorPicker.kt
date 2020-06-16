@@ -3,21 +3,18 @@ package com.andb.apps.aspen.ui.common
 import androidx.compose.Composable
 import androidx.compose.state
 import androidx.compose.stateFor
+import androidx.core.graphics.ColorUtils
 import androidx.core.graphics.toColorInt
 import androidx.ui.animation.animate
-import androidx.ui.core.Alignment
-import androidx.ui.core.Modifier
-import androidx.ui.core.drawBehind
-import androidx.ui.core.drawLayer
+import androidx.ui.core.*
 import androidx.ui.foundation.*
+import androidx.ui.foundation.gestures.DragDirection
+import androidx.ui.foundation.gestures.draggable
 import androidx.ui.foundation.shape.corner.CircleShape
 import androidx.ui.geometry.RRect
 import androidx.ui.geometry.Radius
 import androidx.ui.geometry.toRect
-import androidx.ui.graphics.Color
-import androidx.ui.graphics.HorizontalGradient
-import androidx.ui.graphics.Outline
-import androidx.ui.graphics.drawOutline
+import androidx.ui.graphics.*
 import androidx.ui.layout.*
 import androidx.ui.material.FilledTextField
 import androidx.ui.material.MaterialTheme
@@ -25,8 +22,7 @@ import androidx.ui.material.icons.Icons
 import androidx.ui.material.icons.filled.Colorize
 import androidx.ui.material.icons.filled.Done
 import androidx.ui.material.icons.filled.KeyboardArrowDown
-import androidx.ui.unit.Px
-import androidx.ui.unit.dp
+import androidx.ui.unit.*
 import androidx.ui.util.toHexString
 import com.andb.apps.aspen.models.Subject
 
@@ -41,38 +37,26 @@ fun ColorPicker(selected: Int, modifier: Modifier = Modifier, onSelect: (color: 
             modifier = Modifier.padding(top = 24.dp, bottom = 16.dp)
         )
 
-        Flexbox(verticalGravity = Alignment.CenterVertically, modifier = Modifier.fillMaxWidth()) {
+        Flexbox(verticalGravity = Alignment.CenterVertically) {
             if (!expanded.value) {
                 for (color in Subject.COLOR_PRESETS) {
                     Box(shape = CircleShape,
                         backgroundColor = Color(color),
                         border = Border(1.dp, Color.Black),
                         gravity = ContentGravity.Center,
-                        modifier = Modifier.padding(end = 4.dp, bottom = 4.dp).size(32.dp).clickable(
-                            onClick = {
-                                onSelect.invoke(color)
-                            }
-                        )) {
+                        modifier = Modifier.padding(end = 4.dp, bottom = 4.dp).size(32.dp)
+                            .clickable(
+                                onClick = {
+                                    onSelect.invoke(color)
+                                }
+                            )) {
                         if (selected == color) {
                             Icon(asset = Icons.Default.Done)
                         }
                     }
                 }
             } else {
-                Box(modifier = Modifier
-                    .height(32.dp)
-                    .weight(1f)
-                    .drawBehind {
-                        drawOutline(
-                            Outline.Rounded(RRect(size.toRect(), Radius.circular(16.dp.toPx().value))),
-                            HorizontalGradient(
-                                colors = Subject.COLOR_PRESETS.map { Color(it) },
-                                startX = Px.Zero.value,
-                                endX = size.width
-                            )
-                        )
-                    }
-                )
+                ColorGradientPicker(selected = selected, onSelect = onSelect)
             }
 
             Icon(
@@ -115,4 +99,73 @@ private fun String.toColorIntOrNull() = try {
     this.toColorInt()
 } catch (e: IllegalArgumentException) {
     null
+}
+
+@Composable
+fun ColorGradientPicker(selected: Int, onSelect: (color: Int) -> Unit) {
+    val draggedPx = state { 0.px }
+    val gradientWidth = state { 0.ipx }
+
+    val colors = Subject.COLOR_PRESETS
+        .map { Color(it) }
+        .mapIndexed { index, color -> ColorStop(1f / Subject.COLOR_PRESETS.size * index, color) }
+
+    Stack(
+        //Drag stack to allow user to click anywhere on gradient and go there
+        Modifier.draggable(DragDirection.Horizontal) { delta ->
+            draggedPx.value = (draggedPx.value + delta.px).coerceIn(0.px..gradientWidth.value.toPx())
+            delta
+        }.padding(end = 32.dp)
+    ) {
+        Box(modifier = Modifier
+            .height(16.dp)
+            .fillMaxWidth()
+            .offset(x = 16.dp)
+            .gravity(Alignment.Center)
+            .drawBehind {
+                val gradient = HorizontalGradient(
+                    colorStops = *colors.toTypedArray(),
+                    startX = Px.Zero.value,
+                    endX = size.width
+                )
+
+                drawOutline(
+                    Outline.Rounded(RRect(size.toRect(), Radius.circular(16.dp.toPx().value))),
+                    gradient
+                )
+            }
+            .onPositioned {
+                gradientWidth.value = it.size.width
+            }
+        )
+        Box(
+            modifier = Modifier
+                .size(32.dp)
+                .offset(x = with(DensityAmbient.current) {
+                    (draggedPx.value).toDp()
+                }),
+            shape = CircleShape,
+            border = Border(2.dp, MaterialTheme.colors.onBackground),
+            backgroundColor = colors.getColorAtPercent(draggedPx.value.value / gradientWidth.value.toPx().value)
+        )
+    }
+}
+
+private fun List<ColorStop>.getColorAtPercent(percent: Float): Color {
+    if (percent.isNaN()) return first().second
+    println("getting color at percent $percent")
+    val segmentStart = this.filter { it.first < percent }.maxBy { it.first }
+    val segmentEnd = this.filter { it.first > percent }.minBy { it.first }
+    if (segmentStart == null) return segmentEnd!!.second
+    if (segmentEnd == null) return segmentStart.second
+
+    val segmentPercent = (percent - segmentStart.first) / (segmentEnd.first - segmentStart.first)
+
+    val color = ColorUtils.blendARGB(
+        segmentStart.second.toArgb(),
+        segmentEnd.second.toArgb(),
+        segmentPercent
+    )
+    println("percent $percent blends ${segmentStart.second.toArgb().toHexString()} and ${segmentEnd.second.toArgb().toHexString()} to ${color.toHexString()}")
+    return Color(color).copy(alpha = 1f)
 }

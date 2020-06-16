@@ -2,6 +2,7 @@ package com.andb.apps.aspen.ui.common
 
 import androidx.compose.Composable
 import androidx.ui.core.Modifier
+import androidx.ui.foundation.Box
 import androidx.ui.foundation.Text
 import androidx.ui.layout.Column
 import androidx.ui.layout.padding
@@ -23,10 +24,12 @@ fun IconPicker(selected: Subject.Icon, modifier: Modifier = Modifier, onSelect: 
                 Chip(
                     icon = icon.toVectorAsset(),
                     text = icon.name.toLowerCase().capitalize(),
+                    //backgroundColor = MaterialTheme.colors.background,
                     selected = icon == selected,
                     modifier = Modifier.padding(bottom = 4.dp, end = 4.dp),
                     onClick = { onSelect.invoke(icon) }
                 )
+                Box()
             }
         }
     }

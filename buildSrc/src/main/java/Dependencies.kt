@@ -15,11 +15,12 @@ object Versions {
     const val koin = "3.0.0-alpha-9"
     const val serialization = "0.20.0"
     const val cocoapodsext = "0.6"
-    const val jetpackCompose = "0.1.0-dev12"
+    const val jetpackCompose = "0.1.0-dev13"
     const val klock = "1.10.3"
     const val slf4j = "1.7.30"
     const val kissme = "0.2.5"
     const val composeShimmer = "1.0.1"
+    const val kotlinResult = "1.1.7"
 }
 
 object Deps {
@@ -37,6 +38,7 @@ object Deps {
     const val cocoapodsext = "co.touchlab:kotlinnativecocoapods:${Versions.cocoapodsext}"
     const val slf4j = "org.slf4j:slf4j-simple:${Versions.slf4j}"
     const val composeShimmer = "com.github.kazemihabib:compose-shimmer:${Versions.composeShimmer}"
+    const val kotlinResult = "com.michael-bull.kotlin-result:kotlin-result:${Versions.kotlinResult}"
 
 
     object Klock {

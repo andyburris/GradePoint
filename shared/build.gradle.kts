@@ -58,6 +58,7 @@ kotlin {
         implementation(Deps.Ktor.commonSerialization)
         implementation(Deps.Klock.common)
         implementation(Deps.Kissme.common)
+        //implementation(Deps.kotlinResult)
     }
 
     sourceSets["commonTest"].dependencies {
