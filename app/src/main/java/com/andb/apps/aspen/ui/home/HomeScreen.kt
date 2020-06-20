@@ -6,6 +6,7 @@ import androidx.compose.*
 import androidx.ui.animation.DpPropKey
 import androidx.ui.animation.Transition
 import androidx.ui.core.Modifier
+import androidx.ui.core.drawLayer
 import androidx.ui.foundation.Icon
 import androidx.ui.foundation.Text
 import androidx.ui.layout.offset
@@ -39,7 +40,7 @@ fun HomeScreen(homeScreen: Screen.Home) {
     val fabState = homeScreen.currentTab
         .map { fabStateFromTab(it) }
         .combine(fabExpanded) { fabState, expanded ->
-            if (fabState == FabState.COLLAPSED && expanded) FabState.EXPANDED else fabState
+            if (fabState==FabState.COLLAPSED && expanded) FabState.EXPANDED else fabState
         }
         .collectAsState(initial = FabState.COLLAPSED)
     val appBarOffsetKey = DpPropKey()
@@ -73,18 +74,25 @@ fun HomeScreen(homeScreen: Screen.Home) {
     }
 
     val fab: @Composable() () -> Unit = {
+        val currentTerm = state { 4 }
         Transition(definition = definition, toState = fabState.value) { transitionState ->
             ExtendedFloatingActionButton(
                 icon = {
                     Icon(asset = Icons.Default.FilterList)
                 },
                 text = {
-                    Text(text = "Term".toUpperCase(), maxLines = 1, color = MaterialTheme.colors.onPrimary)
+                    Text(
+                        text = "Term ${if (transitionState[termExpansion] < .5f) currentTerm.value else " "}".toUpperCase(),
+                        maxLines = 1,
+                        color = MaterialTheme.colors.onPrimary
+                    )
                     HomeTermSwitcher(
-                        Modifier
-                        .scale(x = transitionState[termExpansion])
-                        .padding(start = 24.dp)
-                        //.clipToBounds()
+                        currentTerm = currentTerm.value,
+                        modifier = Modifier
+                            .scale(x = transitionState[termExpansion])
+                            .drawLayer(alpha = transitionState[termExpansion])
+                            .padding(start = 16.dp),
+                        onTermSwitch = { currentTerm.value = it }
                     )
                 },
                 backgroundColor = MaterialTheme.colors.primary,
@@ -103,7 +111,7 @@ fun HomeScreen(homeScreen: Screen.Home) {
             Transition(definition = definition, toState = fabState.value) { state ->
                 HomeAppBar(
                     selectedTab = currentTab.value,
-                    fabConfig = if (fabState.value == FabState.HIDDEN) null else fabConfig,
+                    fabConfig = if (fabState.value==FabState.HIDDEN) null else fabConfig,
                     fab = fab,
                     modifier = Modifier.offset(y = state[appBarOffsetKey])
                 ) {

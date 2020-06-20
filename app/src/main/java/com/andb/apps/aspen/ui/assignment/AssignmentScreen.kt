@@ -18,6 +18,7 @@ import androidx.ui.material.icons.filled.Event
 import androidx.ui.text.style.TextOverflow
 import androidx.ui.tooling.preview.Preview
 import androidx.ui.unit.dp
+import androidx.ui.unit.sp
 import com.andb.apps.aspen.models.Assignment
 import com.andb.apps.aspen.models.Grade
 import com.andb.apps.aspen.models.SubjectGrade
@@ -29,116 +30,125 @@ import com.soywiz.klock.Date
 
 @Composable
 fun AssignmentScreen(assignment: Assignment) {
-    Column(modifier = Modifier.fillMaxSize().padding(horizontal = 24.dp)) {
-        Row(Modifier.padding(top = 48.dp), verticalGravity = Alignment.CenterVertically) {
-            Icon(
-                asset = Icons.Default.Clear,
-                modifier = Modifier.clickable(onClick = { AppState.goBack() }),
-                tint = contentColor().copy(alpha = .54f)
-            )
-            Text(
-                text = assignment.subjectName,
-                style = MaterialTheme.typography.h6,
-                color = MaterialTheme.colors.onSecondary,
-                modifier = Modifier.padding(start = 24.dp),
-                maxLines = 1,
-                overflow = TextOverflow.Ellipsis
-            )
-        }
-        Text(
-            text = assignment.title,
-            style = MaterialTheme.typography.h4,
-            modifier = Modifier.padding(top = 24.dp)
-        )
-        Stack(modifier = Modifier.padding(top = 32.dp)) {
-            when (assignment.grade) {
-                is Grade.Score -> ExtendedScoreItem(score = (assignment.grade as Grade.Score))
-                else -> EmptyGradeItem(grade = assignment.grade)
+    MaterialTheme(typography = MaterialTheme.typography.copy(
+        subtitle1 = MaterialTheme.typography.subtitle1.copy(fontSize = 16.sp),
+        body1 = MaterialTheme.typography.body1.copy(fontSize = 16.sp)
+    )) {
+        Column(modifier = Modifier.fillMaxSize().padding(horizontal = 24.dp)) {
+            Row(Modifier.padding(top = 48.dp), verticalGravity = Alignment.CenterVertically) {
+                Icon(
+                    asset = Icons.Default.Clear,
+                    modifier = Modifier.clickable(onClick = { AppState.goBack() }),
+                    tint = contentColor().copy(alpha = .54f)
+                )
+                Text(
+                    text = assignment.subjectName,
+                    style = MaterialTheme.typography.h6,
+                    color = MaterialTheme.colors.onSecondary,
+                    modifier = Modifier.padding(start = 24.dp),
+                    maxLines = 1,
+                    overflow = TextOverflow.Ellipsis
+                )
             }
-        }
-        DetailItem(
-            title = "Category",
-            text = assignment.category,
-            icon = getIconFromCategory(assignment.category),
-            modifier = Modifier.padding(top = 16.dp).fillMaxWidth()
-        )
-
-        DetailItem(
-            title = "Due",
-            text = assignment.due.format("MMM d"),
-            icon = Icons.Default.Event,
-            modifier = Modifier.padding(top = 16.dp).fillMaxWidth()
-        )
-
-        Text(
-            text = "Class Scores".toUpperCase(),
-            style = MaterialTheme.typography.subtitle1,
-            color = MaterialTheme.colors.primary,
-            modifier = Modifier.padding(top = 48.dp)
-        )
-
-        when (assignment.statistics) {
-            is Assignment.Statistics.Hidden -> Text(
-                text = "Hidden by teacher",
-                style = MaterialTheme.typography.subtitle1,
+            Text(
+                text = assignment.title,
+                style = MaterialTheme.typography.h4,
                 modifier = Modifier.padding(top = 24.dp)
             )
-            is Assignment.Statistics.Ungraded -> Text(
-                text = "Ungraded",
-                style = MaterialTheme.typography.subtitle1,
-                modifier = Modifier.padding(top = 24.dp)
+            Stack(modifier = Modifier.padding(top = 48.dp)) {
+                when (assignment.grade) {
+                    is Grade.Score -> ExtendedScoreItem(score = (assignment.grade as Grade.Score))
+                    else -> EmptyGradeItem(grade = assignment.grade)
+                }
+            }
+            DetailItem(
+                title = "Category",
+                text = assignment.category,
+                icon = getIconFromCategory(assignment.category),
+                modifier = Modifier.padding(top = 16.dp).fillMaxWidth()
             )
-            is Assignment.Statistics.Available -> {
-                val stats = assignment.statistics as Assignment.Statistics.Available
-                StatisticItem(
-                    type = "High",
-                    value = stats.high,
+
+            DetailItem(
+                title = "Due",
+                text = assignment.due.format("MMM d"),
+                icon = Icons.Default.Event,
+                modifier = Modifier.padding(top = 16.dp).fillMaxWidth()
+            )
+
+            Text(
+                text = "Class Scores".toUpperCase(),
+                style = MaterialTheme.typography.subtitle1,
+                color = MaterialTheme.colors.primary,
+                modifier = Modifier.padding(top = 48.dp)
+            )
+
+            when (assignment.statistics) {
+                is Assignment.Statistics.Hidden -> Text(
+                    text = "Hidden by teacher",
+                    style = MaterialTheme.typography.subtitle1,
                     modifier = Modifier.padding(top = 24.dp)
                 )
-                StatisticItem(
-                    type = "Low",
-                    value = stats.low,
-                    modifier = Modifier.padding(top = 16.dp)
+                is Assignment.Statistics.Ungraded -> Text(
+                    text = "Ungraded",
+                    style = MaterialTheme.typography.subtitle1,
+                    modifier = Modifier.padding(top = 24.dp)
                 )
-                StatisticItem(
-                    type = "Average",
-                    value = stats.average,
-                    modifier = Modifier.padding(top = 16.dp)
-                )
-                StatisticItem(
-                    type = "Median",
-                    value = stats.median,
-                    modifier = Modifier.padding(top = 16.dp)
-                )
+                is Assignment.Statistics.Available -> {
+                    val stats = assignment.statistics as Assignment.Statistics.Available
+                    StatisticItem(
+                        type = "High",
+                        value = stats.high,
+                        modifier = Modifier.padding(top = 24.dp)
+                    )
+                    StatisticItem(
+                        type = "Low",
+                        value = stats.low,
+                        modifier = Modifier.padding(top = 16.dp)
+                    )
+                    StatisticItem(
+                        type = "Average",
+                        value = stats.average,
+                        modifier = Modifier.padding(top = 16.dp)
+                    )
+                    StatisticItem(
+                        type = "Median",
+                        value = stats.median,
+                        modifier = Modifier.padding(top = 16.dp)
+                    )
+                }
             }
         }
     }
 }
 
 @Composable
-private fun ExtendedScoreItem(score: Grade.Score, modifier: Modifier = Modifier){
+private fun ExtendedScoreItem(score: Grade.Score, modifier: Modifier = Modifier) {
     Column(modifier = modifier) {
-        Row {
+        Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween, verticalGravity = Alignment.Bottom) {
+            Row {
+                Text(
+                    text = "${score.score.trimTrailingZeroes()}/${score.possibleScore.trimTrailingZeroes()}",
+                    style = MaterialTheme.typography.h5
+                )
+                Text(
+                    text = score.letter,
+                    style = MaterialTheme.typography.h5,
+                    color = MaterialTheme.colors.onSecondary,
+                    modifier = Modifier.padding(start = 8.dp)
+                )
+            }
             Text(
-                text = "${score.score.trimTrailingZeroes()}/${score.possibleScore.trimTrailingZeroes()}",
-                style = MaterialTheme.typography.h5
-            )
-            Text(
-                text = score.letter,
-                style = MaterialTheme.typography.h5,
-                color = MaterialTheme.colors.onSecondary,
-                modifier = Modifier.padding(start = 8.dp)
+                text = "${(score.score / score.possibleScore * 100).toDecimalString(2).trimTrailingZeroes()}%",
+                style = MaterialTheme.typography.subtitle1,
+                color = MaterialTheme.colors.primary
             )
         }
         Row(Modifier.fillMaxWidth().padding(top = 8.dp), verticalGravity = Alignment.CenterVertically) {
             LinearProgressIndicator(
-                progress = (score.score/score.possibleScore).toFloat(),
+                progress = (score.score / score.possibleScore).toFloat(),
                 modifier = Modifier.weight(1f)
             )
-            Text(
-                text = "${(score.score / score.possibleScore * 100).toDecimalString(2).trimTrailingZeroes()}%",
-                modifier = Modifier.padding(start = 16.dp)
-            )
+
         }
     }
 }
