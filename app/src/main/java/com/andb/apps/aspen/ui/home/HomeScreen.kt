@@ -1,135 +1,95 @@
 package com.andb.apps.aspen.ui.home
 
-import androidx.animation.FloatPropKey
 import androidx.animation.transitionDefinition
-import androidx.compose.*
+import androidx.compose.Composable
+import androidx.compose.collectAsState
 import androidx.ui.animation.DpPropKey
 import androidx.ui.animation.Transition
 import androidx.ui.core.Modifier
-import androidx.ui.core.drawLayer
-import androidx.ui.foundation.Icon
-import androidx.ui.foundation.Text
 import androidx.ui.layout.offset
-import androidx.ui.layout.padding
-import androidx.ui.material.ExtendedFloatingActionButton
-import androidx.ui.material.MaterialTheme
 import androidx.ui.material.Scaffold
-import androidx.ui.material.icons.Icons
-import androidx.ui.material.icons.filled.FilterList
 import androidx.ui.unit.dp
+import com.andb.apps.aspen.models.Assignment
 import com.andb.apps.aspen.models.HomeTab
-import com.andb.apps.aspen.models.Screen
-import com.andb.apps.aspen.ui.common.scale
-import com.andb.apps.aspen.ui.common.scaleConstraints
+import com.andb.apps.aspen.state.UserAction
 import com.andb.apps.aspen.ui.home.recent.RecentsScreen
 import com.andb.apps.aspen.ui.home.subjectlist.SubjectsScreen
 import com.andb.apps.aspen.ui.settings.SettingsScreen
-import com.andb.apps.aspen.util.collectAsState
+import com.andb.apps.aspen.util.ActionHandler
 import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.map
 
-private enum class FabState {
-    HIDDEN, COLLAPSED, EXPANDED
-}
 
 @Composable
-fun HomeScreen(homeScreen: Screen.Home) {
-    val currentTab: State<HomeTab> = homeScreen.currentTab.collectAsState()
+fun HomeScreen(
+    subjects: List<com.andb.apps.aspen.models.Subject>,
+    recents: List<Assignment>,
+    tab: HomeTab,
+    term: Int,
+    actionHandler: ActionHandler
+) {
     val fabExpanded = MutableStateFlow(false)
-    val fabState = homeScreen.currentTab
-        .map { fabStateFromTab(it) }
-        .combine(fabExpanded) { fabState, expanded ->
-            if (fabState==FabState.COLLAPSED && expanded) FabState.EXPANDED else fabState
-        }
-        .collectAsState(initial = FabState.COLLAPSED)
+    val fabState = fabExpanded.map { expanded ->
+        fabStateFromTab(tab, expanded)
+    }.collectAsState(initial = FabState.COLLAPSED)
+
     val appBarOffsetKey = DpPropKey()
-    val fabOffsetKey = DpPropKey()
-    val fabSize = FloatPropKey()
-    val termExpansion = FloatPropKey()
     val definition = transitionDefinition<FabState> {
         state(FabState.COLLAPSED) {
             this[appBarOffsetKey] = 0.dp
-            this[fabOffsetKey] = 0.dp
-            this[fabSize] = 1f
-            this[termExpansion] = 0f
         }
         state(FabState.EXPANDED) {
             this[appBarOffsetKey] = 64.dp
-            this[fabOffsetKey] = 32.dp
-            this[fabSize] = 1f
-            this[termExpansion] = 1f
         }
         state(FabState.HIDDEN) {
             this[appBarOffsetKey] = 0.dp
-            this[fabOffsetKey] = 0.dp
-            this[fabSize] = 0f
-            this[termExpansion] = 0f
-        }
-
-        transition {
-            fabSize using tween { duration = 199 }
-            termExpansion using tween { duration = 199 }
         }
     }
 
-    val fab: @Composable() () -> Unit = {
-        val currentTerm = state { 4 }
-        Transition(definition = definition, toState = fabState.value) { transitionState ->
-            ExtendedFloatingActionButton(
-                icon = {
-                    Icon(asset = Icons.Default.FilterList)
-                },
-                text = {
-                    Text(
-                        text = "Term ${if (transitionState[termExpansion] < .5f) currentTerm.value else " "}".toUpperCase(),
-                        maxLines = 1,
-                        color = MaterialTheme.colors.onPrimary
-                    )
-                    HomeTermSwitcher(
-                        currentTerm = currentTerm.value,
-                        modifier = Modifier
-                            .scale(x = transitionState[termExpansion])
-                            .drawLayer(alpha = transitionState[termExpansion])
-                            .padding(start = 16.dp),
-                        onTermSwitch = { currentTerm.value = it }
-                    )
-                },
-                backgroundColor = MaterialTheme.colors.primary,
-                onClick = {
-                    fabExpanded.value = !fabExpanded.value
-                },
-                modifier = Modifier.padding(top = transitionState[fabOffsetKey]).scaleConstraints(transitionState[fabSize], transitionState[fabSize])
-            )
+    val fab: @Composable() ()->Unit = { HomeFab(
+        fabState = fabState.value,
+        currentTerm = term,
+        onFabExpandedChanged = { fabExpanded.value = it },
+        onTermChanged = { actionHandler.handle(UserAction.SwitchTerm(it)) }
+    ) }
 
-        }
-    }
     Scaffold(
         floatingActionButton = fab,
         floatingActionButtonPosition = if (fabExpanded.value) Scaffold.FabPosition.End else Scaffold.FabPosition.EndDocked,
         bottomAppBar = { fabConfig ->
             Transition(definition = definition, toState = fabState.value) { state ->
                 HomeAppBar(
-                    selectedTab = currentTab.value,
+                    selectedTab = tab,
                     fabConfig = if (fabState.value==FabState.HIDDEN) null else fabConfig,
                     fab = fab,
-                    modifier = Modifier.offset(y = state[appBarOffsetKey])
-                ) {
-                    homeScreen.switchTab(it)
-                }
+                    modifier = Modifier.offset(y = state[appBarOffsetKey]),
+                    onItemSelected = { actionHandler.handle(UserAction.SwitchTab(it)) }
+                )
             }
         },
         bodyContent = {
-            when (currentTab.value) {
-                HomeTab.SUBJECTS -> SubjectsScreen(subjects = homeScreen.subjects)
-                HomeTab.RECENTS -> RecentsScreen(recents = homeScreen.recents)
-                HomeTab.SETTINGS -> SettingsScreen()
+            when (tab) {
+                HomeTab.SUBJECTS -> {
+                    if (subjects.any { subject -> subject.terms.any { it.term == term } }){
+                        SubjectsScreen(subjects = subjects.filter { it.hasTerm(term) }, term = term, actionHandler = actionHandler)
+                    } else {
+                        SubjectsLoadingScreen()
+                    }
+                }
+                HomeTab.RECENTS -> {
+                    if (recents.isNotEmpty()){
+                        RecentsScreen(recents = recents, actionHandler = actionHandler)
+                    } else {
+                        RecentsLoadingScreen()
+                    }
+                }
+                HomeTab.SETTINGS -> SettingsScreen(actionHandler)
             }
         }
     )
 }
 
-private fun fabStateFromTab(tab: HomeTab) = when (tab) {
-    HomeTab.SUBJECTS -> FabState.COLLAPSED
+private fun fabStateFromTab(tab: HomeTab, expanded: Boolean) = when (tab) {
+    HomeTab.SUBJECTS -> if (expanded) FabState.EXPANDED else FabState.COLLAPSED
     else -> FabState.HIDDEN
 }

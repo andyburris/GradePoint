@@ -27,12 +27,14 @@ import com.andb.apps.aspen.AndroidSettings
 import com.andb.apps.aspen.android.BuildConfig
 import com.andb.apps.aspen.android.R
 import com.andb.apps.aspen.model.DarkMode
-import com.andb.apps.aspen.state.AppState
+import com.andb.apps.aspen.models.Screen
+import com.andb.apps.aspen.state.UserAction
 import com.andb.apps.aspen.ui.common.Chip
 import com.andb.apps.aspen.ui.home.HomeHeader
+import com.andb.apps.aspen.util.ActionHandler
 
 @Composable
-fun SettingsScreen() {
+fun SettingsScreen(actionHandler: ActionHandler) {
     Column {
         HomeHeader(title = "Settings")
         if (BuildConfig.DEBUG) {
@@ -40,7 +42,10 @@ fun SettingsScreen() {
                 title = "Test",
                 summary = "Open test screen",
                 icon = Icons.Default.Settings,
-                modifier = Modifier.clickable(onClick = { AppState.openTest() })
+                modifier = Modifier
+                    .clickable(onClick = {
+                        actionHandler.handle(UserAction.OpenScreen(Screen.Test))
+                    })
                     .padding(horizontal = 24.dp, vertical = 16.dp)
             )
         }

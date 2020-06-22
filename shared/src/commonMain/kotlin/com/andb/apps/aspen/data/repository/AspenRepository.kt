@@ -3,9 +3,9 @@ package com.andb.apps.aspen.data.repository
 import co.touchlab.stately.ensureNeverFrozen
 import com.andb.apps.aspen.DatabaseHelper
 import com.andb.apps.aspen.data.remote.AspenApi
-import com.andb.apps.aspen.models.Assignment
 import com.andb.apps.aspen.models.Subject
 import com.andb.apps.aspen.models.toConfig
+import com.andb.apps.aspen.response.RecentAssignmentResponse
 import com.andb.apps.aspen.response.toSubjectList
 import com.netguru.kissme.Kissme
 import kotlinx.coroutines.launch
@@ -33,23 +33,18 @@ class AspenRepository : BaseModel(), KoinComponent {
         return correct
     }
 
-    suspend fun getResponse(): Pair<List<Subject>, List<Assignment>> {
-        val subjectListResponse = aspenApi.getSubjects(storage.username, storage.password)
-        val recentResponse = aspenApi.getRecentAssignments(storage.username, storage.password)
-
-        val savedConfigs: List<Subject.Config> =
-            dbHelper.selectAllItems().executeAsList().map { it.toConfig() }
-        val subjects = subjectListResponse.toSubjectList(savedConfigs)
+    suspend fun getTerm(term: Int?): List<Subject> {
+        val termResponse = aspenApi.getSubjects(storage.username, storage.password, term)
+        val savedConfigs: List<Subject.Config> = dbHelper.selectAllItems().executeAsList().map { it.toConfig() }
+        val subjects = termResponse.toSubjectList(savedConfigs, term = term ?: termResponse.config.term.toInt())
         dbHelper.insertSubjectConfigs(subjects.map { it.config } - savedConfigs)
-
-        val allAssignments = subjects.flatMap { it.assignments }
-        val recents = recentResponse.data.map { recentAssignment ->
-            allAssignments.find { it.id == recentAssignment.id } // ?: Error("Assignment ${recentAssignment.name} (id = ${recentAssignment.id}) does not have a counterpart in the subject list response")
-        }.mapNotNull { it }
-        return Pair(subjects, recents)
+        return subjects
     }
 
-
+    suspend fun getRecentAssignments(): List<RecentAssignmentResponse> {
+        val recentResponse = aspenApi.getRecentAssignments(storage.username, storage.password)
+        return recentResponse.data
+    }
 
     fun logout() {
         storage.remove("username")

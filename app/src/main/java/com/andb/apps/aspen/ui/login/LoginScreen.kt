@@ -19,11 +19,11 @@ import androidx.ui.tooling.preview.Preview
 import androidx.ui.unit.dp
 import com.andb.apps.aspen.android.BuildConfig
 import com.andb.apps.aspen.android.R
-import com.andb.apps.aspen.state.AppState
+import com.andb.apps.aspen.state.UserAction
+import com.andb.apps.aspen.util.ActionHandler
 
-@Preview("LoginScreen Preview")
 @Composable
-fun LoginScreen() {
+fun LoginScreen(actionHandler: ActionHandler) {
 
     val username = mutableStateOf(BuildConfig.TEST_USERNAME)
     val password = mutableStateOf(BuildConfig.TEST_PASSWORD)
@@ -60,7 +60,9 @@ fun LoginScreen() {
         Button(
             onClick = {
                 titleText.value = "Clicked (${password.value.length})"
-                AppState.login(username.value.replace("\\p{C}", ""), password.value.replace("\\p{C}", ""))
+                val sanitizedUsername = username.value.replace("\\p{C}", "")
+                val sanitizedPassword = password.value.replace("\\p{C}", "")
+                actionHandler.handle(UserAction.Login(sanitizedUsername, sanitizedPassword))
             },
             modifier = Modifier.padding(top = 32.dp),
             shape = RoundedCornerShape(32.dp),
@@ -70,4 +72,10 @@ fun LoginScreen() {
             Text(text = "Log in".toUpperCase())
         }
     }
+}
+
+@Preview
+@Composable
+private fun PreviewLogin(){
+    LoginScreen(actionHandler = ActionHandler { true })
 }

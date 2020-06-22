@@ -19,18 +19,25 @@ import androidx.ui.material.icons.filled.Edit
 import androidx.ui.material.icons.filled.MoreVert
 import androidx.ui.unit.Position
 import androidx.ui.unit.dp
+import com.andb.apps.aspen.models.Screen
 import com.andb.apps.aspen.models.Subject
-import com.andb.apps.aspen.state.AppState
+import com.andb.apps.aspen.models.Term
+import com.andb.apps.aspen.state.UserAction
 import com.andb.apps.aspen.ui.common.SwipeStep
 import com.andb.apps.aspen.ui.common.swipeable
 import com.andb.apps.aspen.ui.home.HomeHeader
+import com.andb.apps.aspen.util.ActionHandler
 
 @Composable
-fun SubjectsScreen(subjects: List<Subject>) {
+fun SubjectsScreen(subjects: List<Subject>, term: Int, actionHandler: ActionHandler) {
     val currentEditSubject = state<Subject?> { null }
 
-    currentEditSubject.value?.let {
-        EditSubjectDialog(subject = it, onClose = { currentEditSubject.value = null })
+    currentEditSubject.value?.let { subject ->
+        EditSubjectDialog(
+            subject = subject,
+            onClose = { currentEditSubject.value = null },
+            onConfigChange = { actionHandler.handle(UserAction.EditConfig(it)) }
+        )
     }
 
     Column {
@@ -46,10 +53,12 @@ fun SubjectsScreen(subjects: List<Subject>) {
                 onDismissRequest = { expanded.value = false },
                 dropdownOffset = Position(x = (-24).dp, y = 0.dp)
             ) {
-                DropdownMenuItem(enabled = true, onClick = { AppState.logout() }) {
+                DropdownMenuItem(enabled = true, onClick = {}) {
                     Text(
                         text = "Log Out",
-                        modifier = Modifier.clickable(onClick = { AppState.logout() })
+                        modifier = Modifier.clickable(onClick = {
+                            actionHandler.handle(UserAction.Logout)
+                        })
                     )
                 }
             }
@@ -58,7 +67,10 @@ fun SubjectsScreen(subjects: List<Subject>) {
             data = subjects
         ) { subject ->
             SubjectItem(
-                subject = subject,
+                name = subject.name,
+                teacher = subject.teacher,
+                config = subject.config,
+                grade = subject.terms.filterIsInstance<Term.WithGrades>().find { it.term == term }!!.grade,
                 modifier = Modifier.swipeable(
                     DragDirection.Horizontal,
                     DensityAmbient.current,
@@ -70,6 +82,11 @@ fun SubjectsScreen(subjects: List<Subject>) {
                             currentEditSubject.value = subject
                         }
                     )
+                ).clickable(
+                    onClick = {
+                        val screen = Screen.Subject(subject, term)
+                        actionHandler.handle(UserAction.OpenScreen(screen))
+                    }
                 )
             )
         }

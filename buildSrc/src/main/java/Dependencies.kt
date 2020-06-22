@@ -34,12 +34,15 @@ object Deps {
     const val stately = "co.touchlab:stately-common:${Versions.stately}"
     const val multiplatformSettings = "com.russhwolf:multiplatform-settings:${Versions.multiplatformSettings}"
     const val multiplatformSettingsTest = "com.russhwolf:multiplatform-settings-test:${Versions.multiplatformSettings}"
-    const val koinCore = "org.koin:koin-core:${Versions.koin}"
     const val cocoapodsext = "co.touchlab:kotlinnativecocoapods:${Versions.cocoapodsext}"
     const val slf4j = "org.slf4j:slf4j-simple:${Versions.slf4j}"
     const val composeShimmer = "com.github.kazemihabib:compose-shimmer:${Versions.composeShimmer}"
     const val kotlinResult = "com.michael-bull.kotlin-result:kotlin-result:${Versions.kotlinResult}"
 
+    object Koin {
+        const val core = "org.koin:koin-core:${Versions.koin}"
+        const val viewModel = "org.koin:koin-android-viewmodel:${Versions.koin}"
+    }
 
     object Klock {
         const val common = "com.soywiz.korlibs.klock:klock:${Versions.klock}"

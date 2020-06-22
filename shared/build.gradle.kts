@@ -54,7 +54,7 @@ kotlin {
         implementation(Deps.Coroutines.common)
         implementation(Deps.stately)
         implementation(Deps.multiplatformSettings)
-        implementation(Deps.koinCore)
+        implementation(Deps.Koin.core)
         implementation(Deps.Ktor.commonSerialization)
         implementation(Deps.Klock.common)
         implementation(Deps.Kissme.common)

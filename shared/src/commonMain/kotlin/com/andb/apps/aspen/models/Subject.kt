@@ -1,16 +1,28 @@
 package com.andb.apps.aspen.models
 
 import com.andb.apps.aspen.db.SubjectConfig
+import com.andb.apps.aspen.util.replace
 
 data class Subject(
     val id: String,
     val name: String,
     val teacher: String,
     val config: Config,
-    val currentGrade: SubjectGrade,
-    val categories: Map<String, List<Category>>,
-    val assignments: List<Assignment>
+    val terms: List<Term>
 ) {
+
+    operator fun plus(other: Subject): Subject {
+        val newTerms = this.terms.toMutableList()
+        for (term in other.terms.filterIsInstance<Term.WithGrades>()){
+            newTerms.replace(term) { it.term == term.term }
+        }
+        return this.copy(terms = newTerms)
+    }
+
+    fun hasTerm(term: Int): Boolean = terms.any { it.term==term && it is Term.WithGrades }
+    fun termGrades(term: Int): Term.WithGrades = (terms.find { it.term==term } as? Term.WithGrades)
+        ?: throw Error("Term $term does not exist for subject $name")
+
     enum class Icon() {
         ART,
         ATOM,

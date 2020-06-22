@@ -1,36 +1,36 @@
 package com.andb.apps.aspen.ui.subject
 
 import androidx.compose.Composable
-import androidx.compose.mutableStateOf
+import androidx.compose.state
 import androidx.ui.core.Alignment
 import androidx.ui.core.Modifier
 import androidx.ui.foundation.*
 import androidx.ui.graphics.toArgb
 import androidx.ui.layout.*
-import androidx.ui.material.Card
-import androidx.ui.material.MaterialTheme
-import androidx.ui.material.Scaffold
+import androidx.ui.material.*
 import androidx.ui.material.icons.Icons
 import androidx.ui.material.icons.filled.Clear
+import androidx.ui.material.icons.filled.FilterList
 import androidx.ui.text.style.TextOverflow
 import androidx.ui.tooling.preview.Preview
 import androidx.ui.unit.dp
 import com.andb.apps.aspen.models.*
-import com.andb.apps.aspen.state.AppState
+import com.andb.apps.aspen.state.UserAction
 import com.andb.apps.aspen.ui.common.AssignmentItem
 import com.andb.apps.aspen.ui.common.TopAppBarWithStatusBar
+import com.andb.apps.aspen.util.ActionHandler
 import com.andb.apps.aspen.util.icon
 import com.andb.apps.aspen.util.trimTrailingZeroes
 import com.soywiz.klock.Date
 
 @Composable
-fun SubjectScreen(subject: Subject) {
+fun SubjectScreen(subject: Subject, selectedTerm: Int, actionHandler: ActionHandler) {
     Scaffold(
         topAppBar = {
             TopAppBarWithStatusBar(
                 navigationIcon = {
                     Box(
-                        Modifier.padding(start = 12.dp).clickable(onClick = { AppState.goBack() })
+                        Modifier.padding(start = 12.dp).clickable(onClick = { actionHandler.handle(UserAction.Back) })
                     ) {
                         Icon(
                             asset = Icons.Default.Clear
@@ -44,21 +44,57 @@ fun SubjectScreen(subject: Subject) {
                         maxLines = 1,
                         overflow = TextOverflow.Ellipsis
                     )
+                },
+                actions = {
+                    val termPickerExpanded = state { false }
+                    DropdownMenu(
+                        toggle = {
+                            Row(
+                                modifier = Modifier
+                                    .clickable(onClick = { termPickerExpanded.value = true })
+                                    .fillMaxHeight()
+                                    .padding(horizontal = 16.dp),
+                                verticalGravity = Alignment.CenterVertically
+                            ) {
+                                Text(text = "Term $selectedTerm".toUpperCase(), style = MaterialTheme.typography.button)
+                                Icon(asset = Icons.Default.FilterList, modifier = Modifier.padding(start = 16.dp))
+                            }
+                        },
+                        expanded = termPickerExpanded.value,
+                        onDismissRequest = { termPickerExpanded.value = false })
+                    {
+                        subject.terms.filterIsInstance<Term.WithGrades>().forEach {
+                            DropdownMenuItem(onClick = {}) {
+                                Text(
+                                    text = "Term ${it.term}",
+                                    modifier = Modifier.clickable(onClick = {
+                                        actionHandler.handle(UserAction.SwitchTerm(it.term))
+                                    })
+                                )
+                            }
+                        }
+                    }
                 }
             )
         },
         bodyContent = {
-            VerticalScroller {
-                CategoriesCard(terms = subject.categories)
-                AssignmentTable(assignments = subject.assignments)
+            if (subject.hasTerm(selectedTerm)) {
+                val termGrades = subject.termGrades(selectedTerm)
+                VerticalScroller {
+                    CategoriesCard(categories = termGrades.categories)
+                    AssignmentTable(assignments = termGrades.assignments) {
+                        val screen = Screen.Assignment(it)
+                        actionHandler.handle(UserAction.OpenScreen(screen))
+                    }
+                }
+            } else {
             }
         }
     )
 }
 
 @Composable
-fun CategoriesCard(terms: Map<String, List<Category>>) {
-    val term = mutableStateOf(4)
+fun CategoriesCard(categories: List<Category>) {
     Card(
         elevation = 4.dp,
         modifier = Modifier.fillMaxWidth()
@@ -76,11 +112,9 @@ fun CategoriesCard(terms: Map<String, List<Category>>) {
                     style = MaterialTheme.typography.subtitle1,
                     color = MaterialTheme.colors.primary
                 )
-                SubjectTermSelector { term.value = it }
             }
 
-            for (category in terms[term.value.toString()]
-                ?: error("Term ${term.value} Unavailable: categories are $terms")) {
+            for (category in categories) {
                 CategoryItem(category = category)
             }
         }
@@ -116,11 +150,15 @@ fun CategoryItem(category: Category) {
 }
 
 @Composable
-fun AssignmentTable(assignments: List<Assignment>) {
+fun AssignmentTable(assignments: List<Assignment>, onAssignmentClick: (Assignment) -> Unit) {
     Column(modifier = Modifier.fillMaxWidth()) {
         AssignmentHeader()
         for (assignment in assignments) {
-            Box(Modifier.clickable(onClick = { AppState.openAssignment(assignment) })) {
+            Box(Modifier.clickable(
+                onClick = {
+                    onAssignmentClick.invoke(assignment)
+                })
+            ) {
                 AssignmentItem(assignment = assignment, summaryText = assignment.category)
             }
         }
@@ -139,11 +177,6 @@ fun AssignmentHeader() {
             style = MaterialTheme.typography.subtitle1,
             color = MaterialTheme.colors.primary
         )
-/*        Text(
-            text = "Due".toUpperCase(),
-            modifier = Modifier.padding(top = 24.dp, bottom = 24.dp),
-            style = MaterialTheme.typography.subtitle1
-        )*/
         Text(
             text = "Grade".toUpperCase(),
             style = MaterialTheme.typography.subtitle1
@@ -160,21 +193,26 @@ private fun Preview() {
             "Subject Name",
             "Teacher Name",
             Subject.Config("0", Subject.Icon.SCHOOL, MaterialTheme.colors.primary.toArgb()),
-            SubjectGrade.Letter(92.35, "A-"),
-            mapOf(
-                Pair("1", listOf(Category("Practice and Application", "50", "92.35", "A-")))
-            ),
             listOf(
-                Assignment(
-                    "0",
-                    "Assignment Title",
-                    "Category",
-                    Date(2020, 4, 17),
-                    Grade.Score(32.5, 36.0, "A"),
-                    "Subject Name",
-                    Assignment.Statistics.Hidden
+                Term.WithGrades(
+                    4,
+                    grade = SubjectGrade.Letter(92.35, "A-"),
+                    assignments = listOf(
+                        Assignment(
+                            "0",
+                            "Assignment Title",
+                            "Category",
+                            Date(2020, 4, 17),
+                            Grade.Score(32.5, 36.0, "A"),
+                            "Subject Name",
+                            Assignment.Statistics.Hidden
+                        )
+                    ),
+                    categories = listOf(Category("Practice and Application", "50", "92.35", "A-"))
                 )
             )
-        )
+        ),
+        selectedTerm = 4,
+        actionHandler = ActionHandler { true }
     )
 }

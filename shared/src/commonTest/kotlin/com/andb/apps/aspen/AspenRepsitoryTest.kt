@@ -28,7 +28,7 @@ class AspenRepsitoryTest : BaseTest() {
 
     @Test
     fun saveSubjectConfigTest() = runTest {
-        val (subjects, recents) = repository.getResponse()
+        val subjects = repository.getTerm(null)
         val subjectConfig = dbHelper.selectAllItems().executeAsList().first().toConfig()
         assertEquals(subjectConfig, subjects.first().config)
     }
@@ -37,13 +37,13 @@ class AspenRepsitoryTest : BaseTest() {
     fun useSavedSubjectConfigTest() = runTest {
         val savedConfig = Subject.Config("id", Subject.Icon.BOOK, 0xFFAAABAC.toInt())
         dbHelper.upsertSubjectConfig(savedConfig)
-        val (subjects, recents) = repository.getResponse()
+        val subjects = repository.getTerm(null)
         assertEquals(subjects.first().config, savedConfig)
     }
 
     @Test
     fun updateSubjectConfigTest() = runTest {
-        val (subjects, recents) = repository.getResponse()
+        val subjects = repository.getTerm(null)
         fun savedConfig() = dbHelper.selectAllItems().executeAsList().first().toConfig()
 
         val downloadedConfig = subjects.first().config
@@ -61,7 +61,7 @@ class AspenRepsitoryTest : BaseTest() {
     @Test
     fun notifyErrorOnException() = runTest {
         aspenApi.throwOnRequest = true
-        repository.getResponse()
+        repository.getTerm(null)
         //TODO implement kotlin-result when it becomes multiplatform and check that error
     }
 

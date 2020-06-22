@@ -8,23 +8,27 @@ import androidx.ui.foundation.clickable
 import androidx.ui.layout.padding
 import androidx.ui.unit.dp
 import com.andb.apps.aspen.models.Assignment
-import com.andb.apps.aspen.state.AppState
+import com.andb.apps.aspen.models.Screen
+import com.andb.apps.aspen.state.UserAction
 import com.andb.apps.aspen.ui.common.AssignmentItem
 import com.andb.apps.aspen.ui.home.HomeHeader
+import com.andb.apps.aspen.util.ActionHandler
 
 @Composable
-fun RecentsScreen(recents: List<Assignment>) {
-    println("showing recents, last = " + recents.last())
+fun RecentsScreen(recents: List<Assignment>, actionHandler: ActionHandler) {
     AdapterList(data = recents) { assignment ->
         if (recents.indexOf(assignment) == 0) {
             HomeHeader(title = "Recent")
         }
         Box(
-            Modifier.clickable(onClick = { AppState.openAssignment(assignment) })
-                .padding(bottom = if (recents.indexOf(assignment) == recents.size - 1) 64.dp else 0.dp)
+            Modifier.clickable(
+                onClick = {
+                    val screen = Screen.Assignment(assignment)
+                    actionHandler.handle(UserAction.OpenScreen(screen))
+                }
+            ).padding(bottom = if (recents.indexOf(assignment) == recents.size - 1) 64.dp else 0.dp)
         ) {
             AssignmentItem(assignment = assignment, summaryText = assignment.subjectName)
         }
     }
-
 }

@@ -22,14 +22,15 @@ import androidx.ui.unit.sp
 import com.andb.apps.aspen.models.Assignment
 import com.andb.apps.aspen.models.Grade
 import com.andb.apps.aspen.models.SubjectGrade
-import com.andb.apps.aspen.state.AppState
+import com.andb.apps.aspen.state.UserAction
+import com.andb.apps.aspen.util.ActionHandler
 import com.andb.apps.aspen.util.getIconFromCategory
 import com.andb.apps.aspen.util.toDecimalString
 import com.andb.apps.aspen.util.trimTrailingZeroes
 import com.soywiz.klock.Date
 
 @Composable
-fun AssignmentScreen(assignment: Assignment) {
+fun AssignmentScreen(assignment: Assignment, actionHandler: ActionHandler) {
     MaterialTheme(typography = MaterialTheme.typography.copy(
         subtitle1 = MaterialTheme.typography.subtitle1.copy(fontSize = 16.sp),
         body1 = MaterialTheme.typography.body1.copy(fontSize = 16.sp)
@@ -38,7 +39,7 @@ fun AssignmentScreen(assignment: Assignment) {
             Row(Modifier.padding(top = 48.dp), verticalGravity = Alignment.CenterVertically) {
                 Icon(
                     asset = Icons.Default.Clear,
-                    modifier = Modifier.clickable(onClick = { AppState.goBack() }),
+                    modifier = Modifier.clickable(onClick = { actionHandler.handle(UserAction.Back) }),
                     tint = contentColor().copy(alpha = .54f)
                 )
                 Text(
@@ -252,6 +253,7 @@ private fun Preview() {
                 average = SubjectGrade.Letter(24.3, "D+"),
                 median = SubjectGrade.Letter(26.0, "C-")
             )
-        )
+        ),
+        actionHandler = ActionHandler { true }
     )
 }

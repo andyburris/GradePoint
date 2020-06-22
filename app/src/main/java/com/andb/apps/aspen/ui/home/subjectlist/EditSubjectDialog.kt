@@ -1,7 +1,6 @@
 package com.andb.apps.aspen.ui.home.subjectlist
 
 import androidx.compose.Composable
-import androidx.compose.state
 import androidx.ui.core.Modifier
 import androidx.ui.foundation.Text
 import androidx.ui.foundation.VerticalScroller
@@ -10,15 +9,15 @@ import androidx.ui.layout.*
 import androidx.ui.layout.ColumnScope.weight
 import androidx.ui.material.AlertDialog
 import androidx.ui.material.Button
+import androidx.ui.savedinstancestate.savedInstanceState
 import androidx.ui.unit.dp
 import com.andb.apps.aspen.models.Subject
-import com.andb.apps.aspen.state.AppState
 import com.andb.apps.aspen.ui.common.ColorPicker
 import com.andb.apps.aspen.ui.common.IconPicker
 
 @Composable
-fun EditSubjectDialog(subject: Subject, onClose: () -> Unit) {
-    val currentConfig = state { subject.config }
+fun EditSubjectDialog(subject: Subject, onClose: () -> Unit, onConfigChange: (Subject.Config) -> Unit) {
+    val currentConfig = savedInstanceState { subject.config }
     AlertDialog(
         onCloseRequest = { onClose.invoke() },
         title = { Text(text = "Edit Subject: ${subject.name}") },
@@ -40,7 +39,10 @@ fun EditSubjectDialog(subject: Subject, onClose: () -> Unit) {
                 )
                 Button(
                     text = { Text("Done".toUpperCase()) },
-                    onClick = { onClose.invoke(); AppState.updateSubjectConfig(currentConfig.value) },
+                    onClick = {
+                        onConfigChange.invoke(currentConfig.value)
+                        onClose.invoke()
+                    },
                     backgroundColor = Color.Unset,
                     elevation = 0.dp
                 )

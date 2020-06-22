@@ -17,7 +17,7 @@ class AspenApiMock : AspenApi {
         )
     }
 
-    override suspend fun getSubjects(username: String, password: String): CourseListResponse {
+    override suspend fun getSubjects(username: String, password: String, term: Int?): CourseListResponse {
         if (throwOnRequest) throw Exception()
         jsonRequested = true
         return courseListResponse

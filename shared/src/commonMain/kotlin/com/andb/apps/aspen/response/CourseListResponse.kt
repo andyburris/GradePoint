@@ -2,16 +2,18 @@ package com.andb.apps.aspen.response
 
 import com.andb.apps.aspen.models.Subject
 import com.andb.apps.aspen.models.SubjectGrade
+import com.andb.apps.aspen.models.Term
 import kotlinx.serialization.Serializable
 
 @Serializable
 data class CourseListResponse(
     val errors: ErrorResponse,
+    val config: ResponseConfig = ResponseConfig("dcps", "4"),
     val data: List<CourseResponse>,
     val asOf: Int
 )
 
-fun CourseListResponse.toSubjectList(savedConfigs: List<Subject.Config>): List<Subject> {
+fun CourseListResponse.toSubjectList(savedConfigs: List<Subject.Config>, term: Int = config.term.toInt()): List<Subject> {
     return data.map { courseResponse ->
         val (last, first) = courseResponse.teacher.split(", ")
         val config = savedConfigs.find { it.id == courseResponse.id } ?: Subject.Config(courseResponse.id, courseResponse.name.toIcon(), 0xFF4CAF50.toInt())
@@ -20,11 +22,23 @@ fun CourseListResponse.toSubjectList(savedConfigs: List<Subject.Config>): List<S
             name = courseResponse.name,
             teacher = "$first $last",
             config = config,
-            currentGrade = courseResponse.currentTermGrade.toSubjectGrade(),
-            categories = courseResponse.categoryTable,
-            assignments = courseResponse.assignments.map { it.toAssignment(courseResponse.name) }
+            terms = listOf(Term.Loading(1), Term.Loading(2), Term.Loading(3), Term.Loading(4)).map {
+                when(it.term){
+                    term -> courseResponse.toTermGrades(it.term)
+                    else -> it
+                }
+            }
         )
     }
+}
+
+fun CourseResponse.toTermGrades(term: Int): Term.WithGrades{
+    return Term.WithGrades(
+        term = term,
+        assignments = assignments.map { it.toAssignment(name) },
+        grade = currentTermGrade.toSubjectGrade(),
+        categories = categoryTable[term.toString()] ?: throw Error("Category table did not exist for CourseResponse = $this")
+    )
 }
 
 fun String.toSubjectGrade(): SubjectGrade {

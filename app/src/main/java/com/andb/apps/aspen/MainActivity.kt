@@ -4,8 +4,6 @@ import android.os.Bundle
 import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
 import androidx.compose.Composable
-import androidx.compose.ProvidedValue
-import androidx.compose.Providers
 import androidx.compose.collectAsState
 import androidx.ui.animation.Crossfade
 import androidx.ui.core.Alignment
@@ -29,29 +27,37 @@ import androidx.ui.unit.dp
 import androidx.ui.unit.sp
 import com.andb.apps.aspen.android.BuildConfig
 import com.andb.apps.aspen.models.Screen
-import com.andb.apps.aspen.state.AppState
+import com.andb.apps.aspen.models.recents
+import com.andb.apps.aspen.state.UserAction
 import com.andb.apps.aspen.ui.assignment.AssignmentScreen
 import com.andb.apps.aspen.ui.home.HomeScreen
-import com.andb.apps.aspen.ui.home.LoadingScreen
 import com.andb.apps.aspen.ui.login.LoginScreen
 import com.andb.apps.aspen.ui.subject.SubjectScreen
 import com.andb.apps.aspen.ui.test.TestScreen
+import com.andb.apps.aspen.util.ActionHandler
 import com.andb.apps.aspen.util.isDark
+import org.koin.android.viewmodel.ext.android.viewModel
 
 class MainActivity : AppCompatActivity() {
     companion object {
         val TAG = MainActivity::class.java.simpleName
     }
 
+    private val viewModel: MainActivityViewModel by viewModel()
+    private val handler = ActionHandler {
+        viewModel.screens.handleAction(it)
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
-            AppContent()
+            val currentScreen = viewModel.screens.currentScreen.collectAsState()
+            AppContent(currentScreen.value, handler)
         }
     }
 
     override fun onBackPressed() {
-        val goBack = AppState.goBack()
+        val goBack = handler.handle(UserAction.Back)
         Log.d("onBackPressed", "goBack = $goBack")
         if (!goBack) {
             super.onBackPressed()
@@ -60,18 +66,16 @@ class MainActivity : AppCompatActivity() {
 }
 
 @Composable
-fun AppContent() {
-    val currentScreen = AppState.currentScreen.collectAsState()
+fun AppContent(currentScreen: Screen?, actionHandler: ActionHandler) {
     AppTheme {
         Surface(color = MaterialTheme.colors.background) {
             Stack {
-                Crossfade(current = currentScreen.value) { screen ->
+                Crossfade(current = currentScreen) { screen ->
                     when (screen) {
-                        is Screen.Login -> LoginScreen()
-                        is Screen.Loading -> LoadingScreen()
-                        is Screen.Home -> HomeScreen(screen)
-                        is Screen.Subject -> SubjectScreen(subject = screen.subject)
-                        is Screen.Assignment -> AssignmentScreen(assignment = screen.assignment)
+                        is Screen.Login -> LoginScreen(actionHandler)
+                        is Screen.Home -> HomeScreen(screen.subjects, screen.recents, screen.tab, screen.term, actionHandler)
+                        is Screen.Subject -> SubjectScreen(screen.subject, screen.term, actionHandler)
+                        is Screen.Assignment -> AssignmentScreen(screen.assignment, actionHandler)
                         is Screen.Test -> TestScreen()
                     }
                 }

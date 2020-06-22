@@ -2,8 +2,8 @@ package com.andb.apps.aspen.data.remote
 
 import co.touchlab.stately.ensureNeverFrozen
 import com.andb.apps.aspen.response.CheckLoginResponse
-import com.andb.apps.aspen.response.RecentResponse
 import com.andb.apps.aspen.response.CourseListResponse
+import com.andb.apps.aspen.response.RecentResponse
 import io.ktor.client.HttpClient
 import io.ktor.client.features.HttpTimeout
 import io.ktor.client.features.cookies.AcceptAllCookiesStorage
@@ -45,8 +45,9 @@ class AspenApiImpl : AspenApi {
         }
     }
 
-    override suspend fun getSubjects(username: String, password: String): CourseListResponse {
-        return client.get<CourseListResponse>("$BASE_URL/course?moreData=true"){
+    override suspend fun getSubjects(username: String, password: String, term: Int?): CourseListResponse {
+        val termParam = if (term!=null) "&term=$term" else ""
+        return client.get<CourseListResponse>("$BASE_URL/course?moreData=true$termParam"){
             header("ASPEN_UNAME", username)
             header("ASPEN_PASS", password)
             timeout {

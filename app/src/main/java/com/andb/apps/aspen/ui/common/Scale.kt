@@ -65,7 +65,7 @@ private data class Scale(
         constraints: Constraints,
         layoutDirection: LayoutDirection
     ): MeasureScope.MeasureResult {
-        println("scale - minSize = $minSize")
+        //println("scale - minSize = $minSize")
         val scaledConstraints = lastMeasure?.let {
             val width = (it.width - minSize.width) * x + minSize.width
             val height = (it.height - minSize.height) * y + minSize.height

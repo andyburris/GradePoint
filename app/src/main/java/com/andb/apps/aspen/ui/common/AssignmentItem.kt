@@ -4,7 +4,11 @@ import androidx.compose.Composable
 import androidx.compose.collectAsState
 import androidx.ui.core.Alignment
 import androidx.ui.core.Modifier
+import androidx.ui.foundation.Box
 import androidx.ui.foundation.Text
+import androidx.ui.foundation.shape.corner.CircleShape
+import androidx.ui.foundation.shape.corner.RoundedCornerShape
+import androidx.ui.graphics.Color
 import androidx.ui.layout.*
 import androidx.ui.material.CircularProgressIndicator
 import androidx.ui.material.MaterialTheme
@@ -36,7 +40,7 @@ fun AssignmentItem(assignment: Assignment, summaryText: String, modifier: Modifi
                 maxLines = 1,
                 overflow = TextOverflow.Ellipsis
             )
-            Text(text = summaryText)
+            Text(text = summaryText, modifier = Modifier.padding(top = 4.dp))
         }
 
 /*        Text(
@@ -82,6 +86,24 @@ fun AssignmentItem(assignment: Assignment, summaryText: String, modifier: Modifi
                     )
                 }
             }
+        }
+    }
+}
+
+@Composable
+fun LoadingAssignmentsItem(modifier: Modifier = Modifier) {
+    Row(
+        modifier = modifier.fillMaxWidth().padding(horizontal = 24.dp, vertical = AndroidSettings.assignmentSpacing.dp),
+        horizontalArrangement = Arrangement.SpaceBetween,
+        verticalGravity = Alignment.CenterVertically
+    ) {
+        Column {
+            Box(Modifier.size(width = 120.dp, height = 14.dp), backgroundColor = Color.Gray, shape = RoundedCornerShape(8.dp))
+            Box(Modifier.padding(top = 4.dp).size(width = 72.dp, height = 14.dp), backgroundColor = Color.Gray, shape = RoundedCornerShape(8.dp))
+        }
+        Row(verticalGravity = Alignment.CenterVertically) {
+            Box(modifier = Modifier.padding(end = 4.dp).size(width = 32.dp, height = 14.dp), backgroundColor = Color.Gray, shape = RoundedCornerShape(8.dp))
+            Box(Modifier.size(32.dp), backgroundColor = Color.Gray, shape = CircleShape)
         }
     }
 }
