@@ -3,7 +3,6 @@ package com.andb.apps.aspen.ui.home
 import androidx.animation.FloatPropKey
 import androidx.animation.transitionDefinition
 import androidx.compose.Composable
-import androidx.compose.remember
 import androidx.ui.animation.DpPropKey
 import androidx.ui.animation.Transition
 import androidx.ui.core.Modifier
@@ -23,36 +22,35 @@ enum class FabState {
     HIDDEN, COLLAPSED, EXPANDED
 }
 
-@Composable
-fun HomeFab(fabState: FabState, currentTerm: Int, onFabExpandedChanged: (Boolean) -> Unit, onTermChanged: (Int) -> Unit) {
-    val fabOffsetKey = remember { DpPropKey() }
-    val fabSize = remember { FloatPropKey() }
-    val termExpansion = remember { FloatPropKey() }
-    val definition = remember {
-        transitionDefinition<FabState> {
-            state(FabState.COLLAPSED) {
-                this[fabOffsetKey] = 0.dp
-                this[fabSize] = 1f
-                this[termExpansion] = 0f
-            }
-            state(FabState.EXPANDED) {
-                this[fabOffsetKey] = 32.dp
-                this[fabSize] = 1f
-                this[termExpansion] = 1f
-            }
-            state(FabState.HIDDEN) {
-                this[fabOffsetKey] = 0.dp
-                this[fabSize] = 0f
-                this[termExpansion] = 0f
-            }
-
-            transition {
-                fabSize using tween { duration = 199 }
-                termExpansion using tween { duration = 199 }
-            }
-        }
+private val fabOffsetKey = DpPropKey()
+private val fabSize = FloatPropKey()
+private val termExpansion = FloatPropKey()
+private val definition = transitionDefinition<FabState> {
+    state(FabState.COLLAPSED) {
+        this[fabOffsetKey] = 0.dp
+        this[fabSize] = 1f
+        this[termExpansion] = 0f
+    }
+    state(FabState.EXPANDED) {
+        this[fabOffsetKey] = 32.dp
+        this[fabSize] = 1f
+        this[termExpansion] = 1f
+    }
+    state(FabState.HIDDEN) {
+        this[fabOffsetKey] = 0.dp
+        this[fabSize] = 0f
+        this[termExpansion] = 0f
     }
 
+    transition {
+        fabSize using tween { duration = 199 }
+        termExpansion using tween { duration = 199 }
+    }
+}
+
+
+@Composable
+fun HomeFab(fabState: FabState, currentTerm: Int, onFabExpandedChanged: (Boolean) -> Unit, onTermChanged: (Int) -> Unit) {
     Transition(definition = definition, toState = fabState) { transitionState ->
         ExtendedFloatingActionButton(
             icon = {

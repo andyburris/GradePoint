@@ -56,8 +56,8 @@ fun SubjectScreen(subject: Subject, selectedTerm: Int, actionHandler: ActionHand
                                     .padding(horizontal = 16.dp),
                                 verticalGravity = Alignment.CenterVertically
                             ) {
-                                Text(text = "Term $selectedTerm".toUpperCase(), style = MaterialTheme.typography.button)
-                                Icon(asset = Icons.Default.FilterList, modifier = Modifier.padding(start = 16.dp))
+                                Text(text = "Term $selectedTerm".toUpperCase(), style = MaterialTheme.typography.button, color = MaterialTheme.colors.onPrimary)
+                                Icon(asset = Icons.Default.FilterList, modifier = Modifier.padding(start = 16.dp), tint = MaterialTheme.colors.onPrimary)
                             }
                         },
                         expanded = termPickerExpanded.value,

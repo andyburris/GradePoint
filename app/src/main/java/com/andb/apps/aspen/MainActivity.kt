@@ -5,7 +5,7 @@ import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
 import androidx.compose.Composable
 import androidx.compose.collectAsState
-import androidx.ui.animation.Crossfade
+import androidx.compose.state
 import androidx.ui.core.Alignment
 import androidx.ui.core.Modifier
 import androidx.ui.core.drawLayer
@@ -66,19 +66,22 @@ class MainActivity : AppCompatActivity() {
 }
 
 @Composable
-fun AppContent(currentScreen: Screen?, actionHandler: ActionHandler) {
+fun AppContent(screen: Screen?, actionHandler: ActionHandler) {
     AppTheme {
         Surface(color = MaterialTheme.colors.background) {
             Stack {
-                Crossfade(current = currentScreen) { screen ->
+                //Crossfade(current = currentScreen) { screen ->
                     when (screen) {
                         is Screen.Login -> LoginScreen(actionHandler)
-                        is Screen.Home -> HomeScreen(screen.subjects, screen.recents, screen.tab, screen.term, actionHandler)
+                        is Screen.Home -> {
+                            val expanded = state { false }
+                            HomeScreen(screen.subjects, screen.recents, screen.term, screen.tab, expanded.value, { expanded.value = !expanded.value }, actionHandler)
+                        }
                         is Screen.Subject -> SubjectScreen(screen.subject, screen.term, actionHandler)
                         is Screen.Assignment -> AssignmentScreen(screen.assignment, actionHandler)
                         is Screen.Test -> TestScreen()
                     }
-                }
+                //}
                 if (BuildConfig.DEBUG) {
                     VersionRibbon(Modifier.gravity(Alignment.TopEnd))
                 }

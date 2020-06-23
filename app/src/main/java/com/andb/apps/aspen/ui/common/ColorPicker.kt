@@ -42,7 +42,7 @@ fun ColorPicker(selected: Int, modifier: Modifier = Modifier, onSelect: (color: 
                 for (color in Subject.COLOR_PRESETS) {
                     Box(shape = CircleShape,
                         backgroundColor = Color(color),
-                        border = Border(1.dp, Color.Black),
+                        border = Border(1.dp, MaterialTheme.colors.onBackground),
                         gravity = ContentGravity.Center,
                         modifier = Modifier.padding(end = 4.dp, bottom = 4.dp).size(32.dp)
                             .clickable(

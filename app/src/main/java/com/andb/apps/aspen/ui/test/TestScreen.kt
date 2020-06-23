@@ -5,7 +5,6 @@ import androidx.animation.FloatPropKey
 import androidx.animation.LinearEasing
 import androidx.animation.transitionDefinition
 import androidx.compose.Composable
-import androidx.compose.remember
 import androidx.compose.state
 import androidx.ui.animation.DpPropKey
 import androidx.ui.animation.Transition
@@ -58,27 +57,25 @@ fun TestScreen() {
 }
 
 
+private val offset = DpPropKey()
+private val transition = transitionDefinition<Boolean> {
+    state(true) {
+        this[offset] = 100.dp
+    }
+    state(false) {
+        this[offset] = 0.dp
+    }
+    transition {
+        offset using tween {
+            easing = LinearEasing
+            duration = 1000
+        }
+    }
+}
 
 
 @Composable
-private fun TestAnimation(moved: Boolean, onClick: ()->Unit) {
-    val offset = remember { DpPropKey() }
-    val transition = remember {
-        transitionDefinition<Boolean> {
-            state(true) {
-                this[offset] = 100.dp
-            }
-            state(false) {
-                this[offset] = 0.dp
-            }
-            transition {
-                offset using tween {
-                    easing = LinearEasing
-                    duration = 1000
-                }
-            }
-        }
-    }
+private fun TestAnimation(moved: Boolean, onClick: () -> Unit) {
     Transition(definition = transition, toState = moved) { transitionState ->
         println("transitionState[offset] = ${transitionState[offset]}")
         Box(
