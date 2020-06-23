@@ -3,6 +3,7 @@ package com.andb.apps.aspen.ui.home
 import androidx.animation.FloatPropKey
 import androidx.animation.transitionDefinition
 import androidx.compose.Composable
+import androidx.compose.remember
 import androidx.ui.animation.DpPropKey
 import androidx.ui.animation.Transition
 import androidx.ui.core.Modifier
@@ -24,29 +25,31 @@ enum class FabState {
 
 @Composable
 fun HomeFab(fabState: FabState, currentTerm: Int, onFabExpandedChanged: (Boolean) -> Unit, onTermChanged: (Int) -> Unit) {
-    val fabOffsetKey = DpPropKey()
-    val fabSize = FloatPropKey()
-    val termExpansion = FloatPropKey()
-    val definition = transitionDefinition<FabState> {
-        state(FabState.COLLAPSED) {
-            this[fabOffsetKey] = 0.dp
-            this[fabSize] = 1f
-            this[termExpansion] = 0f
-        }
-        state(FabState.EXPANDED) {
-            this[fabOffsetKey] = 32.dp
-            this[fabSize] = 1f
-            this[termExpansion] = 1f
-        }
-        state(FabState.HIDDEN) {
-            this[fabOffsetKey] = 0.dp
-            this[fabSize] = 0f
-            this[termExpansion] = 0f
-        }
+    val fabOffsetKey = remember { DpPropKey() }
+    val fabSize = remember { FloatPropKey() }
+    val termExpansion = remember { FloatPropKey() }
+    val definition = remember {
+        transitionDefinition<FabState> {
+            state(FabState.COLLAPSED) {
+                this[fabOffsetKey] = 0.dp
+                this[fabSize] = 1f
+                this[termExpansion] = 0f
+            }
+            state(FabState.EXPANDED) {
+                this[fabOffsetKey] = 32.dp
+                this[fabSize] = 1f
+                this[termExpansion] = 1f
+            }
+            state(FabState.HIDDEN) {
+                this[fabOffsetKey] = 0.dp
+                this[fabSize] = 0f
+                this[termExpansion] = 0f
+            }
 
-        transition {
-            fabSize using tween { duration = 199 }
-            termExpansion using tween { duration = 199 }
+            transition {
+                fabSize using tween { duration = 199 }
+                termExpansion using tween { duration = 199 }
+            }
         }
     }
 

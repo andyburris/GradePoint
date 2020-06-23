@@ -81,7 +81,7 @@ fun SubjectScreen(subject: Subject, selectedTerm: Int, actionHandler: ActionHand
             if (subject.hasTerm(selectedTerm)) {
                 val termGrades = subject.termGrades(selectedTerm)
                 VerticalScroller {
-                    CategoriesCard(categories = termGrades.categories)
+                    CategoriesCard(categories = termGrades.categories, termGrade = termGrades.grade)
                     AssignmentTable(assignments = termGrades.assignments) {
                         val screen = Screen.Assignment(it)
                         actionHandler.handle(UserAction.OpenScreen(screen))
@@ -94,7 +94,7 @@ fun SubjectScreen(subject: Subject, selectedTerm: Int, actionHandler: ActionHand
 }
 
 @Composable
-fun CategoriesCard(categories: List<Category>) {
+fun CategoriesCard(categories: List<Category>, termGrade: SubjectGrade) {
     Card(
         elevation = 4.dp,
         modifier = Modifier.fillMaxWidth()
@@ -116,6 +116,16 @@ fun CategoriesCard(categories: List<Category>) {
 
             for (category in categories) {
                 CategoryItem(category = category)
+            }
+            Row(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(start = 16.dp, end = 16.dp, top = 12.dp, bottom = 8.dp),
+                horizontalArrangement = Arrangement.SpaceBetween,
+                verticalGravity = Alignment.CenterVertically
+            ) {
+                Text(text = "Total", style = MaterialTheme.typography.subtitle1, color = MaterialTheme.colors.onSecondary)
+                Text(text = termGrade.toString(), style = MaterialTheme.typography.subtitle1)
             }
         }
     }

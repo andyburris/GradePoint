@@ -20,4 +20,12 @@ sealed class Grade {
 sealed class SubjectGrade {
     class Letter(val number: Double, val letter: String?) : SubjectGrade()
     object Ungraded : SubjectGrade()
+
+    override fun toString(): String {
+        return when {
+            this !is Letter -> ""
+            letter==null -> "$number"
+            else -> "$number $letter"
+        }
+    }
 }

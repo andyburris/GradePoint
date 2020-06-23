@@ -57,11 +57,7 @@ fun SubjectItem(config: Subject.Config, name: String, teacher: String, grade: Su
                 }
             }
             Text(
-                text = when {
-                    grade !is SubjectGrade.Letter -> ""
-                    grade.letter==null -> "${grade.number}"
-                    else -> "${grade.number} ${grade.letter}"
-                },
+                text = grade.toString(),
                 style = MaterialTheme.typography.subtitle1
             )
         }

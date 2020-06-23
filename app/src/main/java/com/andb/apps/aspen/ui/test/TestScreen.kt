@@ -2,19 +2,20 @@ package com.andb.apps.aspen.ui.test
 
 import androidx.animation.FastOutSlowInEasing
 import androidx.animation.FloatPropKey
+import androidx.animation.LinearEasing
 import androidx.animation.transitionDefinition
 import androidx.compose.Composable
+import androidx.compose.remember
 import androidx.compose.state
+import androidx.ui.animation.DpPropKey
 import androidx.ui.animation.Transition
 import androidx.ui.core.Alignment
 import androidx.ui.core.DensityAmbient
 import androidx.ui.core.Modifier
 import androidx.ui.core.drawLayer
-import androidx.ui.foundation.Icon
-import androidx.ui.foundation.Text
-import androidx.ui.foundation.VerticalScroller
-import androidx.ui.foundation.clickable
+import androidx.ui.foundation.*
 import androidx.ui.foundation.gestures.DragDirection
+import androidx.ui.foundation.shape.corner.CircleShape
 import androidx.ui.graphics.Color
 import androidx.ui.layout.*
 import androidx.ui.material.DropdownMenu
@@ -49,10 +50,45 @@ fun TestScreen() {
                 )
                 .padding(horizontal = 24.dp, vertical = 16.dp)
         )
+        val moved = state { false }
+        TestAnimation(moved.value) { moved.value = !moved.value }
         TestColorPicker()
-        TestIconPicker()
         TestInboxItem()
-        TestDropdown()
+    }
+}
+
+
+
+
+@Composable
+private fun TestAnimation(moved: Boolean, onClick: ()->Unit) {
+    val offset = remember { DpPropKey() }
+    val transition = remember {
+        transitionDefinition<Boolean> {
+            state(true) {
+                this[offset] = 100.dp
+            }
+            state(false) {
+                this[offset] = 0.dp
+            }
+            transition {
+                offset using tween {
+                    easing = LinearEasing
+                    duration = 1000
+                }
+            }
+        }
+    }
+    Transition(definition = transition, toState = moved) { transitionState ->
+        println("transitionState[offset] = ${transitionState[offset]}")
+        Box(
+            modifier = Modifier
+                .clickable(onClick = onClick)
+                .padding(start = transitionState[offset])
+                .size(56.dp),
+            shape = CircleShape,
+            backgroundColor = Color.Blue
+        )
     }
 }
 
