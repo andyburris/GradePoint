@@ -26,9 +26,8 @@ import androidx.ui.material.icons.filled.Settings
 import androidx.ui.material.icons.filled.UnfoldLess
 import androidx.ui.material.icons.filled.UnfoldMore
 import androidx.ui.tooling.preview.Preview
-import androidx.ui.unit.IntPxSize
+import androidx.ui.unit.IntSize
 import androidx.ui.unit.dp
-import androidx.ui.unit.ipx
 import com.andb.apps.aspen.models.Subject
 import com.andb.apps.aspen.ui.common.*
 import com.andb.apps.aspen.ui.settings.SettingsItem
@@ -53,6 +52,7 @@ fun TestScreen() {
         TestAnimation(moved.value) { moved.value = !moved.value }
         TestColorPicker()
         TestInboxItem()
+        //Icon(asset = Icons.Default.MoreVert, modifier = Modifier.size(0.dp))
     }
 }
 
@@ -172,7 +172,7 @@ private fun TestInboxItem() {
                         .scale(
                             y = transition[percentExpanded],
                             //y = 0f,
-                            minSize = IntPxSize(48.ipx, with(DensityAmbient.current) { 48.dp.toIntPx() })
+                            minSize = IntSize(48, with(DensityAmbient.current) { 48.dp.toIntPx() })
                         )
                         .drawLayer(alpha = transition[newAlpha])
                         .fillMaxHeight(),

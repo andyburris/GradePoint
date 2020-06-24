@@ -2,6 +2,7 @@ package com.andb.apps.aspen
 
 import android.os.Bundle
 import android.util.Log
+import androidx.animation.TweenBuilder
 import androidx.appcompat.app.AppCompatActivity
 import androidx.compose.Composable
 import androidx.compose.collectAsState
@@ -13,10 +14,7 @@ import androidx.ui.core.setContent
 import androidx.ui.foundation.Box
 import androidx.ui.foundation.Text
 import androidx.ui.graphics.Color
-import androidx.ui.layout.Stack
-import androidx.ui.layout.fillMaxWidth
-import androidx.ui.layout.height
-import androidx.ui.layout.size
+import androidx.ui.layout.*
 import androidx.ui.material.MaterialTheme
 import androidx.ui.material.Surface
 import androidx.ui.material.darkColorPalette
@@ -30,12 +28,14 @@ import com.andb.apps.aspen.models.Screen
 import com.andb.apps.aspen.models.recents
 import com.andb.apps.aspen.state.UserAction
 import com.andb.apps.aspen.ui.assignment.AssignmentScreen
+import com.andb.apps.aspen.ui.common.inbox.InboxParent2
 import com.andb.apps.aspen.ui.home.HomeScreen
 import com.andb.apps.aspen.ui.login.LoginScreen
 import com.andb.apps.aspen.ui.subject.SubjectScreen
 import com.andb.apps.aspen.ui.test.TestScreen
 import com.andb.apps.aspen.util.ActionHandler
 import com.andb.apps.aspen.util.isDark
+import com.andb.apps.aspen.util.toInboxTag
 import org.koin.android.viewmodel.ext.android.viewModel
 
 class MainActivity : AppCompatActivity() {
@@ -69,8 +69,13 @@ class MainActivity : AppCompatActivity() {
 fun AppContent(screen: Screen?, actionHandler: ActionHandler) {
     AppTheme {
         Surface(color = MaterialTheme.colors.background) {
-            Stack {
-                //Crossfade(current = currentScreen) { screen ->
+            Stack(Modifier.fillMaxSize()) {
+                InboxParent2(
+                    new = screen,
+                    tag = { screen -> screen?.toInboxTag() ?: "" },
+                    //equalityCheck = { old, new -> old?.toInboxTag() == new?.toInboxTag() },
+                    animation = TweenBuilder<Float>().also{ it.duration = 1000 }
+                ) { screen ->
                     when (screen) {
                         is Screen.Login -> LoginScreen(actionHandler)
                         is Screen.Home -> {
@@ -81,7 +86,7 @@ fun AppContent(screen: Screen?, actionHandler: ActionHandler) {
                         is Screen.Assignment -> AssignmentScreen(screen.assignment, actionHandler)
                         is Screen.Test -> TestScreen()
                     }
-                //}
+                }
                 if (BuildConfig.DEBUG) {
                     VersionRibbon(Modifier.gravity(Alignment.TopEnd))
                 }

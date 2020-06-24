@@ -4,11 +4,11 @@ import androidx.compose.Composable
 import androidx.compose.state
 import androidx.ui.core.DensityAmbient
 import androidx.ui.core.Modifier
-import androidx.ui.foundation.AdapterList
 import androidx.ui.foundation.Icon
 import androidx.ui.foundation.Text
 import androidx.ui.foundation.clickable
 import androidx.ui.foundation.gestures.DragDirection
+import androidx.ui.foundation.lazy.LazyColumnItems
 import androidx.ui.layout.Column
 import androidx.ui.material.DropdownMenu
 import androidx.ui.material.DropdownMenuItem
@@ -24,6 +24,7 @@ import com.andb.apps.aspen.models.Subject
 import com.andb.apps.aspen.models.Term
 import com.andb.apps.aspen.state.UserAction
 import com.andb.apps.aspen.ui.common.SwipeStep
+import com.andb.apps.aspen.ui.common.inbox.inboxItem
 import com.andb.apps.aspen.ui.common.swipeable
 import com.andb.apps.aspen.ui.home.HomeHeader
 import com.andb.apps.aspen.util.ActionHandler
@@ -53,18 +54,13 @@ fun SubjectsScreen(subjects: List<Subject>, term: Int, actionHandler: ActionHand
                 onDismissRequest = { expanded.value = false },
                 dropdownOffset = Position(x = (-24).dp, y = 0.dp)
             ) {
-                DropdownMenuItem(enabled = true, onClick = {}) {
-                    Text(
-                        text = "Log Out",
-                        modifier = Modifier.clickable(onClick = {
-                            actionHandler.handle(UserAction.Logout)
-                        })
-                    )
+                DropdownMenuItem(enabled = true, onClick = {actionHandler.handle(UserAction.Logout) }) {
+                    Text(text = "Log Out")
                 }
             }
         }
-        AdapterList(
-            data = subjects
+        LazyColumnItems(
+            items = subjects
         ) { subject ->
             SubjectItem(
                 name = subject.name,
@@ -87,7 +83,7 @@ fun SubjectsScreen(subjects: List<Subject>, term: Int, actionHandler: ActionHand
                         val screen = Screen.Subject(subject, term)
                         actionHandler.handle(UserAction.OpenScreen(screen))
                     }
-                )
+                ).inboxItem(subject.id)
             )
         }
     }

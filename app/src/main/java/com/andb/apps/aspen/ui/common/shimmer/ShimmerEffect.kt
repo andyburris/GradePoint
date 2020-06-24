@@ -1,13 +1,13 @@
 package com.andb.apps.aspen.ui.common.shimmer
 
+import androidx.ui.geometry.Size
 import androidx.ui.graphics.Canvas
-import androidx.ui.unit.PxSize
 
 
 interface ShimmerEffect {
 
-    fun draw(canvas: Canvas, size: PxSize)
+    fun draw(canvas: Canvas, size: Size)
 
-    fun updateSize(size: PxSize)
+    fun updateSize(size: Size)
 
 }

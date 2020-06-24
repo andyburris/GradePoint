@@ -30,7 +30,7 @@ fun AssignmentItem(assignment: Assignment, summaryText: String, modifier: Modifi
     val assignmentSpacing = AndroidSettings.assignmentSpacingFlow.collectAsState()
     Row(
         horizontalArrangement = Arrangement.SpaceBetween,
-        modifier = modifier.fillMaxWidth().padding(horizontal = 24.dp, vertical = assignmentSpacing.value.dp),
+        modifier = modifier.padding(horizontal = 24.dp, vertical = assignmentSpacing.value.dp).fillMaxWidth(),
         verticalGravity = Alignment.CenterVertically
     ) {
         Column(modifier = Modifier.padding(end = 16.dp).weight(1f)) {
@@ -67,7 +67,7 @@ fun AssignmentItem(assignment: Assignment, summaryText: String, modifier: Modifi
                             color = MaterialTheme.colors.primary.copy(alpha = 0.24f)
                         )
                         CircularProgressIndicator(
-                            progress = (score / possibleScore).toFloat(),
+                            progress = (score / possibleScore).coerceAtMost(1.0).toFloat(),
                             modifier = Modifier.size(36.dp),
                             strokeWidth = 3.dp
                         )
@@ -102,7 +102,7 @@ fun LoadingAssignmentsItem(modifier: Modifier = Modifier) {
             Box(Modifier.padding(top = 4.dp).size(width = 72.dp, height = 14.dp), backgroundColor = Color.Gray, shape = RoundedCornerShape(8.dp))
         }
         Row(verticalGravity = Alignment.CenterVertically) {
-            Box(modifier = Modifier.padding(end = 4.dp).size(width = 32.dp, height = 14.dp), backgroundColor = Color.Gray, shape = RoundedCornerShape(8.dp))
+            Box(modifier = Modifier.padding(end = 8.dp).size(width = 32.dp, height = 14.dp), backgroundColor = Color.Gray, shape = RoundedCornerShape(8.dp))
             Box(Modifier.size(32.dp), backgroundColor = Color.Gray, shape = CircleShape)
         }
     }

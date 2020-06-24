@@ -22,7 +22,7 @@ import androidx.ui.material.icons.Icons
 import androidx.ui.material.icons.filled.Colorize
 import androidx.ui.material.icons.filled.Done
 import androidx.ui.material.icons.filled.KeyboardArrowDown
-import androidx.ui.unit.*
+import androidx.ui.unit.dp
 import androidx.ui.util.toHexString
 import com.andb.apps.aspen.models.Subject
 
@@ -103,8 +103,8 @@ private fun String.toColorIntOrNull() = try {
 
 @Composable
 fun ColorGradientPicker(selected: Int, onSelect: (color: Int) -> Unit) {
-    val draggedPx = state { 0.px }
-    val gradientWidth = state { 0.ipx }
+    val draggedPx = state { 0f }
+    val gradientWidth = state { 0 }
 
     val colors = Subject.COLOR_PRESETS
         .map { Color(it) }
@@ -113,7 +113,7 @@ fun ColorGradientPicker(selected: Int, onSelect: (color: Int) -> Unit) {
     Stack(
         //Drag stack to allow user to click anywhere on gradient and go there
         Modifier.draggable(DragDirection.Horizontal) { delta ->
-            draggedPx.value = (draggedPx.value + delta.px).coerceIn(0.px..gradientWidth.value.toPx())
+            draggedPx.value = (draggedPx.value + delta).coerceIn(0f..gradientWidth.value.toFloat())
             delta
         }.padding(end = 32.dp)
     ) {
@@ -125,12 +125,12 @@ fun ColorGradientPicker(selected: Int, onSelect: (color: Int) -> Unit) {
             .drawBehind {
                 val gradient = HorizontalGradient(
                     colorStops = *colors.toTypedArray(),
-                    startX = Px.Zero.value,
+                    startX = 0f,
                     endX = size.width
                 )
 
                 drawOutline(
-                    Outline.Rounded(RRect(size.toRect(), Radius.circular(16.dp.toPx().value))),
+                    Outline.Rounded(RRect(size.toRect(), Radius(16.dp.toPx()))),
                     gradient
                 )
             }
@@ -146,7 +146,7 @@ fun ColorGradientPicker(selected: Int, onSelect: (color: Int) -> Unit) {
                 }),
             shape = CircleShape,
             border = Border(2.dp, MaterialTheme.colors.onBackground),
-            backgroundColor = colors.getColorAtPercent(draggedPx.value.value / gradientWidth.value.toPx().value)
+            backgroundColor = colors.getColorAtPercent(draggedPx.value / gradientWidth.value)
         )
     }
 }

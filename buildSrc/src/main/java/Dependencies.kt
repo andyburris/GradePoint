@@ -15,7 +15,7 @@ object Versions {
     const val koin = "3.0.0-alpha-9"
     const val serialization = "0.20.0"
     const val cocoapodsext = "0.6"
-    const val jetpackCompose = "0.1.0-dev13"
+    const val jetpackCompose = "0.1.0-dev14"
     const val klock = "1.10.3"
     const val slf4j = "1.7.30"
     const val kissme = "0.2.5"

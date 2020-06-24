@@ -5,11 +5,10 @@ import androidx.compose.remember
 import androidx.ui.animation.asDisposableClock
 import androidx.ui.core.*
 import androidx.ui.geometry.Rect
+import androidx.ui.geometry.Size
 import androidx.ui.graphics.Paint
 import androidx.ui.graphics.drawscope.drawCanvas
 import androidx.ui.graphics.withSaveLayer
-import androidx.ui.unit.PxSize
-import androidx.ui.unit.ipx
 import com.andb.apps.aspen.ui.common.shimmer.RepeatMode.RESTART
 import com.andb.apps.aspen.ui.common.shimmer.RepeatMode.REVERSE
 
@@ -55,7 +54,7 @@ internal class ShimmerModifier(
     clock: AnimationClockObservable
 ) : DrawModifier, LayoutModifier {
 
-    private var size: PxSize = PxSize(0.ipx, 0.ipx)
+    private var size: Size = Size(0f, 0f)
     private val paint = Paint()
     private val factory: ShimmerEffect = shimmerTheme.run {
         factory.create(
@@ -78,8 +77,8 @@ internal class ShimmerModifier(
                 Rect(
                     0f,
                     0f,
-                    this@ShimmerModifier.size.width.value,
-                    this@ShimmerModifier.size.height.value
+                    this@ShimmerModifier.size.width,
+                    this@ShimmerModifier.size.height
                 ), paint
             ) {
                 drawContent()
@@ -97,10 +96,10 @@ internal class ShimmerModifier(
         layoutDirection: LayoutDirection
     ): MeasureScope.MeasureResult {
         val placeable = measurable.measure(constraints)
-        size = PxSize(width = placeable.width, height = placeable.height)
+        size = Size(width = placeable.width.toFloat(), height = placeable.height.toFloat())
         factory.updateSize(size)
         return layout(placeable.width, placeable.height) {
-            placeable.place(0.ipx, 0.ipx)
+            placeable.place(0, 0)
         }
     }
 }

@@ -38,10 +38,15 @@ data class Screens(private val stack: MutableStateFlow<List<Screen>>) : KoinComp
             is TabState -> currentHomeScreen.copy(tab = homeState.tab)
         }
         println("reducing home state: \ncurrent = $currentHomeScreen, \npartial = $homeState, \nreduced = $reducedState")
-        stack.value = stack.value.map {
-            when(it){
+        stack.value = stack.value.map { screen ->
+            when(screen){
                 is Screen.Home -> reducedState
-                else -> it
+                is Screen.Subject ->{
+                    if (homeState !is SubjectListState) return@map screen
+                    val newSubject = homeState.subjects.find { it.id == screen.subject.id }
+                    return@map if (newSubject != null) screen.copy(subject = screen.subject + newSubject) else screen
+                }
+                else -> screen
             }
         }
     }

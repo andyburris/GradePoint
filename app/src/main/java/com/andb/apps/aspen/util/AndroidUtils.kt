@@ -16,6 +16,7 @@ import androidx.ui.res.vectorResource
 import com.andb.apps.aspen.android.R
 import com.andb.apps.aspen.model.DarkMode
 import com.andb.apps.aspen.models.Category
+import com.andb.apps.aspen.models.Screen
 import com.andb.apps.aspen.models.Subject
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.StateFlow
@@ -77,6 +78,14 @@ fun Subject.Icon.toVectorAsset() = when (this) {
     Subject.Icon.THEATER -> vectorResource(id = R.drawable.ic_theater)
     Subject.Icon.TRANSLATE -> Icons.Default.Translate
     Subject.Icon.WRITING -> Icons.Default.Edit
+}
+
+fun Screen.toInboxTag() = when(this){
+    Screen.Login -> "Login"
+    is Screen.Home -> "Home"
+    is Screen.Subject -> this.subject.id
+    is Screen.Assignment -> this.assignment.id
+    Screen.Test -> "Test"
 }
 
 fun MutableState<Boolean>.toggle(){

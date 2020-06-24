@@ -5,9 +5,7 @@ import androidx.ui.core.Alignment
 import androidx.ui.core.Layout
 import androidx.ui.core.Modifier
 import androidx.ui.core.Placeable
-import androidx.ui.unit.IntPx
-import androidx.ui.unit.PxPosition
-import androidx.ui.unit.ipx
+import androidx.ui.geometry.Offset
 
 @Composable
 fun Flexbox(
@@ -18,12 +16,12 @@ fun Flexbox(
     Layout( modifier = modifier, children = children) { measurables, constraints, _ ->
         val placeables = measurables.map { it.measure(constraints) }
 
-        var placedWidth = 0.ipx
-        val rowHeights = mutableListOf(0.ipx)
+        var placedWidth = 0
+        val rowHeights = mutableListOf(0)
         val positions = placeables.map { placeable ->
             if (placedWidth + placeable.width > constraints.maxWidth) {
-                rowHeights.add(0.ipx)
-                placedWidth = 0.ipx
+                rowHeights.add(0)
+                placedWidth = 0
             }
 
             val position = FlexboxPosition(placeable, placedWidth, rowHeights.size - 1)
@@ -32,22 +30,22 @@ fun Flexbox(
             return@map position
         }
 
-        layout(constraints.maxWidth, rowHeights.sumBy { it.value }.ipx) {
+        layout(constraints.maxWidth, rowHeights.sumBy { it }) {
             positions.forEach { it.placeable.place(it.getPosition(verticalGravity, rowHeights)) }
         }
     }
 }
 
-private class FlexboxPosition(val placeable: Placeable, val x: IntPx, val row: Int){
-    fun getPosition(verticalGravity: Alignment.Vertical, rowHeights: List<IntPx>): PxPosition{
-        val rowTop = rowHeights.slice(0 until row).sumBy { it.value }.ipx
+private class FlexboxPosition(val placeable: Placeable, val x: Int, val row: Int){
+    fun getPosition(verticalGravity: Alignment.Vertical, rowHeights: List<Int>): Offset{
+        val rowTop = rowHeights.slice(0 until row).sumBy { it }
         val currentRowHeight = rowHeights[row]
         val itemOffset = when(verticalGravity){
-            Alignment.Top -> 0.ipx
+            Alignment.Top -> 0
             Alignment.CenterVertically -> (currentRowHeight - placeable.height)/2
             Alignment.Bottom -> currentRowHeight - placeable.height
-            else -> 0.ipx
+            else -> 0
         }
-        return PxPosition(x, rowTop + itemOffset)
+        return Offset(x.toFloat(), (rowTop + itemOffset).toFloat())
     }
 }

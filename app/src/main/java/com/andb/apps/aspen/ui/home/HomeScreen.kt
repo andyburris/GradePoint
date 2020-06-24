@@ -52,12 +52,12 @@ fun HomeScreen(
 
     Scaffold(
         floatingActionButton = fab,
-        floatingActionButtonPosition = Scaffold.FabPosition.EndDocked,
-        bottomAppBar = { fabConfig ->
+        floatingActionButtonPosition = Scaffold.FabPosition.End,
+        isFloatingActionButtonDocked = true,
+        bottomBar = {
             Transition(definition = appBarOffsetDefinition, toState = fabStateFromTab(tab, expanded)) { state ->
                 HomeAppBar(
                     selectedTab = tab,
-                    fabConfig = if (tab == HomeTab.SUBJECTS) fabConfig else null,
                     fab = fab,
                     modifier = Modifier.offset(y = state[appBarOffsetKey]),
                     onItemSelected = { actionHandler.handle(UserAction.SwitchTab(it)) }

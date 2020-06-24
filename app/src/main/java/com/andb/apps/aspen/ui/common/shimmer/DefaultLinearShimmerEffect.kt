@@ -7,8 +7,8 @@ import androidx.compose.setValue
 import androidx.core.graphics.transform
 import androidx.ui.geometry.Offset
 import androidx.ui.geometry.Rect
+import androidx.ui.geometry.Size
 import androidx.ui.graphics.*
-import androidx.ui.unit.PxSize
 import kotlin.math.tan
 
 /**
@@ -103,7 +103,7 @@ private class DefaultLinearShimmerEffect(
         animation.toState(ShimmerTransition.State.End)
     }
 
-    override fun draw(canvas: Canvas, size: PxSize) {
+    override fun draw(canvas: Canvas, size: Size) {
         animationPulse // model read so we will be redrawn with the next animation values
 
         val progress = animation[ShimmerTransition.progress]
@@ -132,25 +132,25 @@ private class DefaultLinearShimmerEffect(
         }
         paint.shader?.nativeShader?.transform {
             reset()
-            postRotate(tilt, size.width.value / 2f, size.height.value / 2f)
+            postRotate(tilt, size.width / 2f, size.height / 2f)
             postTranslate(dx, dy)
         }
 
         canvas.drawRect(
-            rect = Rect(0f, 0f, size.width.value, size.height.value),
+            rect = Rect(0f, 0f, size.width, size.height),
             paint = paint
         )
     }
 
 
-    override fun updateSize(size: PxSize) {
-        translateHeight = size.height.value + tiltTan * size.width.value
-        translateWidth = size.width.value + tiltTan * size.height.value
+    override fun updateSize(size: Size) {
+        translateHeight = size.height + tiltTan * size.width
+        translateWidth = size.width + tiltTan * size.height
 
 
         val toOffset = when (direction) {
-            Direction.RightToLeft, Direction.LeftToRight -> Offset(size.width.value, 0f)
-            else -> Offset(0f, size.height.value)
+            Direction.RightToLeft, Direction.LeftToRight -> Offset(size.width, 0f)
+            else -> Offset(0f, size.height)
         }
 
         paint.shader = LinearGradientShader(

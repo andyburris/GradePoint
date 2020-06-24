@@ -10,7 +10,9 @@ import androidx.ui.geometry.Size
 import androidx.ui.graphics.Color
 import androidx.ui.graphics.vector.VectorAsset
 import androidx.ui.layout.offset
-import androidx.ui.unit.*
+import androidx.ui.unit.Density
+import androidx.ui.unit.Dp
+import androidx.ui.unit.dp
 
 fun Modifier.swipeable(
     direction: DragDirection,
@@ -44,7 +46,7 @@ fun Modifier.swipeable(
             },
             startDragImmediately = dragPx.isRunning
         ) { delta ->
-            val maxDrag = steps.map { it.width.toPx(density) }.maxBy { it }?.value ?: 0f
+            val maxDrag = steps.map { it.width.toPx(density) }.maxBy { it } ?: 0f
             dragPx.snapTo((dragPx.value + delta).coerceIn(0f..maxDrag))
             delta
         }
@@ -63,10 +65,10 @@ class SwipeStep(
         class Size(val width: Dp) : Width()
         object Fill : Width()
 
-        fun toPx(density: Density): Px {
+        fun toPx(density: Density): Float {
             return when (this) {
                 is Size -> with(density) { this@Width.width.toPx() }
-                else -> Int.MAX_VALUE.px
+                else -> Float.MAX_VALUE
             }
         }
     }

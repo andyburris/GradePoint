@@ -18,6 +18,7 @@ import com.andb.apps.aspen.models.*
 import com.andb.apps.aspen.state.UserAction
 import com.andb.apps.aspen.ui.common.AssignmentItem
 import com.andb.apps.aspen.ui.common.TopAppBarWithStatusBar
+import com.andb.apps.aspen.ui.common.inbox.inboxItem
 import com.andb.apps.aspen.util.ActionHandler
 import com.andb.apps.aspen.util.icon
 import com.andb.apps.aspen.util.trimTrailingZeroes
@@ -26,7 +27,7 @@ import com.soywiz.klock.Date
 @Composable
 fun SubjectScreen(subject: Subject, selectedTerm: Int, actionHandler: ActionHandler) {
     Scaffold(
-        topAppBar = {
+        topBar = {
             TopAppBarWithStatusBar(
                 navigationIcon = {
                     Box(
@@ -64,13 +65,12 @@ fun SubjectScreen(subject: Subject, selectedTerm: Int, actionHandler: ActionHand
                         onDismissRequest = { termPickerExpanded.value = false })
                     {
                         subject.terms.filterIsInstance<Term.WithGrades>().forEach {
-                            DropdownMenuItem(onClick = {}) {
-                                Text(
-                                    text = "Term ${it.term}",
-                                    modifier = Modifier.clickable(onClick = {
-                                        actionHandler.handle(UserAction.SwitchTerm(it.term))
-                                    })
-                                )
+                            DropdownMenuItem(
+                                onClick = {
+                                    actionHandler.handle(UserAction.SwitchTerm(it.term))
+                                }
+                            ) {
+                                Text(text = "Term ${it.term}")
                             }
                         }
                     }
@@ -169,7 +169,7 @@ fun AssignmentTable(assignments: List<Assignment>, onAssignmentClick: (Assignmen
                     onAssignmentClick.invoke(assignment)
                 })
             ) {
-                AssignmentItem(assignment = assignment, summaryText = assignment.category)
+                AssignmentItem(assignment = assignment, summaryText = assignment.category, modifier = Modifier.inboxItem(assignment.id))
             }
         }
     }

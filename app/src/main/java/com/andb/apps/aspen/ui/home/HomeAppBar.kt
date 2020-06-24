@@ -18,20 +18,17 @@ import androidx.ui.material.icons.filled.AccessTime
 import androidx.ui.material.icons.filled.School
 import androidx.ui.material.icons.filled.Settings
 import androidx.ui.unit.dp
-import androidx.ui.unit.ipx
 import com.andb.apps.aspen.models.HomeTab
 
 @Composable
 fun HomeAppBar(
     selectedTab: HomeTab,
-    fabConfig: BottomAppBar.FabConfiguration?,
     fab: @Composable() (() -> Unit),
     modifier: Modifier = Modifier,
     onItemSelected: (HomeTab) -> Unit
 ) {
     BottomAppBar(
-        fabConfiguration = fabConfig,
-        cutoutShape = RoundedCornerShape(32.dp),
+        cutoutShape = if (selectedTab == HomeTab.SUBJECTS) RoundedCornerShape(32.dp) else null,
         modifier = modifier.height(64.dp),
         backgroundColor = MaterialTheme.colors.primary
     ) {
@@ -66,7 +63,7 @@ fun HomeAppBar(
         }) { measurables, constraints, _ ->
             val (fabMeasurable, boxMeasurable) = measurables.map { it.measure(constraints) }
             layout(fabMeasurable.width, fabMeasurable.height) {
-                boxMeasurable.place(this.parentWidth - fabMeasurable.width - 24.dp.toIntPx(), 4.ipx)
+                boxMeasurable.place(this.parentWidth - fabMeasurable.width - 24.dp.toIntPx(), 4)
             }
         }
 
