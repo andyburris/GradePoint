@@ -20,6 +20,7 @@ import androidx.ui.layout.*
 import androidx.ui.material.DropdownMenu
 import androidx.ui.material.DropdownMenuItem
 import androidx.ui.material.MaterialTheme
+import androidx.ui.material.TopAppBar
 import androidx.ui.material.icons.Icons
 import androidx.ui.material.icons.filled.MoreVert
 import androidx.ui.material.icons.filled.Settings
@@ -36,7 +37,10 @@ import com.andb.apps.aspen.util.toggle
 @Composable
 fun TestScreen() {
     VerticalScroller(modifier = Modifier.fillMaxSize()) {
-        TopAppBarWithStatusBar(title = { Text(text = "Test", style = MaterialTheme.typography.h6) })
+        TopAppBar(
+            title = { Text(text = "Test", style = MaterialTheme.typography.h6) },
+            backgroundColor = MaterialTheme.colors.primary
+        )
         SettingsItem(
             title = "Title",
             icon = Icons.Default.Settings,

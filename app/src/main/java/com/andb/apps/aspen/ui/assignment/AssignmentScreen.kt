@@ -36,7 +36,7 @@ fun AssignmentScreen(assignment: Assignment, actionHandler: ActionHandler) {
         body1 = MaterialTheme.typography.body1.copy(fontSize = 16.sp)
     )) {
         Column(modifier = Modifier.drawBackground(MaterialTheme.colors.background).fillMaxSize().padding(horizontal = 24.dp)) {
-            Row(Modifier.padding(top = 48.dp), verticalGravity = Alignment.CenterVertically) {
+            Row(Modifier.padding(top = 24.dp), verticalGravity = Alignment.CenterVertically) {
                 Icon(
                     asset = Icons.Default.Clear,
                     modifier = Modifier.clickable(onClick = { actionHandler.handle(UserAction.Back) }),

@@ -31,13 +31,13 @@ data class Screens(private val stack: MutableStateFlow<List<Screen>>) : KoinComp
     }
 
     private fun reduceHomeState(homeState: HomeState){
-        val currentHomeScreen = stack.value.filterIsInstance<Screen.Home>().first()
+        val currentHomeScreen = stack.value.filterIsInstance<Screen.Home>().firstOrNull() ?: return
         val reducedState = when(homeState){
             is SubjectListState -> currentHomeScreen.let { it.copy(subjects = it.subjects.combineWith(homeState.subjects)) }
             is RecentAssignmentsState -> currentHomeScreen.let { it.copy(recentItems = it.recentItems + homeState.recents) }
             is TabState -> currentHomeScreen.copy(tab = homeState.tab)
         }
-        println("reducing home state: \ncurrent = $currentHomeScreen, \npartial = $homeState, \nreduced = $reducedState")
+        //println("reducing home state: \ncurrent = $currentHomeScreen, \npartial = $homeState, \nreduced = $reducedState")
         stack.value = stack.value.map { screen ->
             when(screen){
                 is Screen.Home -> reducedState

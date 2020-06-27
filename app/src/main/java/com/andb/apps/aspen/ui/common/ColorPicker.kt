@@ -34,7 +34,7 @@ fun ColorPicker(selected: Int, modifier: Modifier = Modifier, onSelect: (color: 
         Text(
             text = "Color",
             style = MaterialTheme.typography.subtitle1,
-            modifier = Modifier.padding(top = 24.dp, bottom = 16.dp)
+            modifier = Modifier.padding(bottom = 16.dp)
         )
 
         Flexbox(verticalGravity = Alignment.CenterVertically) {
@@ -66,10 +66,6 @@ fun ColorPicker(selected: Int, modifier: Modifier = Modifier, onSelect: (color: 
                     .clickable(onClick = { expanded.value = !expanded.value })
                     .drawLayer(rotationZ = animate(target = if (expanded.value) 180f else 0f))
             )
-        }
-
-        if (expanded.value) {
-            ColorPickerTextField(selected = selected, onValid = onSelect)
         }
     }
 }

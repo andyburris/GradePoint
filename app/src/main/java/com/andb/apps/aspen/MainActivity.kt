@@ -33,9 +33,7 @@ import com.andb.apps.aspen.ui.home.HomeScreen
 import com.andb.apps.aspen.ui.login.LoginScreen
 import com.andb.apps.aspen.ui.subject.SubjectScreen
 import com.andb.apps.aspen.ui.test.TestScreen
-import com.andb.apps.aspen.util.ActionHandler
-import com.andb.apps.aspen.util.isDark
-import com.andb.apps.aspen.util.toInboxTag
+import com.andb.apps.aspen.util.*
 import org.koin.android.viewmodel.ext.android.viewModel
 
 class MainActivity : AppCompatActivity() {
@@ -50,9 +48,21 @@ class MainActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        //window.setFlags(WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS, WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS)
+/*        viewModel.screens.currentScreen.onEach {
+            println("new screen = $it")
+            when(it){
+                is Screen.Login, is Screen.Home, is Screen.Assignment -> window.decorView.systemUiVisibility = View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR
+                is Screen.Subject, is Screen.Test -> window.decorView.systemUiVisibility = 0
+            }
+        }*/
         setContent {
-            val currentScreen = viewModel.screens.currentScreen.collectAsState()
-            AppContent(currentScreen.value, handler)
+            AppTheme {
+                val currentScreen = viewModel.screens.currentScreen.collectAsState(initial = null)
+                StatusBar(currentScreen = currentScreen.value)
+                NavigationBar(currentScreen = currentScreen.value)
+                AppContent(currentScreen.value, handler)
+            }
         }
     }
 
@@ -67,32 +77,32 @@ class MainActivity : AppCompatActivity() {
 
 @Composable
 fun AppContent(screen: Screen?, actionHandler: ActionHandler) {
-    AppTheme {
-        Surface(color = MaterialTheme.colors.background) {
-            Stack(Modifier.fillMaxSize()) {
-                InboxParent2(
-                    new = screen,
-                    tag = { screen -> screen?.toInboxTag() ?: "" },
-                    //equalityCheck = { old, new -> old?.toInboxTag() == new?.toInboxTag() },
-                    animation = TweenBuilder<Float>().also{ it.duration = 1000 }
-                ) { screen ->
-                    when (screen) {
-                        is Screen.Login -> LoginScreen(actionHandler)
-                        is Screen.Home -> {
-                            val expanded = state { false }
-                            HomeScreen(screen.subjects, screen.recents, screen.term, screen.tab, expanded.value, { expanded.value = !expanded.value }, actionHandler)
-                        }
-                        is Screen.Subject -> SubjectScreen(screen.subject, screen.term, actionHandler)
-                        is Screen.Assignment -> AssignmentScreen(screen.assignment, actionHandler)
-                        is Screen.Test -> TestScreen()
+
+    Surface(color = MaterialTheme.colors.background) {
+        Stack(Modifier.fillMaxSize()) {
+            InboxParent2(
+                newState = screen,
+                newTag = screen?.toInboxTag() ?: "",
+                areEquivalent = { old, new -> old?.toInboxTag() == new?.toInboxTag() },
+                animation = TweenBuilder<Float>().also { it.duration = 1000 }
+            ) { screen ->
+                when (screen) {
+                    is Screen.Login -> LoginScreen(actionHandler)
+                    is Screen.Home -> {
+                        val expanded = state { false }
+                        HomeScreen(screen.subjects, screen.recents, screen.term, screen.tab, expanded.value, { expanded.value = !expanded.value }, actionHandler)
                     }
+                    is Screen.Subject -> SubjectScreen(screen.subject, screen.term, actionHandler)
+                    is Screen.Assignment -> AssignmentScreen(screen.assignment, actionHandler)
+                    is Screen.Test -> TestScreen()
                 }
-                if (BuildConfig.DEBUG) {
-                    VersionRibbon(Modifier.gravity(Alignment.TopEnd))
-                }
+            }
+            if (BuildConfig.DEBUG) {
+                VersionRibbon(Modifier.gravity(Alignment.TopEnd))
             }
         }
     }
+
 }
 
 @Composable

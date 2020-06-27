@@ -17,7 +17,6 @@ import androidx.ui.unit.dp
 import com.andb.apps.aspen.models.*
 import com.andb.apps.aspen.state.UserAction
 import com.andb.apps.aspen.ui.common.AssignmentItem
-import com.andb.apps.aspen.ui.common.TopAppBarWithStatusBar
 import com.andb.apps.aspen.ui.common.inbox.inboxItem
 import com.andb.apps.aspen.util.ActionHandler
 import com.andb.apps.aspen.util.icon
@@ -28,7 +27,8 @@ import com.soywiz.klock.Date
 fun SubjectScreen(subject: Subject, selectedTerm: Int, actionHandler: ActionHandler) {
     Scaffold(
         topBar = {
-            TopAppBarWithStatusBar(
+            TopAppBar(
+                backgroundColor = MaterialTheme.colors.primary,
                 navigationIcon = {
                     Box(
                         Modifier.padding(start = 12.dp).clickable(onClick = { actionHandler.handle(UserAction.Back) })
@@ -54,7 +54,7 @@ fun SubjectScreen(subject: Subject, selectedTerm: Int, actionHandler: ActionHand
                                 modifier = Modifier
                                     .clickable(onClick = { termPickerExpanded.value = true })
                                     .fillMaxHeight()
-                                    .padding(horizontal = 16.dp),
+                                    .padding(start = 16.dp, end = 8.dp),
                                 verticalGravity = Alignment.CenterVertically
                             ) {
                                 Text(text = "Term $selectedTerm".toUpperCase(), style = MaterialTheme.typography.button, color = MaterialTheme.colors.onPrimary)

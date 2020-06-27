@@ -14,7 +14,7 @@ fun HomeHeader(title: String, actions: @Composable() RowScope.() -> Unit = {}) {
         horizontalArrangement = Arrangement.SpaceBetween,
         verticalGravity = Alignment.CenterVertically,
         modifier = Modifier.fillMaxWidth()
-            .padding(top = 48.dp, bottom = 16.dp, start = 24.dp, end = 24.dp)
+            .padding(top = 24.dp, bottom = 16.dp, start = 24.dp, end = 24.dp)
     ) {
         Text(
             text = title,

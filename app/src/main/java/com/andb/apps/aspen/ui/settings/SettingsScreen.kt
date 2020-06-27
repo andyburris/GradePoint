@@ -85,13 +85,13 @@ fun SettingsScreen(actionHandler: ActionHandler) {
             modifier = Modifier.fillMaxWidth().padding(horizontal = 24.dp, vertical = 16.dp)
         ) {
             Chip(
-                text = "8dp (default)",
+                text = "8dp",
                 selected = spacing.value == 8,
                 onClick = { AndroidSettings.assignmentSpacing = 8 },
                 modifier = Modifier.padding(end = 4.dp)
             )
             Chip(
-                text = "12dp",
+                text = "12dp (default)",
                 selected = spacing.value == 12,
                 onClick = { AndroidSettings.assignmentSpacing = 12 })
         }

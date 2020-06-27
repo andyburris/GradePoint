@@ -22,12 +22,13 @@ fun TopAppBarWithStatusBar(
     navigationIcon: @Composable() (() -> Unit)? = null,
     actions: @Composable() RowScope.() -> Unit = {},
     backgroundColor: Color = MaterialTheme.colors.primary,
+    statusColor: Color = MaterialTheme.colors.primaryVariant,
     contentColor: Color = contentColorFor(backgroundColor),
     elevation: Dp = 4.dp
 ) {
     Column {
         Box(
-            modifier = Modifier.fillMaxWidth().height(24.dp).drawBackground(color = backgroundColor)
+            modifier = Modifier.fillMaxWidth().height(24.dp).drawBackground(color = statusColor)
         )
         TopAppBar(
             title,

@@ -3,7 +3,7 @@ object Versions {
     const val target_sdk = 29
     const val compile_sdk = 29
 
-    const val kotlin = "1.3.70"
+    const val kotlin = "1.3.72"
     const val android_x = "1.1.0"
     const val android_gradle_plugin = "4.1.0-alpha09"
     const val junit = "4.12"

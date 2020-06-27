@@ -10,6 +10,8 @@ import androidx.ui.foundation.clickable
 import androidx.ui.foundation.gestures.DragDirection
 import androidx.ui.foundation.lazy.LazyColumnItems
 import androidx.ui.layout.Column
+import androidx.ui.layout.Spacer
+import androidx.ui.layout.height
 import androidx.ui.material.DropdownMenu
 import androidx.ui.material.DropdownMenuItem
 import androidx.ui.material.IconButton
@@ -42,26 +44,16 @@ fun SubjectsScreen(subjects: List<Subject>, term: Int, actionHandler: ActionHand
     }
 
     Column {
-        HomeHeader("Classes") {
-            val expanded = state { false }
-            DropdownMenu(
-                toggle = {
-                    IconButton(onClick = { expanded.value = !expanded.value }) {
-                        Icon(asset = Icons.Default.MoreVert)
-                    }
-                },
-                expanded = expanded.value,
-                onDismissRequest = { expanded.value = false },
-                dropdownOffset = Position(x = (-24).dp, y = 0.dp)
-            ) {
-                DropdownMenuItem(enabled = true, onClick = {actionHandler.handle(UserAction.Logout) }) {
-                    Text(text = "Log Out")
-                }
-            }
-        }
+
         LazyColumnItems(
             items = subjects
         ) { subject ->
+            val index = subjects.indexOf(subject)
+
+            if (index == 0){
+                SubjectListHeader(onLogout = { actionHandler.handle(UserAction.Logout) })
+            }
+
             SubjectItem(
                 name = subject.name,
                 teacher = subject.teacher,
@@ -85,7 +77,30 @@ fun SubjectsScreen(subjects: List<Subject>, term: Int, actionHandler: ActionHand
                     }
                 ).inboxItem(subject.id)
             )
+            if (index == subjects.size - 1){
+                Spacer(modifier = Modifier.height(72.dp))
+            }
         }
     }
 }
 
+@Composable
+private fun SubjectListHeader(onLogout: ()->Unit){
+    HomeHeader("Classes") {
+        val expanded = state { false }
+        DropdownMenu(
+            toggle = {
+                IconButton(onClick = { expanded.value = !expanded.value }) {
+                    Icon(asset = Icons.Default.MoreVert)
+                }
+            },
+            expanded = expanded.value,
+            onDismissRequest = { expanded.value = false },
+            dropdownOffset = Position(x = (-24).dp, y = 0.dp)
+        ) {
+            DropdownMenuItem(enabled = true, onClick = onLogout) {
+                Text(text = "Log Out")
+            }
+        }
+    }
+}

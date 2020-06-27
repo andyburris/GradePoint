@@ -23,37 +23,41 @@ private class InboxState<T> {
 
 private data class InboxAnimationItem<T>(
     val key: T,
-    val transition: InboxTransition
-)
+    val tag: String,
+    val transition: InboxTransition = SnapTransition
+) {
+    override fun toString(): String {
+        return "InboxAnimationItem(key = ${key.toString().takeWhile { it != '(' }}, tag = $tag, transition = $transition"
+    }
+}
 
 private typealias InboxTransition = @Composable() (children: @Composable() () -> Unit) -> Unit
-val SnapTransition: InboxTransition = { children -> Stack { children() } }
+val SnapTransition: InboxTransition = { children ->  children() }
 
 @Composable
 fun <T> InboxParent(
-    current: T,
-    tag: (T) -> String,
+    new: T,
+    currentTag: String,
     areEquivalent: (old: T?, new: T) -> Boolean = ReferentiallyEqual,
     animation: AnimationBuilder<Float> = TweenBuilder(),
     children: @Composable() (T) -> Unit
 ) {
     InboxControllerProvider {
         val state = remember { InboxState<T>() }
-        if (!areEquivalent.invoke(state.current, current)) {
-            state.current = current
-            val keys = state.stack.map { it.key }.toMutableList()
-            if (!keys.contains(current)) {
-                keys.add(current)
+        if (!areEquivalent.invoke(state.current, new)) {
+            state.current = new
+            if (new !in state.stack.map { it.key }) {
+                state.stack.add(InboxAnimationItem(new, currentTag))
             }
             val controller = InboxAnimationControllerAmbient.current
-            if (keys.none { controller.hasTag(tag.invoke(it)) }){
-                state.stack = mutableListOf(InboxAnimationItem(key = current, transition = SnapTransition))
+            if (state.stack.none { controller.hasTag(it.tag) }){
+                state.stack = mutableListOf(InboxAnimationItem(key = new, tag = currentTag, transition = SnapTransition))
                 state.invalidate()
             } else {
                 state.stack.clear()
-                keys.mapTo(state.stack) { key ->
-                    InboxAnimationItem(key) { children ->
-                        val item = InboxAnimationControllerAmbient.current.animationItems[tag.invoke(key)]
+                state.stack = state.stack.map { animationItem ->
+                    InboxAnimationItem(animationItem.key, animationItem.tag) { children ->
+                        val item = InboxAnimationControllerAmbient.current.animationItems[animationItem.tag]
                         if (item == null){ // if no item to expand from, show page without animation
                             Stack { children() }
                             return@InboxAnimationItem
@@ -63,9 +67,9 @@ fun <T> InboxParent(
                         if (pageBounds.value != null) {
                             val scale = animatedScale(
                                 animation = animation,
-                                visible = key == current,
+                                visible = animationItem.key == new,
                                 onAnimationFinish = {
-                                    if (key == state.current) {
+                                    if (animationItem.key == state.current) {
                                         // leave only the current in the list
                                         state.stack.removeAll { it.key != state.current }
                                         state.invalidate()
@@ -93,7 +97,7 @@ fun <T> InboxParent(
                             )
                         }
                     }
-                }
+                }.toMutableList()
             }
         }
         Stack {
@@ -111,8 +115,8 @@ fun <T> InboxParent(
 
 @Composable
 fun <T> InboxParent2(
-    new: T,
-    tag: (T) -> String,
+    newState: T,
+    newTag: String,
     areEquivalent: (old: T?, new: T) -> Boolean = ReferentiallyEqual,
     animation: AnimationBuilder<Float> = TweenBuilder(),
     children: @Composable() (T) -> Unit
@@ -120,13 +124,23 @@ fun <T> InboxParent2(
     InboxControllerProvider {
         val state = remember { InboxState<T>() }
 
-        if (!areEquivalent(state.current, new)){
-
+        if (newState != state.current){
+            state.current = newState
+            state.stack.retainAll { !areEquivalent(it.key, newState) }
+            state.stack.add(InboxAnimationItem(newState, newTag))
+            println("new state - stack = ${state.stack}")
         }
 
 
         Stack {
-            children(new)
+            //state.invalidate = invalidate
+            //state.stack.forEach { animationItem ->
+            //if (state.current != null){
+                //key(animationItem.key) {
+                    children(newState)
+                //}
+            //}
+            //}
         }
     }
 }

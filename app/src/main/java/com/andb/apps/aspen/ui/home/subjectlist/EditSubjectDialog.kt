@@ -26,7 +26,7 @@ fun EditSubjectDialog(subject: Subject, onClose: () -> Unit, onConfigChange: (Su
                 ColorPicker(selected = currentConfig.value.color) {
                     currentConfig.value = currentConfig.value.copy(color = it)
                 }
-                IconPicker(selected = currentConfig.value.icon, modifier = Modifier.fillMaxWidth()) {
+                IconPicker(selected = currentConfig.value.icon, modifier = Modifier.fillMaxWidth().padding(top = 16.dp)) {
                     currentConfig.value = currentConfig.value.copy(icon = it)
                 }
             }

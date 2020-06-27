@@ -10,9 +10,12 @@ import androidx.compose.MutableState
 import androidx.compose.State
 import androidx.compose.collectAsState
 import androidx.ui.foundation.isSystemInDarkTheme
+import androidx.ui.graphics.toArgb
+import androidx.ui.material.MaterialTheme
 import androidx.ui.material.icons.Icons
 import androidx.ui.material.icons.filled.*
 import androidx.ui.res.vectorResource
+import com.andb.apps.aspen.AndroidSettings
 import com.andb.apps.aspen.android.R
 import com.andb.apps.aspen.model.DarkMode
 import com.andb.apps.aspen.models.Category
@@ -98,5 +101,27 @@ fun DarkMode.isDark(): Boolean{
         DarkMode.LIGHT -> false
         DarkMode.DARK -> true
         DarkMode.SYSTEM -> isSystemInDarkTheme()
+    }
+}
+
+@Composable
+fun Activity.StatusBar(currentScreen: Screen?){
+    when (currentScreen) {
+        is Screen.Login, is Screen.Home, is Screen.Assignment -> {
+            window.decorView.systemUiVisibility = if (AndroidSettings.darkMode.isDark()) 0 else View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR
+            window.statusBarColor = MaterialTheme.colors.background.toArgb()
+        }
+        is Screen.Subject, is Screen.Test -> {
+            window.decorView.systemUiVisibility = 0
+            window.statusBarColor = MaterialTheme.colors.primaryVariant.toArgb()
+        }
+    }
+}
+
+@Composable
+fun Activity.NavigationBar(currentScreen: Screen?){
+    when (currentScreen){
+        is Screen.Home -> window.navigationBarColor = MaterialTheme.colors.primaryVariant.toArgb()
+        else -> window.navigationBarColor = MaterialTheme.colors.primaryVariant.toArgb()
     }
 }
