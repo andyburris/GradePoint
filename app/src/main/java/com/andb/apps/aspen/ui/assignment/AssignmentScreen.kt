@@ -15,6 +15,7 @@ import androidx.ui.material.icons.Icons
 import androidx.ui.material.icons.filled.BorderClear
 import androidx.ui.material.icons.filled.Clear
 import androidx.ui.material.icons.filled.Event
+import androidx.ui.text.style.TextAlign
 import androidx.ui.text.style.TextOverflow
 import androidx.ui.tooling.preview.Preview
 import androidx.ui.unit.dp
@@ -35,7 +36,7 @@ fun AssignmentScreen(assignment: Assignment, actionHandler: ActionHandler) {
         subtitle1 = MaterialTheme.typography.subtitle1.copy(fontSize = 16.sp),
         body1 = MaterialTheme.typography.body1.copy(fontSize = 16.sp)
     )) {
-        Column(modifier = Modifier.drawBackground(MaterialTheme.colors.background).fillMaxSize().padding(horizontal = 24.dp)) {
+        VerticalScroller(modifier = Modifier.drawBackground(MaterialTheme.colors.background).fillMaxSize().padding(horizontal = 24.dp)) {
             Row(Modifier.padding(top = 24.dp), verticalGravity = Alignment.CenterVertically) {
                 Icon(
                     asset = Icons.Default.Clear,
@@ -118,6 +119,8 @@ fun AssignmentScreen(assignment: Assignment, actionHandler: ActionHandler) {
                     )
                 }
             }
+
+            Spacer(modifier = Modifier.height(24.dp))
         }
     }
 }
@@ -213,7 +216,7 @@ private fun DetailItem(title: String, text: String, icon: VectorAsset, modifier:
                 modifier = Modifier.padding(start = 16.dp)
             )
         }
-        Text(text = text, style = MaterialTheme.typography.body1)
+        Text(text = text, style = MaterialTheme.typography.body1, textAlign = TextAlign.End)
     }
 }
 

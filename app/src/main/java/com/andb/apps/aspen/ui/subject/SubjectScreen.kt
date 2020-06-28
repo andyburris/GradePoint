@@ -138,12 +138,18 @@ fun CategoryItem(category: Category) {
         verticalGravity = Alignment.CenterVertically,
         modifier = Modifier.fillMaxWidth().padding(horizontal = 16.dp, vertical = 4.dp)
     ) {
-        Row(verticalGravity = Alignment.CenterVertically) {
+        Row(
+            verticalGravity = Alignment.CenterVertically,
+            modifier = Modifier.weight(1f),
+            horizontalArrangement = Arrangement.Start
+        ) {
             Icon(asset = category.icon(), tint = MaterialTheme.colors.onSurface.copy(alpha = .54f))
             Text(
                 text = category.name,
                 style = MaterialTheme.typography.subtitle1,
-                modifier = Modifier.padding(start = 8.dp)
+                maxLines = 1,
+                overflow = TextOverflow.Ellipsis,
+                modifier = Modifier.padding(start = 8.dp).weight(1f, fill = false)
             )
             Text(
                 text = "(${category.weight.trimTrailingZeroes()}%)",
@@ -154,7 +160,8 @@ fun CategoryItem(category: Category) {
         }
         Text(
             text = category.average + " " + category.letter,
-            style = MaterialTheme.typography.subtitle1
+            style = MaterialTheme.typography.subtitle1,
+            modifier = Modifier.padding(start = 16.dp)
         )
     }
 }
