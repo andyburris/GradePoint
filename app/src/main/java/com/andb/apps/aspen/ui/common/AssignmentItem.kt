@@ -1,7 +1,6 @@
 package com.andb.apps.aspen.ui.common
 
 import androidx.compose.Composable
-import androidx.compose.collectAsState
 import androidx.ui.core.Alignment
 import androidx.ui.core.Modifier
 import androidx.ui.foundation.Box
@@ -19,7 +18,6 @@ import androidx.ui.text.style.TextOverflow
 import androidx.ui.tooling.preview.Preview
 import androidx.ui.unit.dp
 import androidx.ui.unit.sp
-import com.andb.apps.aspen.AndroidSettings
 import com.andb.apps.aspen.models.Assignment
 import com.andb.apps.aspen.models.Grade
 import com.andb.apps.aspen.util.trimTrailingZeroes
@@ -27,10 +25,9 @@ import com.soywiz.klock.Date
 
 @Composable
 fun AssignmentItem(assignment: Assignment, summaryText: String, modifier: Modifier = Modifier) {
-    val assignmentSpacing = AndroidSettings.assignmentSpacingFlow.collectAsState()
     Row(
         horizontalArrangement = Arrangement.SpaceBetween,
-        modifier = modifier.padding(horizontal = 24.dp, vertical = assignmentSpacing.value.dp).fillMaxWidth(),
+        modifier = modifier.padding(horizontal = 24.dp, vertical = 12.dp).fillMaxWidth(),
         verticalGravity = Alignment.CenterVertically
     ) {
         Column(modifier = Modifier.padding(end = 16.dp).weight(1f)) {
@@ -93,7 +90,7 @@ fun AssignmentItem(assignment: Assignment, summaryText: String, modifier: Modifi
 @Composable
 fun LoadingAssignmentsItem(modifier: Modifier = Modifier) {
     Row(
-        modifier = modifier.fillMaxWidth().padding(horizontal = 24.dp, vertical = AndroidSettings.assignmentSpacing.dp),
+        modifier = modifier.fillMaxWidth().padding(horizontal = 24.dp, vertical = 12.dp),
         horizontalArrangement = Arrangement.SpaceBetween,
         verticalGravity = Alignment.CenterVertically
     ) {

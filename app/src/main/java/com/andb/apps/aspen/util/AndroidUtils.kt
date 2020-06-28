@@ -111,9 +111,13 @@ fun Activity.StatusBar(currentScreen: Screen?){
             window.decorView.systemUiVisibility = if (AndroidSettings.darkMode.isDark()) 0 else View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR
             window.statusBarColor = MaterialTheme.colors.background.toArgb()
         }
-        is Screen.Subject, is Screen.Assignment, is Screen.Test -> {
+        is Screen.Subject, is Screen.Test -> {
             window.decorView.systemUiVisibility = 0
             window.statusBarColor = MaterialTheme.colors.primaryVariant.toArgb()
+        }
+        is Screen.Assignment -> {
+            window.decorView.systemUiVisibility = if (AndroidSettings.darkMode.isDark() || AndroidSettings.assignmentHeaderColor) 0 else View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR
+            window.statusBarColor = if (AndroidSettings.assignmentHeaderColor) MaterialTheme.colors.primaryVariant.toArgb() else MaterialTheme.colors.background.toArgb()
         }
     }
 }

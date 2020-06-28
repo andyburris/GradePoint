@@ -20,14 +20,12 @@ import androidx.ui.text.style.TextOverflow
 import androidx.ui.tooling.preview.Preview
 import androidx.ui.unit.dp
 import androidx.ui.unit.sp
+import com.andb.apps.aspen.AndroidSettings
 import com.andb.apps.aspen.models.Assignment
 import com.andb.apps.aspen.models.Grade
 import com.andb.apps.aspen.models.SubjectGrade
 import com.andb.apps.aspen.state.UserAction
-import com.andb.apps.aspen.util.ActionHandler
-import com.andb.apps.aspen.util.getIconFromCategory
-import com.andb.apps.aspen.util.toDecimalString
-import com.andb.apps.aspen.util.trimTrailingZeroes
+import com.andb.apps.aspen.util.*
 import com.soywiz.klock.Date
 
 @Composable
@@ -84,29 +82,38 @@ private fun AssignmentTextSize(children: @Composable() () -> Unit){
 
 @Composable
 private fun Header(assignment: Assignment, modifier: Modifier = Modifier, onCloseClick: ()->Unit){
-    Surface(elevation = 4.dp, color = MaterialTheme.colors.primary) {
-        Column(modifier = modifier.fillMaxWidth().padding(horizontal = 24.dp)) {
-            Row(Modifier.padding(top = 24.dp), verticalGravity = Alignment.CenterVertically) {
-                Icon(
-                    asset = Icons.Default.Clear,
-                    modifier = Modifier.clickable(onClick = onCloseClick),
-                    tint = MaterialTheme.colors.onPrimary.copy(alpha = .54f)
-                )
+    val colorful = AndroidSettings.assignmentHeaderColorFlow.collectAsState()
+    MaterialTheme(
+        colors = MaterialTheme.colors.copy(
+            primary = if (colorful.value) MaterialTheme.colors.primary else MaterialTheme.colors.background,
+            onSecondary = if (colorful.value) MaterialTheme.colors.onPrimary.copy(alpha = .7f) else MaterialTheme.colors.onSecondary,
+            onPrimary = if (colorful.value) MaterialTheme.colors.onPrimary else MaterialTheme.colors.onBackground
+        )
+    ) {
+        Surface(elevation = 4.dp, color = MaterialTheme.colors.primary) {
+            Column(modifier = modifier.fillMaxWidth().padding(horizontal = 24.dp)) {
+                Row(Modifier.padding(top = 24.dp), verticalGravity = Alignment.CenterVertically) {
+                    Icon(
+                        asset = Icons.Default.Clear,
+                        modifier = Modifier.clickable(onClick = onCloseClick),
+                        tint = MaterialTheme.colors.onSecondary
+                    )
+                    Text(
+                        text = assignment.subjectName,
+                        style = MaterialTheme.typography.h6,
+                        color = MaterialTheme.colors.onSecondary,
+                        modifier = Modifier.padding(start = 24.dp),
+                        maxLines = 1,
+                        overflow = TextOverflow.Ellipsis
+                    )
+                }
                 Text(
-                    text = assignment.subjectName,
-                    style = MaterialTheme.typography.h6,
-                    color = MaterialTheme.colors.onPrimary.copy(alpha = .7f),
-                    modifier = Modifier.padding(start = 24.dp),
-                    maxLines = 1,
-                    overflow = TextOverflow.Ellipsis
+                    text = assignment.title,
+                    style = MaterialTheme.typography.h4,
+                    modifier = Modifier.padding(top = 16.dp, bottom = 24.dp),
+                    color = MaterialTheme.colors.onPrimary
                 )
             }
-            Text(
-                text = assignment.title,
-                style = MaterialTheme.typography.h4,
-                modifier = Modifier.padding(top = 24.dp, bottom = 24.dp),
-                color = MaterialTheme.colors.onPrimary
-            )
         }
     }
 }

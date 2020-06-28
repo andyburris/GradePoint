@@ -8,6 +8,7 @@ import androidx.ui.foundation.Icon
 import androidx.ui.foundation.Text
 import androidx.ui.foundation.drawBackground
 import androidx.ui.foundation.shape.corner.RoundedCornerShape
+import androidx.ui.geometry.Offset
 import androidx.ui.graphics.Color
 import androidx.ui.layout.height
 import androidx.ui.material.BottomAppBar
@@ -35,7 +36,7 @@ fun HomeAppBar(
         BottomNavigationItem(
             modifier = Modifier.weight(1f),
             icon = { Icon(asset = Icons.Default.School) },
-            text = { Text(text = "Subjects", color = MaterialTheme.colors.onPrimary) },
+            text = { Text(text = "Subjects", color = MaterialTheme.colors.onPrimary, maxLines = 1) },
             selected = selectedTab == HomeTab.SUBJECTS,
             onSelected = { onItemSelected.invoke(HomeTab.SUBJECTS) },
             alwaysShowLabels = false
@@ -43,7 +44,7 @@ fun HomeAppBar(
         BottomNavigationItem(
             modifier = Modifier.weight(1f),
             icon = { Icon(asset = Icons.Default.AccessTime) },
-            text = { Text(text = "Recents", color = MaterialTheme.colors.onPrimary) },
+            text = { Text(text = "Recents", color = MaterialTheme.colors.onPrimary, maxLines = 1) },
             selected = selectedTab == HomeTab.RECENTS,
             onSelected = { onItemSelected.invoke(HomeTab.RECENTS) },
             alwaysShowLabels = false
@@ -51,7 +52,7 @@ fun HomeAppBar(
         BottomNavigationItem(
             modifier = Modifier.weight(1f),
             icon = { Icon(asset = Icons.Default.Settings) },
-            text = { Text(text = "Settings", color = MaterialTheme.colors.onPrimary) },
+            text = { Text(text = "Settings", color = MaterialTheme.colors.onPrimary, maxLines = 1) },
             selected = selectedTab == HomeTab.SETTINGS,
             onSelected = { onItemSelected.invoke(HomeTab.SETTINGS) },
             alwaysShowLabels = false
@@ -63,7 +64,7 @@ fun HomeAppBar(
         }) { measurables, constraints, _ ->
             val (fabMeasurable, boxMeasurable) = measurables.map { it.measure(constraints) }
             layout(fabMeasurable.width, fabMeasurable.height) {
-                boxMeasurable.place(this.parentWidth - fabMeasurable.width - 24.dp.toIntPx(), 4)
+                boxMeasurable.place(Offset.Zero)
             }
         }
 

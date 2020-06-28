@@ -18,8 +18,8 @@ import androidx.ui.material.MaterialTheme
 import androidx.ui.material.RadioGroup
 import androidx.ui.material.icons.Icons
 import androidx.ui.material.icons.filled.FormatSize
+import androidx.ui.material.icons.filled.Palette
 import androidx.ui.material.icons.filled.Settings
-import androidx.ui.material.icons.filled.UnfoldMore
 import androidx.ui.material.icons.outlined.Info
 import androidx.ui.res.vectorResource
 import androidx.ui.unit.dp
@@ -78,22 +78,22 @@ fun SettingsScreen(actionHandler: ActionHandler) {
                 onClick = { AndroidSettings.fontSize = 16 })
         }
 
-        val spacing = AndroidSettings.assignmentSpacingFlow.collectAsState()
+        val color = AndroidSettings.assignmentHeaderColorFlow.collectAsState()
         SettingsItem(
-            title = "Assignment List Spacing",
-            icon = Icons.Default.UnfoldMore,
+            title = "Assignment Page Header Color",
+            icon = Icons.Default.Palette,
             modifier = Modifier.fillMaxWidth().padding(horizontal = 24.dp, vertical = 16.dp)
         ) {
             Chip(
-                text = "8dp",
-                selected = spacing.value == 8,
-                onClick = { AndroidSettings.assignmentSpacing = 8 },
+                text = "Background",
+                selected = !color.value,
+                onClick = { AndroidSettings.assignmentHeaderColor = false },
                 modifier = Modifier.padding(end = 4.dp)
             )
             Chip(
-                text = "12dp (default)",
-                selected = spacing.value == 12,
-                onClick = { AndroidSettings.assignmentSpacing = 12 })
+                text = "Green",
+                selected = color.value,
+                onClick = { AndroidSettings.assignmentHeaderColor = true })
         }
 
         SettingsItem(

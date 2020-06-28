@@ -48,14 +48,6 @@ class MainActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        //window.setFlags(WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS, WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS)
-/*        viewModel.screens.currentScreen.onEach {
-            println("new screen = $it")
-            when(it){
-                is Screen.Login, is Screen.Home, is Screen.Assignment -> window.decorView.systemUiVisibility = View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR
-                is Screen.Subject, is Screen.Test -> window.decorView.systemUiVisibility = 0
-            }
-        }*/
         setContent {
             AppTheme {
                 val currentScreen = viewModel.screens.currentScreen.collectAsState(initial = null)

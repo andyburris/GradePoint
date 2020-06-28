@@ -27,12 +27,15 @@ object AndroidSettings : KoinComponent{
 
     val fontSizeFlow = MutableStateFlow(fontSize)
 
-    var assignmentSpacing: Int
-        get() = storage.getInt("assignmentSpacing", 12)
+    var assignmentHeaderColor: Boolean
+        get() = storage.getBoolean("assignmentHeaderColor", false)
         set(value) {
-            storage.putInt("assignmentSpacing", value)
-            assignmentSpacingFlow.value = assignmentSpacing
+            storage.putBoolean("assignmentHeaderColor", value)
+            assignmentHeaderColorFlow.value = assignmentHeaderColor
         }
 
-    val assignmentSpacingFlow = MutableStateFlow(assignmentSpacing)
+    val assignmentHeaderColorFlow = MutableStateFlow(assignmentHeaderColor)
+
+
 }
+
