@@ -107,11 +107,11 @@ fun DarkMode.isDark(): Boolean{
 @Composable
 fun Activity.StatusBar(currentScreen: Screen?){
     when (currentScreen) {
-        is Screen.Login, is Screen.Home, is Screen.Assignment -> {
+        is Screen.Login, is Screen.Home -> {
             window.decorView.systemUiVisibility = if (AndroidSettings.darkMode.isDark()) 0 else View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR
             window.statusBarColor = MaterialTheme.colors.background.toArgb()
         }
-        is Screen.Subject, is Screen.Test -> {
+        is Screen.Subject, is Screen.Assignment, is Screen.Test -> {
             window.decorView.systemUiVisibility = 0
             window.statusBarColor = MaterialTheme.colors.primaryVariant.toArgb()
         }

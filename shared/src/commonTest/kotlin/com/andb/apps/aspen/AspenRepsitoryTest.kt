@@ -4,7 +4,7 @@ import com.andb.apps.aspen.data.remote.AspenApiMock
 import com.andb.apps.aspen.data.repository.AspenRepository
 import com.andb.apps.aspen.models.Subject
 import com.andb.apps.aspen.models.toConfig
-import com.russhwolf.settings.MockSettings
+import com.netguru.kissme.Kissme
 import kotlin.test.AfterTest
 import kotlin.test.BeforeTest
 import kotlin.test.Test
@@ -14,7 +14,7 @@ class AspenRepsitoryTest : BaseTest() {
 
     private lateinit var repository: AspenRepository
     private var dbHelper = DatabaseHelper(testDbConnection())
-    private val settings = MockSettings()
+    private val settings = Kissme()
     private val aspenApi = AspenApiMock()
 
     @BeforeTest

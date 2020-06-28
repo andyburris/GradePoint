@@ -10,6 +10,7 @@ import androidx.ui.graphics.vector.VectorAsset
 import androidx.ui.layout.*
 import androidx.ui.material.LinearProgressIndicator
 import androidx.ui.material.MaterialTheme
+import androidx.ui.material.Surface
 import androidx.ui.material.icons.Icons
 import androidx.ui.material.icons.filled.BorderClear
 import androidx.ui.material.icons.filled.Clear
@@ -31,64 +32,78 @@ import com.soywiz.klock.Date
 
 @Composable
 fun AssignmentScreen(assignment: Assignment, actionHandler: ActionHandler) {
-    MaterialTheme(typography = MaterialTheme.typography.copy(
-        subtitle1 = MaterialTheme.typography.subtitle1.copy(fontSize = 16.sp),
-        body1 = MaterialTheme.typography.body1.copy(fontSize = 16.sp)
-    )) {
-        VerticalScroller(modifier = Modifier.drawBackground(MaterialTheme.colors.background).fillMaxSize().padding(horizontal = 24.dp)) {
+    AssignmentTextSize {
+        Column(modifier = Modifier.drawBackground(MaterialTheme.colors.background).fillMaxSize()) {
             Header(
-                subjectName = assignment.subjectName,
-                modifier = Modifier.padding(top = 24.dp),
+                assignment = assignment,
                 onCloseClick = { actionHandler.handle(UserAction.Back) }
             )
-            Text(
-                text = assignment.title,
-                style = MaterialTheme.typography.h4,
-                modifier = Modifier.padding(top = 24.dp)
-            )
-            Stack(modifier = Modifier.padding(top = 48.dp)) {
-                when (assignment.grade) {
-                    is Grade.Score -> ExtendedScoreItem(score = (assignment.grade as Grade.Score))
-                    else -> EmptyGradeItem(grade = assignment.grade)
+            VerticalScroller(modifier = Modifier.padding(horizontal = 24.dp)) {
+                Stack(modifier = Modifier.padding(top = 24.dp)) {
+                    when (assignment.grade) {
+                        is Grade.Score -> ExtendedScoreItem(score = (assignment.grade as Grade.Score))
+                        else -> EmptyGradeItem(grade = assignment.grade)
+                    }
                 }
+                DetailItem(
+                    title = "Category",
+                    text = assignment.category,
+                    icon = getIconFromCategory(assignment.category),
+                    modifier = Modifier.padding(top = 16.dp).fillMaxWidth()
+                )
+
+                DetailItem(
+                    title = "Due",
+                    text = assignment.due.format("MMM d"),
+                    icon = Icons.Default.Event,
+                    modifier = Modifier.padding(top = 16.dp).fillMaxWidth()
+                )
+
+                AssignmentStatistics(statistics = assignment.statistics)
+
+                Spacer(modifier = Modifier.height(24.dp))
             }
-            DetailItem(
-                title = "Category",
-                text = assignment.category,
-                icon = getIconFromCategory(assignment.category),
-                modifier = Modifier.padding(top = 16.dp).fillMaxWidth()
-            )
-
-            DetailItem(
-                title = "Due",
-                text = assignment.due.format("MMM d"),
-                icon = Icons.Default.Event,
-                modifier = Modifier.padding(top = 16.dp).fillMaxWidth()
-            )
-
-            AssignmentStatistics(statistics = assignment.statistics)
-
-            Spacer(modifier = Modifier.height(24.dp))
         }
     }
 }
 
 @Composable
-private fun Header(subjectName: String, modifier: Modifier = Modifier, onCloseClick: ()->Unit){
-    Row(modifier, verticalGravity = Alignment.CenterVertically) {
-        Icon(
-            asset = Icons.Default.Clear,
-            modifier = Modifier.clickable(onClick = onCloseClick),
-            tint = contentColor().copy(alpha = .54f)
-        )
-        Text(
-            text = subjectName,
-            style = MaterialTheme.typography.h6,
-            color = MaterialTheme.colors.onSecondary,
-            modifier = Modifier.padding(start = 24.dp),
-            maxLines = 1,
-            overflow = TextOverflow.Ellipsis
-        )
+private fun AssignmentTextSize(children: @Composable() () -> Unit){
+    MaterialTheme(
+        typography = MaterialTheme.typography.copy(
+            subtitle1 = MaterialTheme.typography.subtitle1.copy(fontSize = 16.sp),
+            body1 = MaterialTheme.typography.body1.copy(fontSize = 16.sp)
+        ),
+        content = children
+    )
+}
+
+@Composable
+private fun Header(assignment: Assignment, modifier: Modifier = Modifier, onCloseClick: ()->Unit){
+    Surface(elevation = 4.dp, color = MaterialTheme.colors.primary) {
+        Column(modifier = modifier.fillMaxWidth().padding(horizontal = 24.dp)) {
+            Row(Modifier.padding(top = 24.dp), verticalGravity = Alignment.CenterVertically) {
+                Icon(
+                    asset = Icons.Default.Clear,
+                    modifier = Modifier.clickable(onClick = onCloseClick),
+                    tint = MaterialTheme.colors.onPrimary.copy(alpha = .54f)
+                )
+                Text(
+                    text = assignment.subjectName,
+                    style = MaterialTheme.typography.h6,
+                    color = MaterialTheme.colors.onPrimary.copy(alpha = .7f),
+                    modifier = Modifier.padding(start = 24.dp),
+                    maxLines = 1,
+                    overflow = TextOverflow.Ellipsis
+                )
+            }
+            Text(
+                text = assignment.title,
+                style = MaterialTheme.typography.h4,
+                modifier = Modifier.padding(top = 24.dp, bottom = 24.dp),
+                color = MaterialTheme.colors.onPrimary
+            )
+        }
     }
 }
 
