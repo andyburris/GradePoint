@@ -12,9 +12,9 @@ import androidx.ui.material.LinearProgressIndicator
 import androidx.ui.material.MaterialTheme
 import androidx.ui.material.Surface
 import androidx.ui.material.icons.Icons
-import androidx.ui.material.icons.filled.BorderClear
 import androidx.ui.material.icons.filled.Clear
 import androidx.ui.material.icons.filled.Event
+import androidx.ui.material.icons.filled.NotInterested
 import androidx.ui.text.style.TextAlign
 import androidx.ui.text.style.TextOverflow
 import androidx.ui.tooling.preview.Preview
@@ -41,8 +41,12 @@ fun AssignmentScreen(assignment: Assignment, actionHandler: ActionHandler) {
             VerticalScroller(modifier = Modifier.padding(horizontal = 24.dp)) {
                 Stack(modifier = Modifier.padding(top = 24.dp)) {
                     when (assignment.grade) {
-                        is Grade.Score -> ExtendedScoreItem(score = (assignment.grade as Grade.Score))
-                        else -> EmptyGradeItem(grade = assignment.grade)
+                        is Grade.Score, is Grade.Missing -> ExtendedScoreItem(grade = assignment.grade)
+                        else -> DetailItem(
+                            title = assignment.grade.toString(),
+                            text = "",
+                            icon = Icons.Default.NotInterested
+                        )
                     }
                 }
                 DetailItem(
@@ -108,60 +112,64 @@ private fun Header(assignment: Assignment, modifier: Modifier = Modifier, onClos
 }
 
 @Composable
-private fun ExtendedScoreItem(score: Grade.Score, modifier: Modifier = Modifier) {
+private fun ExtendedScoreItem(grade: Grade, modifier: Modifier = Modifier) {
+    val score = when(grade){
+        is Grade.Score -> grade.score.trimTrailingZeroes()
+        is Grade.Missing -> "Missing"
+        else -> throw Error("Extended score item should only have Grade.Score or Grade.Missing")
+    }
+    val possibleScore = when(grade){
+        is Grade.Score -> grade.possibleScore.trimTrailingZeroes()
+        is Grade.Missing -> grade.possibleScore.trimTrailingZeroes()
+        else -> throw Error()
+    }
+    val letter = when(grade){
+        is Grade.Score -> grade.letter
+        is Grade.Missing -> "F"
+        else -> throw Error()
+    }
+    val percent = when(grade){
+        is Grade.Score -> grade.score/grade.possibleScore
+        is Grade.Missing -> 0.0
+        else -> throw Error()
+    }
+
     Column(modifier = modifier) {
         Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween, verticalGravity = Alignment.Bottom) {
             Row {
                 Text(
-                    text = "${score.score.trimTrailingZeroes()}/${score.possibleScore.trimTrailingZeroes()}",
+                    text = "$score/$possibleScore",
                     style = MaterialTheme.typography.h5
                 )
                 Text(
-                    text = score.letter,
+                    text = letter,
                     style = MaterialTheme.typography.h5,
                     color = MaterialTheme.colors.onSecondary,
                     modifier = Modifier.padding(start = 8.dp)
                 )
             }
             Text(
-                text = "${(score.score / score.possibleScore * 100).toDecimalString(2).trimTrailingZeroes()}%",
+                text = "${(percent * 100).toDecimalString(2).trimTrailingZeroes()}%",
                 style = MaterialTheme.typography.subtitle1,
                 color = MaterialTheme.colors.primary
             )
         }
-        Row(Modifier.fillMaxWidth().padding(top = 8.dp), verticalGravity = Alignment.CenterVertically) {
-            LinearProgressIndicator(
-                progress = (score.score / score.possibleScore).toFloat(),
-                modifier = Modifier.weight(1f)
-            )
-        }
-    }
-}
-
-@Composable
-private fun EmptyGradeItem(grade: Grade, modifier: Modifier = Modifier) {
-    Row(verticalGravity = Alignment.CenterVertically, modifier = modifier) {
-        Icon(
-            asset = Icons.Default.BorderClear.copy(defaultWidth = 36.dp, defaultHeight = 36.dp),
-            tint = MaterialTheme.colors.onSurface.copy(alpha = .54f)
-        )
-        Text(
-            text = grade.toString(),
-            style = MaterialTheme.typography.subtitle1,
-            modifier = Modifier.padding(start = 16.dp)
+        LinearProgressIndicator(
+            progress = percent.toFloat(),
+            modifier = Modifier.fillMaxWidth().padding(top = 8.dp)
         )
     }
 }
 
 @Composable
-private fun DetailItem(title: String, text: String, icon: VectorAsset, modifier: Modifier) {
+private fun DetailItem(title: String, text: String, icon: VectorAsset, modifier: Modifier = Modifier) {
     Row(verticalGravity = Alignment.CenterVertically, horizontalArrangement = Arrangement.SpaceBetween, modifier = modifier) {
         Row(verticalGravity = Alignment.CenterVertically) {
             Stack(
                 modifier = Modifier.size(32.dp).drawBackground(MaterialTheme.colors.primary, shape = CircleShape)
             ) {
                 Icon(
-                    asset = icon.copy(defaultHeight = 20.dp, defaultWidth = 20.dp),
+                    asset = icon.copy(defaultHeight = 16.dp, defaultWidth = 16.dp),
                     tint = Color.Black.copy(alpha = .54f),
                     modifier = Modifier.gravity(Alignment.Center)
                 )
@@ -182,7 +190,7 @@ private fun AssignmentStatistics(statistics: Assignment.Statistics){
         text = "Class Scores".toUpperCase(),
         style = MaterialTheme.typography.subtitle1,
         color = MaterialTheme.colors.primary,
-        modifier = Modifier.padding(top = 48.dp)
+        modifier = Modifier.padding(top = 32.dp)
     )
 
     when (statistics) {

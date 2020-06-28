@@ -9,9 +9,9 @@ sealed class Grade {
 
     override fun toString(): String {
         return when(this){
-            is Grade.Score -> "${score}/${possibleScore}"
-            is Grade.Empty -> message
-            is Grade.Missing -> "Missing/${possibleScore}"
+            is Score -> "${score}/${possibleScore}"
+            is Empty -> message
+            is Missing -> "Missing/${possibleScore}"
             else -> "Ungraded"
         }
     }
