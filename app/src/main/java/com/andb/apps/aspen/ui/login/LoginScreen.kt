@@ -11,8 +11,8 @@ import androidx.ui.foundation.shape.corner.CircleShape
 import androidx.ui.foundation.shape.corner.RoundedCornerShape
 import androidx.ui.layout.*
 import androidx.ui.material.Button
-import androidx.ui.material.FilledTextField
 import androidx.ui.material.MaterialTheme
+import androidx.ui.material.OutlinedTextField
 import androidx.ui.material.Surface
 import androidx.ui.res.vectorResource
 import androidx.ui.tooling.preview.Preview
@@ -45,13 +45,13 @@ fun LoginScreen(actionHandler: ActionHandler) {
             style = MaterialTheme.typography.h4,
             modifier = Modifier.padding(top = 32.dp)
         )
-        FilledTextField(
+        OutlinedTextField(
             value = username.value,
             onValueChange = { username.value = it },
             label = { Text(text = "Username") },
             modifier = Modifier.padding(top = 32.dp)
         )
-        FilledTextField(
+        OutlinedTextField(
             value = password.value,
             onValueChange = { password.value = it },
             label = { Text(text = "Password") },
@@ -69,7 +69,7 @@ fun LoginScreen(actionHandler: ActionHandler) {
             padding = InnerPadding(start = 24.dp, end = 24.dp, top = 16.dp, bottom = 16.dp)
 
         ) {
-            Text(text = "Log in".toUpperCase())
+            Text(text = "Log in".toUpperCase(), color = MaterialTheme.colors.onPrimary)
         }
     }
 }
