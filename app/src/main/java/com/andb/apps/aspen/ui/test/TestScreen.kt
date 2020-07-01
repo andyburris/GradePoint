@@ -5,6 +5,7 @@ import androidx.animation.FloatPropKey
 import androidx.animation.LinearEasing
 import androidx.animation.transitionDefinition
 import androidx.compose.Composable
+import androidx.compose.remember
 import androidx.compose.state
 import androidx.ui.animation.DpPropKey
 import androidx.ui.animation.Transition
@@ -17,12 +18,9 @@ import androidx.ui.foundation.gestures.DragDirection
 import androidx.ui.foundation.shape.corner.CircleShape
 import androidx.ui.graphics.Color
 import androidx.ui.layout.*
-import androidx.ui.material.DropdownMenu
-import androidx.ui.material.DropdownMenuItem
 import androidx.ui.material.MaterialTheme
 import androidx.ui.material.TopAppBar
 import androidx.ui.material.icons.Icons
-import androidx.ui.material.icons.filled.MoreVert
 import androidx.ui.material.icons.filled.Settings
 import androidx.ui.material.icons.filled.UnfoldLess
 import androidx.ui.material.icons.filled.UnfoldMore
@@ -50,7 +48,6 @@ fun TestScreen() {
                     DensityAmbient.current,
                     SwipeStep(SwipeStep.Width.Size(48.dp), Color.Blue, Icons.Default.Settings)
                 )
-                .padding(horizontal = 24.dp, vertical = 16.dp)
         )
         val moved = state { false }
         TestAnimation(moved.value) { moved.value = !moved.value }
@@ -113,49 +110,29 @@ private fun TestIconPicker() {
         onSelect = { currentIcon.value = it })
 }
 
-@Composable
-private fun TestDropdown() {
-    val expanded = state { false }
-    val onClick = { println("Test 1 clicked"); expanded.value = false }
-    DropdownMenu(
-        toggle = {
-            Icon(
-                asset = Icons.Default.MoreVert,
-                modifier = Modifier.clickable(onClick = { expanded.value = true }).padding(24.dp)
-            )
-        },
-        expanded = expanded.value, onDismissRequest = { expanded.value = false }
-    ) {
-        DropdownMenuItem(onClick = onClick) {
-            Text(text = "Test 1")
-        }
-        DropdownMenuItem(onClick = onClick) {
-            Text(text = "Test 2")
-        }
-    }
-}
-
 @Preview
 @Composable
 private fun TestInboxItem() {
 
     val expanded = state { false }
 
-    val percentExpanded = FloatPropKey()
-    val oldAlpha = FloatPropKey()
-    val newAlpha = FloatPropKey()
-    val transitionDefinition = transitionDefinition {
-        state(false) { this[percentExpanded] = 0f; this[oldAlpha] = 1f; this[newAlpha] = 0f }
-        state(true) { this[percentExpanded] = 1f; this[oldAlpha] = 0f; this[newAlpha] = 1f }
-        transition {
-            percentExpanded using tween<Float> { duration = 1000 }
-            oldAlpha using keyframes<Float> {
-                duration = 1000
-                0f at 500 with FastOutSlowInEasing
-            }
-            newAlpha using keyframes<Float> {
-                duration = 1000
-                0f at 500 with FastOutSlowInEasing
+    val percentExpanded = remember { FloatPropKey() }
+    val oldAlpha = remember { FloatPropKey() }
+    val newAlpha = remember { FloatPropKey() }
+    val transitionDefinition = remember {
+        transitionDefinition {
+            state(false) { this[percentExpanded] = 0f; this[oldAlpha] = 1f; this[newAlpha] = 0f }
+            state(true) { this[percentExpanded] = 1f; this[oldAlpha] = 0f; this[newAlpha] = 1f }
+            transition {
+                percentExpanded using tween<Float> { duration = 1000 }
+                oldAlpha using keyframes<Float> {
+                    duration = 1000
+                    0f at 500 with FastOutSlowInEasing
+                }
+                newAlpha using keyframes<Float> {
+                    duration = 1000
+                    0f at 500 with FastOutSlowInEasing
+                }
             }
         }
     }

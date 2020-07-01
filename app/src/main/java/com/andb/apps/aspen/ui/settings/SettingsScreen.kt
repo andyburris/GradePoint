@@ -37,34 +37,23 @@ import com.andb.apps.aspen.util.ActionHandler
 fun SettingsScreen(actionHandler: ActionHandler) {
     Column {
         HomeHeader(title = "Settings")
-        if (BuildConfig.DEBUG) {
-            SettingsItem(
-                title = "Test",
-                summary = "Open test screen",
-                icon = Icons.Default.Settings,
-                modifier = Modifier
-                    .clickable(onClick = {
-                        actionHandler.handle(UserAction.OpenScreen(Screen.Test))
-                    })
-                    .padding(horizontal = 24.dp, vertical = 16.dp)
-            )
-        }
+        Spacer(modifier = Modifier.height(8.dp))
+        SettingsHeaderItem(title = "Theme", topPadding = false)
         val darkModeDialogShown = state { false }
         SettingsItem(
             title = "Dark Mode",
             icon = vectorResource(id = R.drawable.ic_weather_night),
             modifier = Modifier.clickable(onClick = { darkModeDialogShown.value = true })
-                .padding(horizontal = 24.dp, vertical = 16.dp)
         )
         DarkModeDialog(
             showing = darkModeDialogShown.value,
             onClose = { darkModeDialogShown.value = false }
         )
 
+        SettingsHeaderItem(title = "Experiments")
         SettingsItem(
             title = "Font Size",
-            icon = Icons.Default.FormatSize,
-            modifier = Modifier.fillMaxWidth().padding(horizontal = 24.dp, vertical = 16.dp)
+            icon = Icons.Default.FormatSize
         ) {
             Chip(
                 text = "14sp (default)",
@@ -81,8 +70,7 @@ fun SettingsScreen(actionHandler: ActionHandler) {
         val color = AndroidSettings.assignmentHeaderColorFlow.collectAsState()
         SettingsItem(
             title = "Assignment Page Header Color",
-            icon = Icons.Default.Palette,
-            modifier = Modifier.fillMaxWidth().padding(horizontal = 24.dp, vertical = 16.dp)
+            icon = Icons.Default.Palette
         ) {
             Chip(
                 text = "Background",
@@ -96,11 +84,22 @@ fun SettingsScreen(actionHandler: ActionHandler) {
                 onClick = { AndroidSettings.assignmentHeaderColor = true })
         }
 
+        if (BuildConfig.DEBUG) {
+            SettingsItem(
+                title = "Test",
+                summary = "Open test screen",
+                icon = Icons.Default.Settings,
+                modifier = Modifier.clickable(onClick = {
+                    actionHandler.handle(UserAction.OpenScreen(Screen.Test))
+                })
+            )
+        }
+
+        SettingsHeaderItem(title = "About")
         SettingsItem(
-            title = "About",
+            title = "Version",
             icon = Icons.Outlined.Info,
-            summary = "v" + BuildConfig.VERSION_NAME,
-            modifier = Modifier.fillMaxWidth().padding(horizontal = 24.dp, vertical = 16.dp)
+            summary = "v" + BuildConfig.VERSION_NAME
         )
     }
 }
@@ -116,7 +115,7 @@ fun SettingsItem(
     Row(
         horizontalArrangement = Arrangement.SpaceBetween,
         verticalGravity = Alignment.CenterVertically,
-        modifier = modifier.fillMaxWidth()
+        modifier = modifier.fillMaxWidth().padding(horizontal = 24.dp, vertical = 16.dp)
     ) {
         Row(verticalGravity = Alignment.CenterVertically, modifier = Modifier.weight(1f)) {
             Icon(asset = icon)
@@ -127,6 +126,16 @@ fun SettingsItem(
         }
         Row(children = widget)
     }
+}
+
+@Composable
+fun SettingsHeaderItem(title: String, topPadding: Boolean = true) {
+    Text(
+        text = title,
+        color = MaterialTheme.colors.primary,
+        style = MaterialTheme.typography.subtitle1,
+        modifier = Modifier.padding(start = 64.dp, top = if (topPadding) 24.dp else 0.dp, bottom = 8.dp)
+    )
 }
 
 @Composable
