@@ -75,3 +75,26 @@ data class Subject(
 }
 
 fun SubjectConfig.toConfig() = Subject.Config(id, Subject.Icon.valueOf(iconName), color.toInt())
+
+fun List<Subject>.combineWith(other: List<Subject>): List<Subject>{
+    val allSubjects = this.toMutableList()
+    val (modifiedSubjects, newSubjects) = other.partition { otherSubject -> this.any { it.id == otherSubject.id } }
+    for (subject in modifiedSubjects){
+        val combined = allSubjects.first { it.id == subject.id } + subject
+        allSubjects.replace(combined) { it.id == subject.id }
+    }
+    for (newSubject in newSubjects){
+
+        val index = other.indexOf(newSubject)
+        val before = other.getOrNull(index - 1)
+        if (before == null){
+            allSubjects.add(0, newSubject)
+            continue
+        }
+
+        val allIndex = allSubjects.indexOfFirst { it.id == before.id } + 1
+        allSubjects.add(allIndex, newSubject)
+    }
+
+    return allSubjects
+}

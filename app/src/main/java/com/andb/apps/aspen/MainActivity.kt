@@ -120,7 +120,7 @@ fun AppTheme(content: @Composable() () -> Unit) {
         body1 = MaterialTheme.typography.body1.copy(color = colors.onSecondary, fontSize = fontSize.value.sp),
         subtitle1 = MaterialTheme.typography.subtitle1.copy(fontWeight = FontWeight.Medium, fontSize = fontSize.value.sp),
         h3 = MaterialTheme.typography.h3.copy(fontWeight = FontWeight.Bold),
-        h4 = MaterialTheme.typography.h4.copy(fontWeight = FontWeight.Medium),
+        h4 = MaterialTheme.typography.h4.copy(fontWeight = FontWeight.Medium, fontSize = 32.sp),
         h5 = MaterialTheme.typography.h5.copy(fontWeight = FontWeight.Medium)
     )
 
