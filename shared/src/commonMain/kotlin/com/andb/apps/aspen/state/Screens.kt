@@ -9,8 +9,11 @@ import kotlinx.coroutines.flow.map
 import org.koin.core.KoinComponent
 import org.koin.core.inject
 
-data class Screens(private val stack: MutableStateFlow<List<Screen>>) : KoinComponent{
+class Screens : KoinComponent{
     private val aspenRepository: AspenRepository by inject()
+
+    private val stack: MutableStateFlow<List<Screen>> = MutableStateFlow(listOf())
+    val currentScreen: Flow<Screen> get() = stack.map { it.last() }
 
     init {
         when (aspenRepository.loggedIn) {
@@ -18,8 +21,6 @@ data class Screens(private val stack: MutableStateFlow<List<Screen>>) : KoinComp
             false -> stack.value = listOf(Screen.Login)
         }
     }
-
-    val currentScreen: Flow<Screen> get() = stack.map { it.last() }
 
     operator fun plusAssign(action: Action){
         handleAction(action)

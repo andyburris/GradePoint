@@ -61,6 +61,7 @@ kotlin {
         implementation(Deps.Ktor.commonSerialization)
         implementation(Deps.Klock.common)
         implementation(Deps.Kissme.common)
+        //implementation("org.jetbrains.kotlinx:kotlinx-serialization-runtime-common:${Versions.serialization}")
         //implementation("com.michael-bull.kotlin-result:kotlin-result:1.1.7")
     }
 
@@ -100,21 +101,29 @@ kotlin {
         implementation(Deps.Ktor.ios)
         implementation(Deps.Ktor.iosCore)
         implementation(Deps.Ktor.iosJson)
+        implementation(Deps.Ktor.iosSerialization)
         implementation(Deps.Ktor.iosLogging)
         implementation(Deps.Coroutines.native) {
             version {
                 strictly("1.3.5-native-mt")
             }
         }
-        implementation(Deps.Ktor.iosSerialization)
         implementation(Deps.Kissme.ios)
     }
 
     sourceSets["jsMain"].dependencies {
         implementation(kotlin("stdlib-js"))
+        implementation(Deps.Coroutines.js)
+        implementation("org.jetbrains.kotlinx:kotlinx-serialization-runtime-js:${Versions.serialization}")
+        implementation(Deps.Ktor.js)
+        implementation(Deps.Ktor.jsCore)
+        implementation(Deps.Ktor.jsJson)
+        implementation(Deps.Ktor.jsSerialization)
+        implementation(Deps.Ktor.jsLogging)
+        //implementation(Deps.SqlDelight.driverJS)
     }
 
-    sourceSets["jsMain"].dependencies {
+    sourceSets["jsTest"].dependencies {
         implementation(kotlin("test-js"))
     }
 

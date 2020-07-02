@@ -81,6 +81,7 @@ object Deps {
         const val jdk = "org.jetbrains.kotlinx:kotlinx-coroutines-core:${Versions.coroutines}"
         const val native = "org.jetbrains.kotlinx:kotlinx-coroutines-core-native:${Versions.coroutines}"
         const val android = "org.jetbrains.kotlinx:kotlinx-coroutines-android:${Versions.coroutines}"
+        const val js = "org.jetbrains.kotlinx:kotlinx-coroutines-core-js:${Versions.coroutines}"
         const val test = "org.jetbrains.kotlinx:kotlinx-coroutines-test:${Versions.coroutines}"
     }
 
@@ -90,6 +91,7 @@ object Deps {
         const val runtimeJdk = "com.squareup.sqldelight:runtime-jvm:${Versions.sqlDelight}"
         const val driverIos = "com.squareup.sqldelight:native-driver:${Versions.sqlDelight}"
         const val driverAndroid = "com.squareup.sqldelight:android-driver:${Versions.sqlDelight}"
+        const val driverJS = "com.squareup.sqldelight:sqljs-driver:${Versions.sqlDelight}"
     }
 
     object Ktor {
@@ -107,11 +109,17 @@ object Deps {
         const val iosJson = "io.ktor:ktor-client-json-native:${Versions.ktor}"
         const val iosSerialization = "io.ktor:ktor-client-serialization-native:${Versions.ktor}"
         const val iosLogging = "io.ktor:ktor-client-logging-native:${Versions.ktor}"
+        const val js = "io.ktor:ktor-client-js:${Versions.ktor}"
+        const val jsCore = "io.ktor:ktor-client-core-js:${Versions.ktor}"
+        const val jsJson = "io.ktor:ktor-client-json-js:${Versions.ktor}"
+        const val jsSerialization = "io.ktor:ktor-client-serialization-js:${Versions.ktor}"
+        const val jsLogging = "io.ktor:ktor-client-logging-js:${Versions.ktor}"
     }
 
     object Kissme {
         const val common = "com.netguru.kissme:common:${Versions.kissme}"
         const val android = "com.netguru.kissme:android:${Versions.kissme}"
         const val ios = "com.netguru.kissme:ios:${Versions.kissme}"
+        const val js = "com.netguru.kissme:js:${Versions.kissme}"
     }
 }

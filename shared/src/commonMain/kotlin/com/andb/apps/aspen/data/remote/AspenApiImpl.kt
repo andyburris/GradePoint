@@ -6,7 +6,6 @@ import com.andb.apps.aspen.response.CourseListResponse
 import com.andb.apps.aspen.response.RecentResponse
 import io.ktor.client.HttpClient
 import io.ktor.client.features.HttpTimeout
-import io.ktor.client.features.cookies.AcceptAllCookiesStorage
 import io.ktor.client.features.json.JsonFeature
 import io.ktor.client.features.json.serializer.KotlinxSerializer
 import io.ktor.client.features.logging.DEFAULT
@@ -19,7 +18,6 @@ import io.ktor.client.request.header
 
 class AspenApiImpl : AspenApi {
 
-    private val cookiesStorage = AcceptAllCookiesStorage()
     private val client = HttpClient {
         install(JsonFeature) {
             serializer = KotlinxSerializer()

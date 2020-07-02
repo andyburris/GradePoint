@@ -3,6 +3,7 @@ package com.andb.apps.aspen
 import android.content.Context
 import android.content.SharedPreferences
 import com.andb.apps.aspen.db.KampstarterDb
+import com.netguru.kissme.Kissme
 import com.russhwolf.settings.AndroidSettings
 import com.russhwolf.settings.Settings
 import com.squareup.sqldelight.android.AndroidSqliteDriver
@@ -25,4 +26,7 @@ actual val platformModule: Module = module {
             context.getSharedPreferences("KAMPSTARTER_SETTINGS", Context.MODE_PRIVATE)
         AndroidSettings(preferences)
     }
+
+    single<Kissme> { Kissme("aspenStorage") }
+    single<Storage> { StorageAndroid(get()) }
 }

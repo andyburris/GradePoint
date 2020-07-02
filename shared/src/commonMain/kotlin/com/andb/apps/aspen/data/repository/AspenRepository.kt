@@ -2,12 +2,12 @@ package com.andb.apps.aspen.data.repository
 
 import co.touchlab.stately.ensureNeverFrozen
 import com.andb.apps.aspen.DatabaseHelper
+import com.andb.apps.aspen.Storage
 import com.andb.apps.aspen.data.remote.AspenApi
 import com.andb.apps.aspen.models.Subject
 import com.andb.apps.aspen.models.toConfig
 import com.andb.apps.aspen.response.RecentAssignmentResponse
 import com.andb.apps.aspen.response.toSubjectList
-import com.netguru.kissme.Kissme
 import kotlinx.coroutines.launch
 import org.koin.core.KoinComponent
 import org.koin.core.inject
@@ -16,9 +16,9 @@ class AspenRepository : BaseModel(), KoinComponent {
 
     private val aspenApi: AspenApi by inject()
     private val dbHelper: DatabaseHelper by inject()
-    private val storage: Kissme by inject()
+    private val storage: Storage by inject()
 
-    val loggedIn: Boolean get() = storage.contains("username") && storage.contains("password")
+    val loggedIn: Boolean get() = storage.loggedIn
 
     init {
         ensureNeverFrozen()
@@ -27,8 +27,8 @@ class AspenRepository : BaseModel(), KoinComponent {
     suspend fun attemptLogin(username: String, password: String): Boolean {
         val correct = aspenApi.checkLogin(username, password).data
         if (correct) {
-            storage.putString("username", username)
-            storage.putString("password", password)
+            storage.username = username
+            storage.password = password
         }
         return correct
     }
@@ -47,8 +47,7 @@ class AspenRepository : BaseModel(), KoinComponent {
     }
 
     fun logout() {
-        storage.remove("username")
-        storage.remove("password")
+        storage.clear()
     }
 
     fun updateSubjectConfig(config: Subject.Config){
@@ -60,10 +59,3 @@ class AspenRepository : BaseModel(), KoinComponent {
     }
 
 }
-
-private val Kissme.username: String
-    get() = getString("username", "")
-        ?: throw Error("Username has not been stored -- be sure to call attemptLogin before getting data")
-private val Kissme.password: String
-    get() = getString("password", "")
-        ?: throw Error("Password has not been stored -- be sure to call attemptLogin before getting data")

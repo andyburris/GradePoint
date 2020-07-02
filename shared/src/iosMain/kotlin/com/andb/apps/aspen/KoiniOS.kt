@@ -15,4 +15,5 @@ actual val platformModule = module {
         AppleSettings(userDefaults)
     }
     single<SqlDriver> { NativeSqliteDriver(KampstarterDb.Schema, "kampstarterdb") }
+    single<Storage> { StorageiOS(Kissme("aspenStorage")) }
 }
