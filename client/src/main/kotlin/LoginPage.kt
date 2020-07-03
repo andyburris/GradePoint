@@ -22,7 +22,7 @@ class LoginPage : RComponent<LoginProps, LoginState>() {
 
     private val onChangePassword = { event: Event ->
         val value = event.targetInputValue
-        setState { username = value }
+        setState { password = value }
     }
 
     private val onLogin = { _: Event ->
@@ -71,7 +71,7 @@ class LoginPage : RComponent<LoginProps, LoginState>() {
                 css {
                     margin(top = 32.px)
                 }
-                mButton("Login", onClick = onLogin, disabled = (!state.username.isNullOrEmpty() && !state.password.isNullOrEmpty()), color = MColor.primary, variant = MButtonVariant.contained, size = MButtonSize.large){
+                mButton("Login", onClick = onLogin, disabled = (state.username.isNullOrEmpty() || state.password.isNullOrEmpty()), color = MColor.primary, variant = MButtonVariant.contained, size = MButtonSize.large){
                     css {
                         margin(top = 32.px)
                         borderRadius = 32.px

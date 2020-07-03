@@ -6,13 +6,10 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
-import react.RBuilder
-import react.RComponent
-import react.RState
+import react.*
 import react.dom.h1
-import react.setState
 
-class App : RComponent<AppPageProps, AppState>() {
+class App : RComponent<RProps, AppState>() {
 
     override fun AppState.init(){
         screens = Screens().apply {
@@ -35,6 +32,9 @@ class App : RComponent<AppPageProps, AppState>() {
                     state.screens += UserAction.Login(username, password)
                 }
             }
+            is Screen.Home -> subjectsPage((state.currentScreen as Screen.Home).subjects, 4){
+                state.screens += it
+            }
             else -> {
                 h1 {
                     +"Not implemented yet"
@@ -44,8 +44,9 @@ class App : RComponent<AppPageProps, AppState>() {
     }
 }
 
-external interface AppPageProps : ActionHandlerProps {
-    var screen: Screen
+
+external interface TermProps : ActionHandlerProps {
+    var term: Int
 }
 
 external interface AppState : RState {

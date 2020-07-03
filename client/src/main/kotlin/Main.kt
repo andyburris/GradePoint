@@ -18,8 +18,9 @@ fun main() {
     }
 }
 
+typealias ActionHandler = (Action) -> Unit
 external interface ActionHandlerProps : RProps {
-    var handler: (Action) -> Unit
+    var handler: ActionHandler
 }
 
 private val styles = CSSBuilder().apply {
