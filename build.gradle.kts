@@ -30,6 +30,7 @@ allprojects {
         maven(url = "https://dl.bintray.com/netguru/maven/")
         maven(url = "https://oss.sonatype.org/content/repositories/snapshots/")
         maven(url = "https://www.jitpack.io")
+        maven("https://dl.bintray.com/cfraser/muirwik")
     }
 }
 

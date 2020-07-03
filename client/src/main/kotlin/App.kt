@@ -30,13 +30,9 @@ class App : RComponent<AppPageProps, AppState>() {
 
     override fun RBuilder.render() {
         when(state.currentScreen){
-            is Screen.Login -> child(LoginPage::class) {
-                attrs {
-                    onLogin = { u, p ->
-                        setState {
-                            state.screens += UserAction.Login(u, p)
-                        }
-                    }
+            is Screen.Login -> loginPage { username, password ->
+                setState {
+                    state.screens += UserAction.Login(username, password)
                 }
             }
             else -> {
@@ -57,3 +53,6 @@ external interface AppState : RState {
     var currentScreen: Screen
 }
 
+fun RBuilder.app(){
+    child(App::class){}
+}
