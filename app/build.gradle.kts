@@ -57,7 +57,7 @@ android {
     buildFeatures {
         compose = true
     }
-    buildToolsVersion = "30.0.0 rc2"
+    buildToolsVersion = "30.0.0"
 
     composeOptions {
         kotlinCompilerVersion = "1.3.70-dev-withExperimentalGoogleExtensions-20200424"

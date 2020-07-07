@@ -5,7 +5,7 @@ object Versions {
 
     const val kotlin = "1.3.72"
     const val android_x = "1.1.0"
-    const val android_gradle_plugin = "4.1.0-alpha09"
+    const val android_gradle_plugin = "4.2.0-alpha02"
     const val junit = "4.12"
     const val sqlDelight = "1.3.0"
     const val ktor = "1.3.2"

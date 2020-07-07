@@ -53,15 +53,15 @@ fun LoginScreen(actionHandler: ActionHandler) {
         )
         OutlinedTextField(
             value = password.value,
-            onValueChange = { password.value = it },
+            onValueChange = { password.value = it; println("password = ${password.value}") },
             label = { Text(text = "Password") },
             modifier = Modifier.padding(top = 16.dp)
         )
         Button(
             onClick = {
                 titleText.value = "Clicked (${password.value.length})"
-                val sanitizedUsername = username.value.replace("\\p{C}", "")
-                val sanitizedPassword = password.value.replace("\\p{C}", "")
+                val sanitizedUsername = username.value.filter { it >= ' ' }
+                val sanitizedPassword = password.value.filter { it >= ' ' }
                 actionHandler.handle(UserAction.Login(sanitizedUsername, sanitizedPassword))
             },
             modifier = Modifier.padding(top = 32.dp),
