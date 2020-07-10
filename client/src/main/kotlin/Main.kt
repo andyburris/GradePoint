@@ -1,20 +1,18 @@
 
 import com.andb.apps.aspen.initKoin
 import com.andb.apps.aspen.state.Action
-import com.ccfraser.muirwik.components.styles.ThemeOptions
 import kotlinx.css.*
 import react.RProps
 import react.dom.render
+import styled.injectGlobal
 import kotlin.browser.document
 
 fun main() {
     console.log("Hello, Kotlin/JS!")
     initKoin()
-    //injectGlobal(styles.toString())
+    injectGlobal(styles.toString())
     render(document.getElementById("root")) {
-        //mThemeProvider(theme = createMuiTheme(paletteOptions)){
-            app()
-        //}
+        app()
     }
 }
 
@@ -31,16 +29,7 @@ private val styles = CSSBuilder().apply {
     p {
         margin(top = 0.px, bottom = 0.px)
     }
-}
-
-private val paletteOptions: ThemeOptions = js("""
-({palette: {
-    primary: {
-        main: '#388E3C',
-    },
-    secondary: {
-        main: '#388E3C',
+    "*"{
+        fontFamily = "Montserrat, Helvetica, sans-serif"
     }
 }
-})
-""")

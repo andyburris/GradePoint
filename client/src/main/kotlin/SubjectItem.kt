@@ -1,7 +1,5 @@
 
 import com.andb.apps.aspen.models.Subject
-import com.ccfraser.muirwik.components.MTypographyVariant
-import com.ccfraser.muirwik.components.mTypography
 import kotlinx.css.*
 import react.RBuilder
 import react.RComponent
@@ -9,6 +7,7 @@ import react.RState
 import react.dom.div
 import styled.css
 import styled.styledDiv
+import styled.styledP
 
 class SubjectItem : RComponent<SubjectProps, RState>() {
     override fun RBuilder.render() {
@@ -31,12 +30,14 @@ class SubjectItem : RComponent<SubjectProps, RState>() {
                     }
                 }
                 div {
-                    mTypography(text = props.subject.name, variant = MTypographyVariant.subtitle1)
-                    mTypography(text = props.subject.teacher)
+                    styledP { +props.subject.name }
+                    styledP { +props.subject.teacher }
                 }
             }
 
-            mTypography(text = props.subject.termGrades(props.term).grade.toString())
+            styledP(){
+                +props.subject.termGrades(props.term).grade.toString()
+            }
         }
     }
 }

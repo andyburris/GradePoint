@@ -1,13 +1,12 @@
 
 import com.andb.apps.aspen.models.Subject
-import com.ccfraser.muirwik.components.MTypographyVariant
-import com.ccfraser.muirwik.components.button.mFab
-import com.ccfraser.muirwik.components.mTypography
 import kotlinx.css.*
 import react.RBuilder
 import react.RComponent
 import react.RState
+import react.dom.h1
 import styled.css
+import styled.styledButton
 import styled.styledDiv
 
 class SubjectsPage : RComponent<SubjectsProps, SubjectsState>() {
@@ -19,11 +18,10 @@ class SubjectsPage : RComponent<SubjectsProps, SubjectsState>() {
                 display = Display.flex
                 justifyContent = JustifyContent.spaceBetween
             }
-            mTypography("Classes", variant = MTypographyVariant.h1)
-            mFab(
-                caption = "Term ${props.term}",
-                iconName = "FilterList"
-            )
+            h1 { +"Classes" }
+            styledButton {
+                +"Term ${props.term}"
+            }
         }
 
         for (subject in props.subjects){

@@ -27,8 +27,8 @@ dependencies {
     implementation(npm("inline-style-prefixer"))
 
     //Material UI
-    implementation(npm("@material-ui/core", "^4.9.14"))
-    implementation("com.ccfraser.muirwik:muirwik-components:0.5.1")
+    //implementation(npm("@material-ui/core", "^4.9.14"))
+    //implementation("com.ccfraser.muirwik:muirwik-components:0.5.1")
 
     implementation(project(":shared"))
 }
