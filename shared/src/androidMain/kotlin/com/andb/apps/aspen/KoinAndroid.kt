@@ -29,4 +29,5 @@ actual val platformModule: Module = module {
 
     single<Kissme> { Kissme("aspenStorage") }
     single<Storage> { StorageAndroid(get()) }
+    single<DatabaseHelper> { DatabaseHelperImpl(get()) }
 }

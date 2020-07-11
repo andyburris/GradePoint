@@ -11,14 +11,14 @@ class SqlDelightTest : BaseTest() {
 
     @BeforeTest
     fun setup() = runTest {
-        dbHelper = DatabaseHelper(testDbConnection())
+        dbHelper = DatabaseHelperImpl(testDbConnection())
         dbHelper.deleteAll()
         dbHelper.upsertSubjectConfig(Subject.Config("id", Subject.Icon.BOOK, 0xFFAAABAC.toInt()))
     }
 
     @Test
     fun `Select All Items Success`() = runTest {
-        val configs = dbHelper.selectAllItems().executeAsList()
+        val configs = dbHelper.selectAllItems()
         assertNotNull(
             configs.find { it.id == "id" },
             "Could not retrieve Config"
@@ -27,20 +27,20 @@ class SqlDelightTest : BaseTest() {
 
     @Test
     fun `Select Item by Id Success`() = runTest {
-        val configs = dbHelper.selectAllItems().executeAsList()
+        val configs = dbHelper.selectAllItems()
         val firstConfig = configs.first()
         assertNotNull(
-            dbHelper.selectById(firstConfig.id).executeAsOneOrNull(),
+            dbHelper.selectById(firstConfig.id),
             "Could not retrieve Config by Id"
         )
     }
 
     @Test
     fun `Update Item Success`() = runTest {
-        val configs = dbHelper.selectAllItems().executeAsList()
+        val configs = dbHelper.selectAllItems()
         val firstConfig = configs.first().toConfig()
         dbHelper.upsertSubjectConfig(firstConfig.copy(icon = Subject.Icon.COMPASS, color = 0xFFABCDEF.toInt()))
-        val newConfig = dbHelper.selectById(firstConfig.id).executeAsOneOrNull()
+        val newConfig = dbHelper.selectById(firstConfig.id)
         assertNotNull(
             newConfig,
             "Could not retrieve Config by Id"
@@ -53,10 +53,10 @@ class SqlDelightTest : BaseTest() {
     fun `Delete All Success`() = runTest {
         dbHelper.upsertSubjectConfig(Subject.Config("id", Subject.Icon.BOOK, 0xFFAAABAC.toInt()))
         dbHelper.upsertSubjectConfig(Subject.Config("id2", Subject.Icon.FLASK, 0xFFABCDEF.toInt()))
-        assertTrue(dbHelper.selectAllItems().executeAsList().isNotEmpty())
+        assertTrue(dbHelper.selectAllItems().isNotEmpty())
         dbHelper.deleteAll()
         assertTrue(
-            dbHelper.selectAllItems().executeAsList().count() == 0,
+            dbHelper.selectAllItems().count() == 0,
             "Delete All did not work"
         )
     }

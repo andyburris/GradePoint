@@ -1,14 +1,24 @@
 package com.andb.apps.aspen
 
+import org.w3c.dom.get
+import org.w3c.dom.set
+import kotlin.browser.sessionStorage
+
 class StorageJS : Storage {
     override val loggedIn: Boolean
-        get() = false
+        get() = sessionStorage["username"] != null && sessionStorage["password"] != null
     override var username: String
-        get() = ""
-        set(value) {}
+        get() = sessionStorage["username"] ?: ""
+        set(value) {
+            sessionStorage["username"] = value
+        }
     override var password: String
-        get() = ""
-        set(value) {}
+        get() = sessionStorage["password"] ?: ""
+        set(value) {
+            sessionStorage["password"] = value
+        }
 
-    override fun clear() {}
+    override fun clear() {
+        sessionStorage.clear()
+    }
 }

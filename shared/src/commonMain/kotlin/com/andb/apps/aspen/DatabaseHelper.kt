@@ -8,14 +8,23 @@ import com.squareup.sqldelight.db.SqlDriver
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 
-class DatabaseHelper(sqlDriver: SqlDriver) {
+interface DatabaseHelper {
+    fun selectAllItems(): List<SubjectConfig>
+    fun selectAllItemsByIds(ids: List<String>): List<SubjectConfig>
+    suspend fun insertSubjectConfigs(configs: List<Subject.Config>)
+    suspend fun upsertSubjectConfig(config: Subject.Config)
+    suspend fun selectById(id: String): SubjectConfig?
+    suspend fun deleteAll()
+}
+
+class DatabaseHelperImpl(sqlDriver: SqlDriver) : DatabaseHelper {
     private val dbRef: KampstarterDb = KampstarterDb(sqlDriver)
 
-    fun selectAllItems(): Query<SubjectConfig> = dbRef.tableQueries.selectAll()
+    override fun selectAllItems(): List<SubjectConfig> = dbRef.tableQueries.selectAll().executeAsList()
 
-    fun selectAllItemsByIds(ids: List<String>): Query<SubjectConfig> = dbRef.tableQueries.selectAllByIds(ids)
+    override fun selectAllItemsByIds(ids: List<String>): List<SubjectConfig> = dbRef.tableQueries.selectAllByIds(ids).executeAsList()
 
-    suspend fun insertSubjectConfigs(configs: List<Subject.Config>) = withContext(Dispatchers.Default) {
+    override suspend fun insertSubjectConfigs(configs: List<Subject.Config>) = withContext(Dispatchers.Default) {
         dbRef.transaction {
             configs.forEach { config ->
                 dbRef.tableQueries.insertSubjectConfig(config.id, config.icon.name, config.color.toLong())
@@ -23,14 +32,14 @@ class DatabaseHelper(sqlDriver: SqlDriver) {
         }
     }
 
-    suspend fun upsertSubjectConfig(config: Subject.Config) = withContext(Dispatchers.Default) {
+    override suspend fun upsertSubjectConfig(config: Subject.Config) = withContext(Dispatchers.Default) {
         dbRef.tableQueries.insertSubjectConfig(config.id, config.icon.name, config.color.toLong())
     }
 
-    suspend fun selectById(id: String): Query<SubjectConfig> =
-        withContext(Dispatchers.Default) { dbRef.tableQueries.selectById(id) }
+    override suspend fun selectById(id: String): SubjectConfig? =
+        withContext(Dispatchers.Default) { dbRef.tableQueries.selectById(id).executeAsOneOrNull() }
 
-    suspend fun deleteAll() = withContext(Dispatchers.Default) { dbRef.tableQueries.deleteAll() }
+    override suspend fun deleteAll() = withContext(Dispatchers.Default) { dbRef.tableQueries.deleteAll() }
 
 }
 

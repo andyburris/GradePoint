@@ -2,6 +2,7 @@ package com.andb.apps.aspen.models
 
 import com.andb.apps.aspen.db.SubjectConfig
 import com.andb.apps.aspen.util.replace
+import kotlinx.serialization.Serializable
 
 data class Subject(
     val id: String,
@@ -58,6 +59,7 @@ data class Subject(
         WRITING,
     }
 
+    @Serializable
     data class Config(val id: String, val icon: Icon, val color: Int)
 
     companion object {

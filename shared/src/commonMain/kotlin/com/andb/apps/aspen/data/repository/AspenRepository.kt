@@ -35,7 +35,7 @@ class AspenRepository : BaseModel(), KoinComponent {
 
     suspend fun getTerm(term: Int?): List<Subject> {
         val termResponse = aspenApi.getSubjects(storage.username, storage.password, term)
-        val savedConfigs: List<Subject.Config> = dbHelper.selectAllItems().executeAsList().map { it.toConfig() }
+        val savedConfigs: List<Subject.Config> = dbHelper.selectAllItems().map { it.toConfig() }
         val subjects = termResponse.toSubjectList(savedConfigs, term = term ?: termResponse.config.term.toInt())
         dbHelper.insertSubjectConfigs(subjects.map { it.config } - savedConfigs)
         return subjects

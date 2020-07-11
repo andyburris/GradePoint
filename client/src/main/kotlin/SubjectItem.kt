@@ -16,26 +16,39 @@ class SubjectItem : RComponent<SubjectProps, RState>() {
                 display = Display.flex
                 flexDirection = FlexDirection.row
                 justifyContent = JustifyContent.spaceBetween
+                alignItems = Align.center
             }
 
             styledDiv {
                 css {
                     display = Display.flex
                     flexDirection = FlexDirection.row
+                    alignItems = Align.center
                 }
                 styledDiv {
                     css {
                         borderRadius = 50.pct
-                        backgroundColor = Color(props.subject.config.color.toString(16))
+                        backgroundColor = Color("#" + props.subject.config.color.toUInt().toString(16).substring(2))
+                        width = 64.px
+                        height = 64.px
+                        margin(right = 24.px)
                     }
                 }
                 div {
-                    styledP { +props.subject.name }
+                    styledP {
+                        css {
+                            fontWeight = FontWeight.w600
+                        }
+                        +props.subject.name
+                    }
                     styledP { +props.subject.teacher }
                 }
             }
 
             styledP(){
+                css {
+                    fontWeight = FontWeight.w600
+                }
                 +props.subject.termGrades(props.term).grade.toString()
             }
         }
@@ -46,7 +59,7 @@ interface SubjectProps : TermProps{
     var subject: Subject
 }
 
-fun RBuilder.subjectItem(subject: Subject, term: Int){
+fun RBuilder.SubjectItem(subject: Subject, term: Int){
     child(SubjectItem::class){
         attrs {
             this.subject = subject

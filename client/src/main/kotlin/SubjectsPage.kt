@@ -6,8 +6,8 @@ import react.RComponent
 import react.RState
 import react.dom.h1
 import styled.css
-import styled.styledButton
 import styled.styledDiv
+import ui.common.OutlinedButton
 
 class SubjectsPage : RComponent<SubjectsProps, SubjectsState>() {
     override fun RBuilder.render() {
@@ -15,17 +15,25 @@ class SubjectsPage : RComponent<SubjectsProps, SubjectsState>() {
             css {
                 width = 100.vw
                 padding(horizontal = 64.px)
-                display = Display.flex
-                justifyContent = JustifyContent.spaceBetween
+                boxSizing = BoxSizing.borderBox
             }
-            h1 { +"Classes" }
-            styledButton {
-                +"Term ${props.term}"
-            }
-        }
 
-        for (subject in props.subjects){
-            subjectItem(subject, props.term)
+            styledDiv {
+                css {
+                    padding(top = 64.px, bottom = 32.px)
+                    width = 100.pct
+                    boxSizing = BoxSizing.borderBox
+                    display = Display.flex
+                    justifyContent = JustifyContent.spaceBetween
+                }
+
+                h1 { +"Classes" }
+                OutlinedButton("Term ${props.term}", onClick = {}) {}
+            }
+
+            for (subject in props.subjects){
+                SubjectItem(subject, props.term)
+            }
         }
     }
 

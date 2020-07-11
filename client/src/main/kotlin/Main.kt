@@ -32,4 +32,9 @@ private val styles = CSSBuilder().apply {
     "*"{
         fontFamily = "Montserrat, Helvetica, sans-serif"
     }
+    h1 {
+        fontSize = 4.5.rem
+        fontWeight = FontWeight.w600
+        margin(top = 0.px, bottom = 0.px)
+    }
 }

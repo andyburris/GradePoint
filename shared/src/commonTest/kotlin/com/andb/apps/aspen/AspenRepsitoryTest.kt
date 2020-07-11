@@ -13,7 +13,7 @@ import kotlin.test.assertEquals
 class AspenRepsitoryTest : BaseTest() {
 
     private lateinit var repository: AspenRepository
-    private var dbHelper = DatabaseHelper(testDbConnection())
+    private var dbHelper = DatabaseHelperImpl(testDbConnection())
     private val settings = Kissme()
     private val aspenApi = AspenApiMock()
 
@@ -29,7 +29,7 @@ class AspenRepsitoryTest : BaseTest() {
     @Test
     fun saveSubjectConfigTest() = runTest {
         val subjects = repository.getTerm(null)
-        val subjectConfig = dbHelper.selectAllItems().executeAsList().first().toConfig()
+        val subjectConfig = dbHelper.selectAllItems().first().toConfig()
         assertEquals(subjectConfig, subjects.first().config)
     }
 
@@ -44,7 +44,7 @@ class AspenRepsitoryTest : BaseTest() {
     @Test
     fun updateSubjectConfigTest() = runTest {
         val subjects = repository.getTerm(null)
-        fun savedConfig() = dbHelper.selectAllItems().executeAsList().first().toConfig()
+        fun savedConfig() = dbHelper.selectAllItems().first().toConfig()
 
         val downloadedConfig = subjects.first().config
         assertEquals(savedConfig(), downloadedConfig)

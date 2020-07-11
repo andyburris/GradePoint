@@ -16,4 +16,5 @@ actual val platformModule = module {
     }
     single<SqlDriver> { NativeSqliteDriver(KampstarterDb.Schema, "kampstarterdb") }
     single<Storage> { StorageiOS(Kissme("aspenStorage")) }
+    single<DatabaseHelper> { DatabaseHelperImpl(get()) }
 }

@@ -14,7 +14,6 @@ fun initKoin(appDeclaration: KoinAppDeclaration = {}) = startKoin {
 }
 
 private val coreModule = module {
-    single { DatabaseHelper(get()) }
     single<AspenApi> { AspenApiImpl() }
     single<AspenRepository> { AspenRepository() }
 }
