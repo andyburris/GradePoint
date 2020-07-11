@@ -32,7 +32,12 @@ class SubjectsPage : RComponent<SubjectsProps, SubjectsState>() {
             }
 
             for (subject in props.subjects){
-                SubjectItem(subject, props.term)
+                styledDiv {
+                    css {
+                        marginBottom = 16.px
+                    }
+                    SubjectItem(subject, props.term)
+                }
             }
         }
     }

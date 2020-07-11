@@ -8,6 +8,7 @@ import react.dom.div
 import styled.css
 import styled.styledDiv
 import styled.styledP
+import ui.common.MaterialIcon
 
 class SubjectItem : RComponent<SubjectProps, RState>() {
     override fun RBuilder.render() {
@@ -32,6 +33,13 @@ class SubjectItem : RComponent<SubjectProps, RState>() {
                         width = 64.px
                         height = 64.px
                         margin(right = 24.px)
+                        display = Display.flex
+                        justifyContent = JustifyContent.center
+                        alignItems = Align.center
+                    }
+                    MaterialIcon("school"){
+                        width = 32.px
+                        height = 32.px
                     }
                 }
                 div {
