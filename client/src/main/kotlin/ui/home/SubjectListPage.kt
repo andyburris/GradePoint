@@ -1,5 +1,9 @@
-
+package ui.home
+import ActionHandler
+import TermProps
+import com.andb.apps.aspen.models.Screen
 import com.andb.apps.aspen.models.Subject
+import com.andb.apps.aspen.state.UserAction
 import kotlinx.css.*
 import react.RBuilder
 import react.RComponent
@@ -9,7 +13,7 @@ import styled.css
 import styled.styledDiv
 import ui.common.OutlinedButton
 
-class SubjectsPage : RComponent<SubjectsProps, SubjectsState>() {
+class SubjectListPage : RComponent<SubjectsProps, SubjectsState>() {
     override fun RBuilder.render() {
         styledDiv {
             css {
@@ -31,12 +35,28 @@ class SubjectsPage : RComponent<SubjectsProps, SubjectsState>() {
                 OutlinedButton("Term ${props.term}", onClick = {}) {}
             }
 
-            for (subject in props.subjects){
-                styledDiv {
-                    css {
-                        marginBottom = 16.px
+            if (props.subjects.any { it.hasTerm(props.term) }){
+                for (subject in props.subjects){
+                    styledDiv {
+                        css {
+                            marginBottom = 16.px
+                        }
+                        SubjectItem(
+                            subject = subject,
+                            term = props.term,
+                            onClick = {
+                                val screen = Screen.Subject(subject, props.term)
+                                props.handler(UserAction.OpenScreen(screen))
+                            }
+                        )
                     }
-                    SubjectItem(subject, props.term)
+                }
+            } else {
+                repeat(8) {
+                    styledDiv {
+                        css { marginBottom = 16.px }
+                        LoadingSubjectItem()
+                    }
                 }
             }
         }
@@ -52,8 +72,8 @@ interface SubjectsState : RState {
     var termExpanded : Boolean
 }
 
-fun RBuilder.subjectsPage(subjects: List<Subject>, term: Int, handler: ActionHandler){
-    child(SubjectsPage::class){
+fun RBuilder.SubjectListPage(subjects: List<Subject>, term: Int, handler: ActionHandler){
+    child(SubjectListPage::class){
         attrs {
             this.subjects = subjects
             this.term = term

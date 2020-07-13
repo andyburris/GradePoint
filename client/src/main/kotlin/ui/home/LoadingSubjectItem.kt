@@ -1,16 +1,20 @@
+package ui.home
 
-import com.andb.apps.aspen.models.Subject
 import kotlinx.css.*
+import kotlinx.css.properties.IterationCount
+import kotlinx.css.properties.animation
+import kotlinx.css.properties.s
+import kotlinx.css.properties.transition
+import kotlinx.html.js.onClickFunction
 import react.RBuilder
 import react.RComponent
+import react.RProps
 import react.RState
 import react.dom.div
-import styled.css
-import styled.styledDiv
-import styled.styledP
+import styled.*
 import ui.common.MaterialIcon
 
-class SubjectItem : RComponent<SubjectProps, RState>() {
+class LoadingSubjectItem : RComponent<RProps, RState>() {
     override fun RBuilder.render() {
         styledDiv {
             css {
@@ -18,6 +22,14 @@ class SubjectItem : RComponent<SubjectProps, RState>() {
                 flexDirection = FlexDirection.row
                 justifyContent = JustifyContent.spaceBetween
                 alignItems = Align.center
+                kotlinx.css.div {
+                    background = "linearGradient(to right, #eff1f3 4%, #e2e2e2 25%, #eff1f3 36%);"
+                    backgroundSize = "1000px, 100%"
+                    animation(duration = 2.s, iterationCount = IterationCount.infinite){
+                        0 { backgroundPosition = "-1000px 0" }
+                        100 { backgroundPosition = "1000px 0"}
+                    }
+                }
             }
 
             styledDiv {
@@ -29,7 +41,6 @@ class SubjectItem : RComponent<SubjectProps, RState>() {
                 styledDiv {
                     css {
                         borderRadius = 50.pct
-                        backgroundColor = Color("#" + props.subject.config.color.toUInt().toString(16).substring(2))
                         width = 64.px
                         height = 64.px
                         margin(right = 24.px)
@@ -37,41 +48,33 @@ class SubjectItem : RComponent<SubjectProps, RState>() {
                         justifyContent = JustifyContent.center
                         alignItems = Align.center
                     }
-                    MaterialIcon("school"){
-                        width = 32.px
-                        height = 32.px
-                    }
                 }
                 div {
-                    styledP {
+                    styledDiv {
                         css {
-                            fontWeight = FontWeight.w600
+                            height = 16.px
+                            width = 160.px
                         }
-                        +props.subject.name
                     }
-                    styledP { +props.subject.teacher }
+                    styledDiv {
+                        css {
+                            height = 16.px
+                            width = 120.px
+                        }
+                    }
                 }
             }
 
-            styledP(){
+            styledDiv {
                 css {
-                    fontWeight = FontWeight.w600
+                    height = 16.px
+                    width = 60.px
                 }
-                +props.subject.termGrades(props.term).grade.toString()
             }
         }
+
     }
 }
-
-interface SubjectProps : TermProps{
-    var subject: Subject
-}
-
-fun RBuilder.SubjectItem(subject: Subject, term: Int){
-    child(SubjectItem::class){
-        attrs {
-            this.subject = subject
-            this.term = term
-        }
-    }
+fun RBuilder.LoadingSubjectItem(){
+    child(LoadingSubjectItem::class){}
 }
