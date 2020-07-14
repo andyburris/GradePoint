@@ -6,6 +6,7 @@ plugins {
 dependencies {
     implementation(kotlin("stdlib-js"))
     implementation(Deps.Koin.core) //for some reason the client module doesn't recognize this same dependency in commonMain, so reimporting it here
+    implementation(Deps.Klock.js)
 
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core-js:1.3.7")
     implementation("org.jetbrains.kotlinx:kotlinx-html-js:0.7.1")
@@ -25,6 +26,8 @@ dependencies {
     //implementation("org.jetbrains", "kotlin-css-js", "1.0.0-104-kotlin-1.3.72")
     implementation(npm("styled-components"))
     implementation(npm("inline-style-prefixer"))
+
+    implementation(npm("rc-progress"))
 
     //Material UI
     //implementation(npm("@material-ui/core", "^4.9.14"))

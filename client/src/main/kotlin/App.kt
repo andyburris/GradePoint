@@ -28,19 +28,18 @@ class App : RComponent<RProps, AppState>() {
         }
     }
 
+    private val handler: ActionHandler = {
+        setState {
+            screens += it
+        }
+    }
     override fun RBuilder.render() {
         when(state.currentScreen){
             is Screen.Login -> loginPage { username, password ->
-                setState {
-                    screens += UserAction.Login(username, password)
-                }
+                handler.invoke(UserAction.Login(username, password))
             }
-            is Screen.Home -> SubjectListPage((state.currentScreen as Screen.Home).subjects, (state.currentScreen as Screen.Home).term){
-                setState {
-                    screens += it
-                }
-            }
-            is Screen.Subject -> SubjectPage((state.currentScreen as Screen.Subject).subject, (state.currentScreen as Screen.Subject).term)
+            is Screen.Home -> SubjectListPage((state.currentScreen as Screen.Home).subjects, (state.currentScreen as Screen.Home).term, handler)
+            is Screen.Subject -> SubjectPage((state.currentScreen as Screen.Subject).subject, (state.currentScreen as Screen.Subject).term, handler)
             else -> {
                 h1 {
                     +"Not implemented yet"

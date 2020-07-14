@@ -12,13 +12,13 @@ object Theme {
 
 fun CSSBuilder.bold() {
     fontWeight = FontWeight.w600
-    fontSize = 16.sp
+    fontSize = 20.sp
 }
 
 fun CSSBuilder.secondary() {
     fontWeight = FontWeight.normal
     color = rgba(0, 0, 0, 0.5)
-    fontSize = 16.sp
+    fontSize = 20.sp
 }
 
 fun CSSBuilder.header() {

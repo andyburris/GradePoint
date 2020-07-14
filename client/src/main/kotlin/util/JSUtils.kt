@@ -3,10 +3,15 @@ package util
 import kotlinx.css.*
 import kotlinx.css.properties.IterationCount
 import kotlinx.css.properties.s
+import kotlinx.html.DIV
 import org.w3c.dom.HTMLInputElement
 import org.w3c.dom.HTMLTextAreaElement
 import org.w3c.dom.events.Event
+import react.RBuilder
+import styled.StyledDOMBuilder
 import styled.animation
+import styled.css
+import styled.styledDiv
 
 val Event.targetInputValue: String
     get() = (target as? HTMLInputElement)?.value ?: (target as? HTMLTextAreaElement)?.value ?: ""
@@ -39,5 +44,22 @@ fun CSSBuilder.shimmer(){
     animation(duration = 2.s, iterationCount = IterationCount.infinite){
         0 { backgroundPosition = "-1000px 0" }
         100 { backgroundPosition = "1000px 0"}
+    }
+}
+
+fun CSSBuilder.displayFlex(direction: FlexDirection = FlexDirection.inherit, justifyContent: JustifyContent = JustifyContent.inherit, alignItems: Align = Align.auto){
+    display = Display.flex
+    flexDirection = direction
+    this.justifyContent = justifyContent
+    this.alignItems = alignItems
+}
+
+fun RBuilder.flexbox(direction: FlexDirection = FlexDirection.inherit, justifyContent: JustifyContent = JustifyContent.inherit, alignItems: Align = Align.auto, otherCSS: CSSBuilder.() -> Unit = {}, children: StyledDOMBuilder<DIV>.() -> Unit){
+    styledDiv {
+        css {
+            displayFlex(direction, justifyContent, alignItems)
+            otherCSS.invoke(this)
+        }
+        children.invoke(this)
     }
 }

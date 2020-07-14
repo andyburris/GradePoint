@@ -47,6 +47,7 @@ object Deps {
     object Klock {
         const val common = "com.soywiz.korlibs.klock:klock:${Versions.klock}"
         const val android = "com.soywiz.korlibs.klock:klock-android:${Versions.klock}"
+        const val js = "com.soywiz.korlibs.klock:klock-js:${Versions.klock}"
     }
 
     object JetpackCompose {
