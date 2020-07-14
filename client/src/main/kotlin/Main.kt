@@ -5,6 +5,7 @@ import kotlinx.css.*
 import react.RProps
 import react.dom.render
 import styled.injectGlobal
+import ui.header
 import kotlin.browser.document
 
 fun main() {
@@ -33,8 +34,7 @@ private val styles = CSSBuilder().apply {
         fontFamily = "Montserrat, Helvetica, sans-serif"
     }
     h1 {
-        fontSize = 4.5.rem
-        fontWeight = FontWeight.w600
         margin(top = 0.px, bottom = 0.px)
+        header()
     }
 }

@@ -1,7 +1,6 @@
 package ui.common
 
 import kotlinx.css.*
-import kotlinx.css.properties.Transitions
 import kotlinx.css.properties.ms
 import kotlinx.css.properties.transition
 import kotlinx.html.js.onClickFunction
@@ -9,11 +8,12 @@ import org.w3c.dom.events.Event
 import react.RBuilder
 import styled.css
 import styled.styledButton
+import ui.Theme
 
 fun RBuilder.OutlinedButton(text: String, onClick: (Event) -> Unit, cssBuilder: CSSBuilder.() -> Unit){
     styledButton {
         css {
-            padding(vertical = 24.px)
+            padding(all = 24.px)
             position = Position.relative
             borderRadius = 0.px
             borderWidth = 2.px

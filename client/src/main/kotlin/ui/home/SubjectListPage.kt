@@ -1,5 +1,6 @@
 package ui.home
 import ActionHandler
+import ActionHandlerProps
 import TermProps
 import com.andb.apps.aspen.models.Screen
 import com.andb.apps.aspen.models.Subject
@@ -11,7 +12,7 @@ import react.RState
 import react.dom.h1
 import styled.css
 import styled.styledDiv
-import ui.common.OutlinedButton
+import ui.common.TermSwitcher
 
 class SubjectListPage : RComponent<SubjectsProps, SubjectsState>() {
     override fun RBuilder.render() {
@@ -29,10 +30,13 @@ class SubjectListPage : RComponent<SubjectsProps, SubjectsState>() {
                     boxSizing = BoxSizing.borderBox
                     display = Display.flex
                     justifyContent = JustifyContent.spaceBetween
+                    alignItems = Align.center
                 }
 
                 h1 { +"Classes" }
-                OutlinedButton("Term ${props.term}", onClick = {}) {}
+                TermSwitcher(props.term, onSwitch = {
+                    props.handler(UserAction.SwitchTerm(it))
+                })
             }
 
             if (props.subjects.any { it.hasTerm(props.term) }){
@@ -64,7 +68,7 @@ class SubjectListPage : RComponent<SubjectsProps, SubjectsState>() {
 
 }
 
-interface SubjectsProps : TermProps {
+interface SubjectsProps : TermProps, ActionHandlerProps {
     var subjects: List<Subject>
 }
 

@@ -6,6 +6,7 @@ import kotlinx.html.js.onChangeFunction
 import react.RBuilder
 import styled.css
 import styled.styledInput
+import ui.sp
 import util.targetInputValue
 
 fun RBuilder.LoginTextBox(placeholder: String, onChange: (String) -> Unit, password: Boolean = false, cssBuilder: CSSBuilder.() -> Unit){
@@ -15,7 +16,7 @@ fun RBuilder.LoginTextBox(placeholder: String, onChange: (String) -> Unit, passw
         css {
             padding(all = 16.px)
             fontWeight = FontWeight.w600
-            fontSize = 2.25.rem
+            fontSize = 36.sp
             borderWidth = 0.px
             backgroundColor = rgba(0, 0, 0, 0.05)
             "::placeholder"{

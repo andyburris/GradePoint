@@ -9,6 +9,7 @@ import kotlinx.coroutines.launch
 import react.*
 import react.dom.h1
 import ui.home.SubjectListPage
+import ui.login.loginPage
 import ui.subject.SubjectPage
 
 class App : RComponent<RProps, AppState>() {
@@ -31,11 +32,13 @@ class App : RComponent<RProps, AppState>() {
         when(state.currentScreen){
             is Screen.Login -> loginPage { username, password ->
                 setState {
-                    state.screens += UserAction.Login(username, password)
+                    screens += UserAction.Login(username, password)
                 }
             }
-            is Screen.Home -> SubjectListPage((state.currentScreen as Screen.Home).subjects, 4){
-                state.screens += it
+            is Screen.Home -> SubjectListPage((state.currentScreen as Screen.Home).subjects, (state.currentScreen as Screen.Home).term){
+                setState {
+                    screens += it
+                }
             }
             is Screen.Subject -> SubjectPage((state.currentScreen as Screen.Subject).subject, (state.currentScreen as Screen.Subject).term)
             else -> {
@@ -48,7 +51,7 @@ class App : RComponent<RProps, AppState>() {
 }
 
 
-external interface TermProps : ActionHandlerProps {
+external interface TermProps : RProps {
     var term: Int
 }
 

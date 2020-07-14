@@ -1,16 +1,15 @@
+package ui.login
+
 import kotlinx.css.*
 import kotlinx.css.properties.BoxShadow
 import kotlinx.css.properties.BoxShadows
-import kotlinx.html.InputType
-import kotlinx.html.js.onChangeFunction
-import kotlinx.html.js.onClickFunction
-import org.w3c.dom.events.Event
 import react.*
-import react.dom.h5
-import styled.*
+import styled.css
+import styled.styledDiv
+import styled.styledImg
+import ui.Text
+import ui.TextVarient
 import ui.common.OutlinedButton
-import ui.login.LoginTextBox
-import util.targetInputValue
 
 class LoginPage : RComponent<LoginProps, LoginState>() {
 
@@ -26,33 +25,12 @@ class LoginPage : RComponent<LoginProps, LoginState>() {
             styledDiv {
                 css {
                     flexGrow = 0.0
-                    display = Display.flex
-                    flexDirection = FlexDirection.row
-                    alignItems = Align.center
                     margin(left = 64.px, top = 64.px)
                 }
 
-                styledImg(src = "assets/GradePointIcon.svg") {
-                    css {
-                        borderRadius = 50.pct
-                        boxShadow = BoxShadows().apply {
-                            this += BoxShadow(false, 0.px, 3.px, 1.5.px, 0.px, Color("#00000022"))
-                        }
-                        width = 64.px
-                        height = 64.px
-                        margin(right = 32.px)
-                    }
-                }
-
-                styledP {
-                    css {
-                        fontSize = 2.rem
-                        fontWeight = FontWeight.w600
-                        fontFamily = "Montserrat"
-                    }
-                    +"GradePoint"
-                }
+                ProductHeader()
             }
+
             styledDiv {
                 css {
                     flexGrow = 1.0
@@ -60,24 +38,16 @@ class LoginPage : RComponent<LoginProps, LoginState>() {
                     flexDirection = FlexDirection.column
                     justifyContent = JustifyContent.center
                     alignItems = Align.center
-                    //height = 100.vh
                 }
 
                 styledDiv {
-
                     css {
                         width = 100.vw
                         maxWidth = 500.px
                         margin(horizontal = 64.px)
                     }
 
-                    styledP {
-                        css {
-                            fontSize = 2.25.rem
-                            fontWeight = FontWeight.w600
-                        }
-                        +"Log in with Aspen"
-                    }
+                    Text("Log in with Aspen", TextVarient.H3)
 
                     LoginTextBox(
                         placeholder = "Username",
@@ -107,6 +77,31 @@ class LoginPage : RComponent<LoginProps, LoginState>() {
                 }
             }
         }
+    }
+}
+
+private fun RBuilder.ProductHeader(){
+    styledDiv {
+
+        css {
+            display = Display.flex
+            flexDirection = FlexDirection.row
+            alignItems = Align.center
+        }
+
+        styledImg(src = "assets/GradePointIcon.svg") {
+            css {
+                borderRadius = 50.pct
+                boxShadow = BoxShadows().apply {
+                    this += BoxShadow(false, 0.px, 3.px, 1.5.px, 0.px, Color("#00000022"))
+                }
+                width = 64.px
+                height = 64.px
+                margin(right = 32.px)
+            }
+        }
+
+        Text("GradePoint", TextVarient.H3)
     }
 }
 

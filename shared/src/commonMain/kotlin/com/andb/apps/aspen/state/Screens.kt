@@ -130,6 +130,10 @@ class Screens : KoinComponent{
         }
         aspenRepository.updateSubjectConfig(config)
     }
+
+    override fun toString(): String {
+        return stack.value.toString()
+    }
 }
 
 private fun MutableStateFlow<List<Screen>>.updateEach(transform: (Screen) -> Screen) {

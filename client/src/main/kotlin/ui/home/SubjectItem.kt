@@ -9,7 +9,8 @@ import react.RState
 import react.dom.div
 import styled.css
 import styled.styledDiv
-import styled.styledP
+import ui.Text
+import ui.TextVarient
 import ui.common.MaterialIcon
 
 class SubjectItem : RComponent<SubjectItemProps, RState>() {
@@ -32,40 +33,33 @@ class SubjectItem : RComponent<SubjectItemProps, RState>() {
                     flexDirection = FlexDirection.row
                     alignItems = Align.center
                 }
-                styledDiv {
-                    css {
-                        borderRadius = 50.pct
-                        backgroundColor = Color("#" + props.subject.config.color.toUInt().toString(16).substring(2))
-                        width = 64.px
-                        height = 64.px
-                        margin(right = 24.px)
-                        display = Display.flex
-                        justifyContent = JustifyContent.center
-                        alignItems = Align.center
-                    }
-                    MaterialIcon("school"){
-                        width = 32.px
-                        height = 32.px
-                    }
-                }
+
+                SubjectIcon(props.subject.config.color, "school")
+
                 div {
-                    styledP {
-                        css {
-                            fontWeight = FontWeight.w600
-                        }
-                        +props.subject.name
-                    }
-                    styledP { +props.subject.teacher }
+                    Text(props.subject.name, TextVarient.Bold)
+                    Text(props.subject.teacher, TextVarient.Secondary)
                 }
             }
 
-            styledP(){
-                css {
-                    fontWeight = FontWeight.w600
-                }
-                +props.subject.termGrades(props.term).grade.toString()
-            }
+            Text(props.subject.termGrades(props.term).grade.toString(), TextVarient.Bold)
         }
+    }
+}
+
+private fun RBuilder.SubjectIcon(color: Int, iconName: String){
+    styledDiv {
+        css {
+            borderRadius = 50.pct
+            backgroundColor = Color("#" + color.toUInt().toString(16).substring(2))
+            width = 64.px
+            height = 64.px
+            margin(right = 24.px)
+            display = Display.flex
+            justifyContent = JustifyContent.center
+            alignItems = Align.center
+        }
+        MaterialIcon(iconName, size = 32.px)
     }
 }
 
