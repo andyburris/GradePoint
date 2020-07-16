@@ -9,14 +9,15 @@ import react.RBuilder
 import styled.css
 import styled.styledButton
 import ui.Theme
+import ui.dp
 
 fun RBuilder.OutlinedButton(text: String, onClick: (Event) -> Unit, cssBuilder: CSSBuilder.() -> Unit){
     styledButton {
         css {
-            padding(all = 24.px)
+            padding(all = 24.dp)
             position = Position.relative
-            borderRadius = 0.px
-            borderWidth = 2.px
+            borderRadius = 0.dp
+            borderWidth = 2.dp
             border = "solid ${Theme.Primary}"
             backgroundColor = Color.transparent
             fontSize = 1.5.rem
@@ -32,9 +33,9 @@ fun RBuilder.OutlinedButton(text: String, onClick: (Event) -> Unit, cssBuilder: 
                 content = QuotedString("")
                 position = Position.absolute
                 backgroundColor = Theme.Primary
-                bottom = 0.px
-                top = 0.px
-                left = 0.px
+                bottom = 0.dp
+                top = 0.dp
+                left = 0.dp
                 right = 100.pct
                 zIndex = -1
                 transition("right", 100.ms)

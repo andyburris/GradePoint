@@ -1,5 +1,7 @@
 package util
 
+import com.andb.apps.aspen.models.Category
+import com.andb.apps.aspen.models.Subject
 import kotlinx.css.*
 import kotlinx.css.properties.IterationCount
 import kotlinx.css.properties.s
@@ -15,21 +17,6 @@ import styled.styledDiv
 
 val Event.targetInputValue: String
     get() = (target as? HTMLInputElement)?.value ?: (target as? HTMLTextAreaElement)?.value ?: ""
-
-fun CSSBuilder.fluidType(
-    minSize: LinearDimension = 16.px,
-    maxSize: LinearDimension = 16.px,
-    rangeMin: LinearDimension = 0.px,
-    rangeMax: LinearDimension = 1000.px
-) {
-    fontSize = minSize
-    media("(min-width: ${rangeMin.value})"){
-        fontSize = LinearDimension("calc($minSize + (${maxSize.number} - ${minSize.number}) * ((100vw - $rangeMin) / (${rangeMax.number} - ${rangeMin.number})))")
-    }
-    media("(min-width: ${rangeMax.value})"){
-        fontSize = maxSize
-    }
-}
 
 fun clamp(min: LinearDimension, between: LinearDimension, max: LinearDimension): LinearDimension{
     return LinearDimension("clamp($min, $between, $max)")
@@ -47,19 +34,65 @@ fun CSSBuilder.shimmer(){
     }
 }
 
-fun CSSBuilder.displayFlex(direction: FlexDirection = FlexDirection.inherit, justifyContent: JustifyContent = JustifyContent.inherit, alignItems: Align = Align.auto){
+fun CSSBuilder.displayFlex(direction: FlexDirection = FlexDirection.inherit, justifyContent: JustifyContent = JustifyContent.inherit, alignItems: Align = Align.auto, wrap: FlexWrap = FlexWrap.inherit){
     display = Display.flex
     flexDirection = direction
     this.justifyContent = justifyContent
     this.alignItems = alignItems
+    this.flexWrap = wrap
 }
 
-fun RBuilder.flexbox(direction: FlexDirection = FlexDirection.inherit, justifyContent: JustifyContent = JustifyContent.inherit, alignItems: Align = Align.auto, otherCSS: CSSBuilder.() -> Unit = {}, children: StyledDOMBuilder<DIV>.() -> Unit){
+fun RBuilder.flexbox(direction: FlexDirection = FlexDirection.inherit, justifyContent: JustifyContent = JustifyContent.inherit, alignItems: Align = Align.auto, wrap: FlexWrap = FlexWrap.inherit, otherCSS: CSSBuilder.() -> Unit = {}, children: StyledDOMBuilder<DIV>.() -> Unit){
     styledDiv {
         css {
-            displayFlex(direction, justifyContent, alignItems)
+            displayFlex(direction, justifyContent, alignItems, wrap)
             otherCSS.invoke(this)
         }
         children.invoke(this)
+    }
+}
+
+fun Subject.Icon.iconName(): String{
+    return when(this){
+        Subject.Icon.ART -> "palette"
+        Subject.Icon.ATOM -> "school"
+        Subject.Icon.BOOK -> "book"
+        Subject.Icon.CALCULUS -> "school"
+        Subject.Icon.COMPASS -> "school"
+        Subject.Icon.COMPUTER -> "laptop"
+        Subject.Icon.FLASK -> "school"
+        Subject.Icon.LANGUAGE -> "language"
+        Subject.Icon.MUSIC -> "music_note"
+        Subject.Icon.PE -> "directions_run"
+        Subject.Icon.SCHOOL -> "school"
+        Subject.Icon.BIOLOGY -> "school"
+        Subject.Icon.CAMERA -> "camera_alt"
+        Subject.Icon.DICE -> "casino"
+        Subject.Icon.ECONOMICS -> "trending_up"
+        Subject.Icon.ENGINEERING -> "build"
+        Subject.Icon.FILM -> "movie"
+        Subject.Icon.FINANCE -> "attach_money"
+        Subject.Icon.FRENCH -> "outlined_flag"
+        Subject.Icon.GLOBE -> "public"
+        Subject.Icon.GOVERNMENT -> "account_balance"
+        Subject.Icon.HEALTH -> "local_hospital"
+        Subject.Icon.HISTORY -> "school"
+        Subject.Icon.LAW -> "gavel"
+        Subject.Icon.NEWS -> "school"
+        Subject.Icon.PSYCHOLOGY -> "school"
+        Subject.Icon.SOCIOLOGY -> "people"
+        Subject.Icon.SPEAKING -> "school"
+        Subject.Icon.STATISTICS -> "bar_chart"
+        Subject.Icon.THEATER -> "school"
+        Subject.Icon.TRANSLATE -> "translate"
+        Subject.Icon.WRITING -> "edit"
+    }
+}
+
+fun Category.iconName(): String {
+    return when {
+        "assessment" in name.toLowerCase() -> "assignment_turned_in"
+        "participation" in name.toLowerCase() -> "assignment_ind"
+        else -> "assignment"
     }
 }

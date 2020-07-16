@@ -30,7 +30,8 @@ fun CSSBuilder.h3(){
     fontWeight = FontWeight.w600
     fontSize = 36.sp
 }
-val Number.sp: LinearDimension get() = clamp(min = this.px, between = this.vw / 16, max = this.px * 2)
+val Number.sp: LinearDimension get() = clamp(min = this.px * 0.75, between = this.vmin / 12, max = this.px * 2)
+val Number.dp: LinearDimension get() = clamp(min = this.px * 0.75, between = this.vmin / 12, max = this.px * 2)
 
 enum class TextVarient{
     Bold, Secondary, Header, H3

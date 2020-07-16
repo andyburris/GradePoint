@@ -12,6 +12,8 @@ import styled.styledDiv
 import ui.Text
 import ui.TextVarient
 import ui.common.MaterialIcon
+import ui.dp
+import util.iconName
 
 class SubjectItem : RComponent<SubjectItemProps, RState>() {
     override fun RBuilder.render() {
@@ -34,7 +36,7 @@ class SubjectItem : RComponent<SubjectItemProps, RState>() {
                     alignItems = Align.center
                 }
 
-                SubjectIcon(props.subject.config.color, "school")
+                SubjectIcon(props.subject.config.color, props.subject.config.icon.iconName())
 
                 div {
                     Text(props.subject.name, TextVarient.Bold)
@@ -52,14 +54,14 @@ private fun RBuilder.SubjectIcon(color: Int, iconName: String){
         css {
             borderRadius = 50.pct
             backgroundColor = Color("#" + color.toUInt().toString(16).substring(2))
-            width = 64.px
-            height = 64.px
-            margin(right = 24.px)
+            width = 64.dp
+            height = 64.dp
+            margin(right = 24.dp)
             display = Display.flex
             justifyContent = JustifyContent.center
             alignItems = Align.center
         }
-        MaterialIcon(iconName, size = 32.px)
+        MaterialIcon(iconName, size = 32.dp)
     }
 }
 

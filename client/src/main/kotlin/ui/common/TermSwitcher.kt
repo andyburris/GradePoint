@@ -12,56 +12,97 @@ import styled.styledDiv
 import ui.Text
 import ui.TextVarient
 import ui.Theme
+import ui.dp
+import util.displayFlex
 
-class TermSwitcher : RComponent<SwitcherProps, SwitcherState>(){
+fun RBuilder.animated(flipID: String, block: RBuilder.() -> Unit) {
+    Flipped {
+        attrs {
+            this.flipId = flipID
+        }
+        block.invoke(this)
+    }
+}
+
+fun RBuilder.deAnimate(flipID: String, block: RBuilder.() -> Unit){
+    Flipped {
+        attrs {
+            this.inverseFlipId = flipID
+            this.scale = "false"
+        }
+        block.invoke(this)
+    }
+}
+
+fun <T> RBuilder.animatorBase(key: T, block: RBuilder.() -> Unit) {
+    Flipper {
+        attrs {
+            this.flipKey = key.hashCode().toString()
+        }
+        block.invoke(this)
+    }
+}
+
+class TermSwitcher : RComponent<SwitcherProps, SwitcherState>() {
     override fun RBuilder.render() {
-        styledDiv {
-            css {
-                padding(horizontal = 16.px, vertical = 12.px)
-                border = "solid ${Theme.Primary}"
-                borderRadius = 0.px
-                borderWidth = 2.px
-                backgroundColor = Color.transparent
-                display = Display.flex
-                flexDirection = FlexDirection.row
-                alignItems = Align.center
-                cursor = Cursor.pointer
-            }
+        animatorBase(state.expanded) {
+            animated("termSwitcherDiv") {
+                styledDiv {
+                    css {
+                        border = "solid ${Theme.Primary}"
+                        borderRadius = 0.dp
+                        borderWidth = 2.dp
+                        backgroundColor = Color.transparent
+                        cursor = Cursor.pointer
+                        overflow = Overflow.hidden
+                    }
 
-            attrs {
-                onClickFunction = {
-                    setState {
-                        expanded = !expanded
+                    attrs {
+                        onClickFunction = {
+                            setState {
+                                expanded = !expanded
+                            }
+                        }
+                    }
+
+                    deAnimate("termSwitcherDiv") {
+                        styledDiv {
+                            css {
+                                displayFlex(alignItems = Align.center)
+                                padding(horizontal = 16.dp, vertical = 12.dp)
+                            }
+
+                            MaterialIcon("filter_list", color = Theme.Primary) {
+                                marginRight = 16.dp
+                            }
+
+                            Text("TERM", TextVarient.Bold) {
+                                color = Theme.Primary
+                            }
+
+                            if (state.expanded) {
+                                styledDiv {
+                                    css { width = 16.dp }
+                                }
+                                TermItem(term = 1, selected = props.term == 1) { props.onSwitch.invoke(1) }
+                                TermItem(term = 2, selected = props.term == 2) { props.onSwitch.invoke(2) }
+                                TermItem(term = 3, selected = props.term == 3) { props.onSwitch.invoke(3) }
+                                TermItem(term = 4, selected = props.term == 4) { props.onSwitch.invoke(4) }
+                            }
+                        }
                     }
                 }
-            }
-
-            MaterialIcon("filter_list", color = Theme.Primary){
-                marginRight = 16.px
-            }
-
-            Text("TERM", TextVarient.Bold){
-                color = Theme.Primary
-            }
-
-            if (state.expanded){
-                styledDiv {
-                    css { width = 16.px }
-                }
-                TermItem(term = 1, selected = props.term == 1) { props.onSwitch.invoke(1) }
-                TermItem(term = 2, selected = props.term == 2) { props.onSwitch.invoke(2) }
-                TermItem(term = 3, selected = props.term == 3) { props.onSwitch.invoke(3) }
-                TermItem(term = 4, selected = props.term == 4) { props.onSwitch.invoke(4) }
             }
         }
     }
 }
 
-private fun RBuilder.TermItem(term: Int, selected: Boolean, onClick: () -> Unit){
+
+private fun RBuilder.TermItem(term: Int, selected: Boolean, onClick: () -> Unit) {
     styledDiv {
         css {
-            width = 36.px
-            height = 36.px
+            width = 36.dp
+            height = 36.dp
             borderRadius = 50.pct
             backgroundColor = if (selected) Theme.Primary else Color.transparent
             color = if (selected) Color.white else Theme.Primary
@@ -89,8 +130,8 @@ interface SwitcherState : RState {
     var expanded: Boolean
 }
 
-fun RBuilder.TermSwitcher(term: Int, onSwitch: (Int) -> Unit){
-    child(TermSwitcher::class){
+fun RBuilder.TermSwitcher(term: Int, onSwitch: (Int) -> Unit) {
+    child(TermSwitcher::class) {
         attrs {
             this.term = term
             this.onSwitch = onSwitch

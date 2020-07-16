@@ -13,19 +13,20 @@ import react.dom.h1
 import styled.css
 import styled.styledDiv
 import ui.common.TermSwitcher
+import ui.dp
 
 class SubjectListPage : RComponent<SubjectsProps, SubjectsState>() {
     override fun RBuilder.render() {
         styledDiv {
             css {
                 width = 100.vw
-                padding(horizontal = 64.px)
+                padding(horizontal = 64.dp)
                 boxSizing = BoxSizing.borderBox
             }
 
             styledDiv {
                 css {
-                    padding(top = 64.px, bottom = 32.px)
+                    padding(top = 64.dp, bottom = 32.dp)
                     width = 100.pct
                     boxSizing = BoxSizing.borderBox
                     display = Display.flex
@@ -43,7 +44,7 @@ class SubjectListPage : RComponent<SubjectsProps, SubjectsState>() {
                 for (subject in props.subjects){
                     styledDiv {
                         css {
-                            marginBottom = 16.px
+                            marginBottom = 16.dp
                         }
                         SubjectItem(
                             subject = subject,
@@ -58,7 +59,7 @@ class SubjectListPage : RComponent<SubjectsProps, SubjectsState>() {
             } else {
                 repeat(8) {
                     styledDiv {
-                        css { marginBottom = 16.px }
+                        css { marginBottom = 16.dp }
                         LoadingSubjectItem()
                     }
                 }

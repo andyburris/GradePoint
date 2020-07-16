@@ -10,16 +10,13 @@ import styled.css
 import styled.styledDiv
 import styled.styledP
 import styled.styledTd
-import ui.Text
-import ui.TextVarient
-import ui.Theme
-import ui.sp
+import ui.*
 import util.flexbox
 
 fun RDOMBuilder<TR>.AssignmentItem(assignment: Assignment) {
     styledTd {
         Text(assignment.title, TextVarient.Bold) {
-            margin(bottom = 4.px)
+            margin(bottom = 4.dp)
         }
         Text(assignment.category, TextVarient.Secondary)
     }
@@ -45,14 +42,14 @@ fun RDOMBuilder<TR>.AssignmentItem(assignment: Assignment) {
 private fun RBuilder.GradeCircle(grade: Grade.Score) {
     styledDiv {
         css {
-            width = 36.px
-            height = 36.px
-            marginLeft = 16.px
+            width = 36.dp
+            height = 36.dp
+            marginLeft = 16.dp
         }
         flexbox(justifyContent = JustifyContent.center, alignItems = Align.center, otherCSS = {
             position = Position.absolute
-            width = 36.px
-            height = 36.px
+            width = 36.dp
+            height = 36.dp
         }) {
             styledP {
                 css {

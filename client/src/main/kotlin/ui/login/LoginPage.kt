@@ -10,6 +10,7 @@ import styled.styledImg
 import ui.Text
 import ui.TextVarient
 import ui.common.OutlinedButton
+import ui.dp
 
 class LoginPage : RComponent<LoginProps, LoginState>() {
 
@@ -25,7 +26,7 @@ class LoginPage : RComponent<LoginProps, LoginState>() {
             styledDiv {
                 css {
                     flexGrow = 0.0
-                    margin(left = 64.px, top = 64.px)
+                    margin(left = 64.dp, top = 64.dp)
                 }
 
                 ProductHeader()
@@ -43,8 +44,8 @@ class LoginPage : RComponent<LoginProps, LoginState>() {
                 styledDiv {
                     css {
                         width = 100.vw
-                        maxWidth = 500.px
-                        margin(horizontal = 64.px)
+                        maxWidth = 500.dp
+                        margin(horizontal = 64.dp)
                     }
 
                     Text("Log in with Aspen", TextVarient.H3)
@@ -53,7 +54,7 @@ class LoginPage : RComponent<LoginProps, LoginState>() {
                         placeholder = "Username",
                         onChange = { setState { username = it } }
                     ) {
-                        marginTop = 64.px
+                        marginTop = 64.dp
                     }
 
                     LoginTextBox(
@@ -61,7 +62,7 @@ class LoginPage : RComponent<LoginProps, LoginState>() {
                         placeholder = "Password",
                         password = true
                     ) {
-                        marginTop = 32.px
+                        marginTop = 32.dp
                     }
 
                     OutlinedButton(
@@ -71,7 +72,7 @@ class LoginPage : RComponent<LoginProps, LoginState>() {
                             props.onLoginClicked(state.username, state.password)
                         }
                     ){
-                        margin(top = 64.px)
+                        margin(top = 64.dp)
                         width = 100.pct
                     }
                 }
@@ -93,11 +94,11 @@ private fun RBuilder.ProductHeader(){
             css {
                 borderRadius = 50.pct
                 boxShadow = BoxShadows().apply {
-                    this += BoxShadow(false, 0.px, 3.px, 1.5.px, 0.px, Color("#00000022"))
+                    this += BoxShadow(false, 0.dp, 3.dp, 1.5.dp, 0.dp, Color("#00000022"))
                 }
-                width = 64.px
-                height = 64.px
-                margin(right = 32.px)
+                width = 64.dp
+                height = 64.dp
+                margin(right = 32.dp)
             }
         }
 

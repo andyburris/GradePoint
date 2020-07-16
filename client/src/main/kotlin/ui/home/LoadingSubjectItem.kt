@@ -8,7 +8,7 @@ import react.RState
 import react.dom.div
 import styled.css
 import styled.styledDiv
-import ui.sp
+import ui.dp
 import util.shimmer
 
 class LoadingSubjectItem : RComponent<RProps, RState>() {
@@ -30,9 +30,9 @@ class LoadingSubjectItem : RComponent<RProps, RState>() {
                 styledDiv {
                     css {
                         borderRadius = 50.pct
-                        width = 64.px
-                        height = 64.px
-                        margin(right = 24.px)
+                        width = 64.dp
+                        height = 64.dp
+                        margin(right = 24.dp)
                         display = Display.flex
                         justifyContent = JustifyContent.center
                         alignItems = Align.center
@@ -42,16 +42,16 @@ class LoadingSubjectItem : RComponent<RProps, RState>() {
                 div {
                     styledDiv {
                         css {
-                            height = 16.sp
-                            width = 160.px
-                            marginBottom = 4.px
+                            height = 16.dp
+                            width = 160.dp
+                            marginBottom = 4.dp
                             shimmer()
                         }
                     }
                     styledDiv {
                         css {
-                            height = 16.sp
-                            width = 120.px
+                            height = 16.dp
+                            width = 120.dp
                             shimmer()
                         }
                     }
@@ -60,8 +60,8 @@ class LoadingSubjectItem : RComponent<RProps, RState>() {
 
             styledDiv {
                 css {
-                    height = 16.px
-                    width = 60.px
+                    height = 16.dp
+                    width = 60.dp
                     shimmer()
                 }
             }
