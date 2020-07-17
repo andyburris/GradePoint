@@ -40,7 +40,9 @@ private val AssignmentTable = functionalComponent<AssignmentTableProps> { props 
             }
 
             tbody {
-                AssignmentTableHeader()
+                animated("assignmentHeader"){
+                    AssignmentTableHeader()
+                }
                 for (assignment in props.assignments) {
                     val isExpanded = assignment.id == expanded
 
@@ -106,16 +108,24 @@ private fun RBuilder.ExpandedAssignment(assignment: Assignment) {
                     border(2.dp, BorderStyle.solid, rgba(0, 0, 0, 0.5), 8.dp)
                 }
 
-                Text("CLASS SCORES", TextVarient.Bold) {
-                    color = Theme.Primary
-                }
+                animated("expandedAssignmentDetails", flippedProps = {
+                    scale = "false"
+                    opacity = "true"
+                    translate = "false"
+                }){
+                    div {
+                        Text("CLASS SCORES", TextVarient.Bold) {
+                            color = Theme.Primary
+                        }
 
-                AssignmentStatistics(assignment.statistics)
-                DetailsItem("Feedback", "None", "message"){
-                    marginTop = 32.dp
-                }
-                DetailsItem("Files", "None", "attach_file"){
-                    marginTop = 24.dp
+                        AssignmentStatistics(assignment.statistics)
+                        DetailsItem("Feedback", "None", "message"){
+                            marginTop = 32.dp
+                        }
+                        DetailsItem("Files", "None", "attach_file"){
+                            marginTop = 24.dp
+                        }
+                    }
                 }
             }
         }
