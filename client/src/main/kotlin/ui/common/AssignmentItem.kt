@@ -26,7 +26,7 @@ fun RBuilder.AssignmentItem(assignment: Assignment) {
 
     styledTd {
         css { textAlign = TextAlign.end }
-        flexbox(alignItems = Align.center) {
+        flexbox {
             Text(assignment.grade.toString(), TextVarient.Bold) {
                 flexGrow = 1.0
             }
@@ -44,11 +44,12 @@ private fun RBuilder.GradeCircle(grade: Grade.Score) {
             height = 36.dp
             marginLeft = 16.dp
         }
-        flexbox(justifyContent = JustifyContent.center, alignItems = Align.center, otherCSS = {
-            position = Position.absolute
-            width = 36.dp
-            height = 36.dp
-        }) {
+        flexbox(justifyContent = JustifyContent.center) {
+            css {
+                position = Position.absolute
+                width = 36.dp
+                height = 36.dp
+            }
             styledP {
                 css {
                     fontSize = 16.sp

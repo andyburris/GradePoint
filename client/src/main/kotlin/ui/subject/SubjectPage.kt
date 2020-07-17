@@ -9,6 +9,7 @@ import com.andb.apps.aspen.models.SubjectGrade
 import com.andb.apps.aspen.state.UserAction
 import kotlinx.css.*
 import kotlinx.css.properties.border
+import kotlinx.html.js.onClickFunction
 import react.RBuilder
 import react.RComponent
 import react.RState
@@ -28,16 +29,20 @@ class SubjectPage : RComponent<SubjectPageProps, RState>() {
     override fun RBuilder.render() {
         styledDiv {
             css {
-                width = 100.vw
+                width = 100.pct
                 padding(horizontal = 64.dp)
+                padding(top = 64.dp)
                 boxSizing = BoxSizing.borderBox
             }
 
+            BackButton {
+                props.handler.invoke(UserAction.Back)
+            }
             styledDiv {
                 css {
                     width = 100.pct
-                    displayFlex(justifyContent = JustifyContent.spaceBetween, alignItems = Align.center, wrap = FlexWrap.wrap)
-                    margin(vertical = 64.dp)
+                    displayFlex(justifyContent = JustifyContent.spaceBetween, wrap = FlexWrap.wrap)
+                    margin(bottom = 64.dp)
                 }
                 Text(props.subject.name, TextVarient.Header)
                 TermSwitcher(props.term) { props.handler(UserAction.SwitchTerm(it)) }
@@ -45,10 +50,9 @@ class SubjectPage : RComponent<SubjectPageProps, RState>() {
 
             flexbox(
                 wrap = FlexWrap.wrapReverse,
-                otherCSS = {
-                    margin(all = (-32).dp)
-                }
+                alignItems = Align.flexEnd
             ) {
+                css { margin(all = (-32).dp) }
                 styledDiv {
                     css {
                         margin(left = 32.dp, top = 32.dp, bottom = 32.dp, right = (-32).dp)
@@ -64,6 +68,20 @@ class SubjectPage : RComponent<SubjectPageProps, RState>() {
                     CategoryTable(props.subject.termGrades(props.term).categories, props.subject.termGrades(props.term).grade)
                 }
             }
+        }
+    }
+}
+
+private fun RBuilder.BackButton(onClick: () -> Unit){
+    flexbox {
+        css { cursor = Cursor.pointer }
+        attrs {
+            onClickFunction = { onClick.invoke() }
+        }
+        MaterialIcon("arrow_back")
+        Text("BACK", TextVarient.Bold){
+            marginLeft = 12.dp
+            color = rgba(0, 0, 0, 0.5)
         }
     }
 }
@@ -90,8 +108,9 @@ private fun RBuilder.CategoryTable(categories: List<Category>, termGrade: Subjec
 }
 
 private fun RBuilder.CategoryItem(category: Category, css: CSSBuilder.() -> Unit = {}){
-    flexbox(justifyContent = JustifyContent.spaceBetween, alignItems = Align.center, otherCSS = css){
-        flexbox(alignItems = Align.center){
+    flexbox(justifyContent = JustifyContent.spaceBetween){
+        css(css)
+        flexbox{
             MaterialIcon(category.iconName())
             Text(category.name, TextVarient.Bold){
                 margin(left = 8.dp)
@@ -105,7 +124,7 @@ private fun RBuilder.CategoryItem(category: Category, css: CSSBuilder.() -> Unit
 }
 
 private fun RBuilder.TotalItem(grade: SubjectGrade){
-    flexbox(justifyContent = JustifyContent.spaceBetween, alignItems = Align.center){
+    flexbox(justifyContent = JustifyContent.spaceBetween){
         Text("Total", TextVarient.Bold){
             color = rgba(0, 0, 0, 0.5)
         }

@@ -34,7 +34,7 @@ fun CSSBuilder.shimmer(){
     }
 }
 
-fun CSSBuilder.displayFlex(direction: FlexDirection = FlexDirection.inherit, justifyContent: JustifyContent = JustifyContent.inherit, alignItems: Align = Align.auto, wrap: FlexWrap = FlexWrap.inherit){
+fun CSSBuilder.displayFlex(direction: FlexDirection = FlexDirection.inherit, justifyContent: JustifyContent = JustifyContent.inherit, alignItems: Align = Align.center, wrap: FlexWrap = FlexWrap.inherit){
     display = Display.flex
     flexDirection = direction
     this.justifyContent = justifyContent
@@ -42,11 +42,10 @@ fun CSSBuilder.displayFlex(direction: FlexDirection = FlexDirection.inherit, jus
     this.flexWrap = wrap
 }
 
-fun RBuilder.flexbox(direction: FlexDirection = FlexDirection.inherit, justifyContent: JustifyContent = JustifyContent.inherit, alignItems: Align = Align.auto, wrap: FlexWrap = FlexWrap.inherit, otherCSS: CSSBuilder.() -> Unit = {}, children: StyledDOMBuilder<DIV>.() -> Unit){
+fun RBuilder.flexbox(direction: FlexDirection = FlexDirection.inherit, justifyContent: JustifyContent = JustifyContent.inherit, alignItems: Align = Align.center, wrap: FlexWrap = FlexWrap.inherit, children: StyledDOMBuilder<DIV>.() -> Unit){
     styledDiv {
         css {
             displayFlex(direction, justifyContent, alignItems, wrap)
-            otherCSS.invoke(this)
         }
         children.invoke(this)
     }

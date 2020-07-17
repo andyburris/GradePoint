@@ -26,20 +26,29 @@ fun CSSBuilder.header() {
     fontSize = 72.sp
 }
 
-fun CSSBuilder.h3(){
+fun CSSBuilder.h3() {
     fontWeight = FontWeight.w600
     fontSize = 36.sp
 }
-val Number.sp: LinearDimension get() = clamp(min = this.px * 0.75, between = this.vmin / 12, max = this.px * 2)
-val Number.dp: LinearDimension get() = clamp(min = this.px * 0.75, between = this.vmin / 12, max = this.px * 2)
 
-enum class TextVarient{
+val Number.sp: LinearDimension get() = clamp(min = this.px * 0.75, between = this.vmin / 12, max = this.px * 2)
+val Number.dp: LinearDimension
+    get() {
+        if (this == 0) return 0.px
+        return when {
+            this.toDouble() > 0 -> clamp(min = this.px * 0.75, between = this.vmin / 12, max = this.px * 2)
+            else -> clamp(min = this.px * 2, between = this.vmin / 12, max = this.px * 0.75)
+        }
+    }
+
+enum class TextVarient {
     Bold, Secondary, Header, H3
 }
-fun RBuilder.Text(text: String, variant: TextVarient, cssBuilder: CSSBuilder.() -> Unit = {}){
+
+fun RBuilder.Text(text: String, variant: TextVarient, cssBuilder: CSSBuilder.() -> Unit = {}) {
     styledP {
         css {
-            when (variant){
+            when (variant) {
                 TextVarient.Bold -> bold()
                 TextVarient.Secondary -> secondary()
                 TextVarient.Header -> header()

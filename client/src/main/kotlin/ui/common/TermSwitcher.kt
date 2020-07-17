@@ -45,7 +45,7 @@ class TermSwitcher : RComponent<SwitcherProps, SwitcherState>() {
                     deAnimate("termSwitcherDiv") {
                         styledDiv {
                             css {
-                                displayFlex(alignItems = Align.center)
+                                displayFlex()
                                 padding(horizontal = 16.dp, vertical = 12.dp)
                             }
 

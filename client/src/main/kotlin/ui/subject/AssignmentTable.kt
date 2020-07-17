@@ -90,7 +90,10 @@ private fun RBuilder.ExpandedAssignmentTopPadding() {
 
 private fun RBuilder.ExpandedAssignment(assignment: Assignment) {
     styledTr {
-        css { cursor = Cursor.pointer }
+        css {
+            cursor = Cursor.pointer
+            pointerEvents = PointerEvents.none
+        }
         td {
             attrs {
                 colSpan = "3"
@@ -98,8 +101,8 @@ private fun RBuilder.ExpandedAssignment(assignment: Assignment) {
 
             styledDiv {
                 css {
-                    margin(top = (-128).dp, right = (-32).dp, left = (-32).dp)
-                    padding(top = 128.dp, right = 32.dp, bottom = 32.dp, left = 32.dp)
+                    margin(top = (-120).dp, right = (-32).dp, left = (-32).dp)
+                    padding(top = 120.dp, right = 32.dp, bottom = 32.dp, left = 32.dp)
                     border(2.dp, BorderStyle.solid, rgba(0, 0, 0, 0.5), 8.dp)
                 }
 
@@ -139,7 +142,8 @@ private fun RBuilder.AssignmentStatistics(statistics: Assignment.Statistics) {
 }
 
 private fun RBuilder.StatisticsItem(type: String, grade: SubjectGrade) {
-    flexbox(justifyContent = JustifyContent.spaceBetween, alignItems = Align.center, otherCSS = { marginTop = 16.dp }) {
+    flexbox(justifyContent = JustifyContent.spaceBetween) {
+        css { marginTop = 16.dp }
         Text(type, TextVarient.Bold)
         Text(grade.toString(), TextVarient.Secondary) {
             color = rgb(0, 0, 0)
@@ -148,11 +152,12 @@ private fun RBuilder.StatisticsItem(type: String, grade: SubjectGrade) {
 }
 
 private fun RBuilder.DetailsItem(title: String, text: String, iconName: String, css: RuleSet){
-    flexbox(justifyContent = JustifyContent.spaceBetween, alignItems = Align.center, otherCSS = css) {
-        flexbox(alignItems = Align.center) {
+    flexbox(justifyContent = JustifyContent.spaceBetween) {
+        css(css)
+        flexbox {
             styledDiv {
                 css {
-                    displayFlex(justifyContent = JustifyContent.center, alignItems = Align.center)
+                    displayFlex(justifyContent = JustifyContent.center)
                     width = 36.dp
                     height = 36.dp
                     borderRadius = 50.pct
@@ -164,7 +169,7 @@ private fun RBuilder.DetailsItem(title: String, text: String, iconName: String, 
                 marginLeft = 24.dp
             }
         }
-        flexbox(alignItems = Align.center) {
+        flexbox {
             Text(text, TextVarient.Secondary)
         }
     }

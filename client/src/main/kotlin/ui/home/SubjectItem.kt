@@ -27,6 +27,7 @@ class SubjectItem : RComponent<SubjectItemProps, RState>() {
                 flexDirection = FlexDirection.row
                 justifyContent = JustifyContent.spaceBetween
                 alignItems = Align.center
+                cursor = Cursor.pointer
             }
 
             styledDiv {
