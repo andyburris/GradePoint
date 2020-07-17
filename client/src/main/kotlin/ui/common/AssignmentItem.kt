@@ -3,9 +3,7 @@ package ui.common
 import com.andb.apps.aspen.models.Assignment
 import com.andb.apps.aspen.models.Grade
 import kotlinx.css.*
-import kotlinx.html.TR
 import react.RBuilder
-import react.dom.RDOMBuilder
 import styled.css
 import styled.styledDiv
 import styled.styledP
@@ -13,7 +11,7 @@ import styled.styledTd
 import ui.*
 import util.flexbox
 
-fun RDOMBuilder<TR>.AssignmentItem(assignment: Assignment) {
+fun RBuilder.AssignmentItem(assignment: Assignment) {
     styledTd {
         Text(assignment.title, TextVarient.Bold) {
             margin(bottom = 4.dp)

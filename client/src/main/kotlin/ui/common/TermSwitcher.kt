@@ -12,36 +12,13 @@ import styled.styledDiv
 import ui.Text
 import ui.TextVarient
 import ui.Theme
+import ui.common.fliptoolkit.animated
+import ui.common.fliptoolkit.animatorBase
+import ui.common.fliptoolkit.deAnimate
 import ui.dp
 import util.displayFlex
 
-fun RBuilder.animated(flipID: String, block: RBuilder.() -> Unit) {
-    Flipped {
-        attrs {
-            this.flipId = flipID
-        }
-        block.invoke(this)
-    }
-}
 
-fun RBuilder.deAnimate(flipID: String, block: RBuilder.() -> Unit){
-    Flipped {
-        attrs {
-            this.inverseFlipId = flipID
-            this.scale = "false"
-        }
-        block.invoke(this)
-    }
-}
-
-fun <T> RBuilder.animatorBase(key: T, block: RBuilder.() -> Unit) {
-    Flipper {
-        attrs {
-            this.flipKey = key.hashCode().toString()
-        }
-        block.invoke(this)
-    }
-}
 
 class TermSwitcher : RComponent<SwitcherProps, SwitcherState>() {
     override fun RBuilder.render() {
