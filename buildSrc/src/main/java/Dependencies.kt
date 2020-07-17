@@ -21,6 +21,7 @@ object Versions {
     const val kissme = "0.2.5"
     const val composeShimmer = "1.0.1"
     const val kotlinResult = "1.1.7"
+    const val composeBackstack = "0.4.0"
 }
 
 object Deps {
@@ -38,6 +39,7 @@ object Deps {
     const val slf4j = "org.slf4j:slf4j-simple:${Versions.slf4j}"
     const val composeShimmer = "com.github.kazemihabib:compose-shimmer:${Versions.composeShimmer}"
     const val kotlinResult = "com.michael-bull.kotlin-result:kotlin-result:${Versions.kotlinResult}"
+    const val composeBackstack = "com.zachklipp:compose-backstack:${Versions.composeBackstack}"
 
     object Koin {
         const val core = "org.koin:koin-core:${Versions.koin}"
