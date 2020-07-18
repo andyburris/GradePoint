@@ -11,7 +11,7 @@ import styled.styledTd
 import ui.*
 import util.flexbox
 
-fun RBuilder.AssignmentItem(assignment: Assignment) {
+fun RBuilder.AssignmentItem(assignment: Assignment, showPercent: Boolean = false) {
     styledTd {
         Text(assignment.title, TextVarient.Bold) {
             margin(bottom = 4.dp)
@@ -27,8 +27,17 @@ fun RBuilder.AssignmentItem(assignment: Assignment) {
     styledTd {
         css { textAlign = TextAlign.end }
         flexbox {
-            Text(assignment.grade.toString(), TextVarient.Bold) {
-                flexGrow = 1.0
+            flexbox(direction = FlexDirection.column, alignItems = Align.flexEnd){
+                css { flexGrow = 1.0 }
+                Text(assignment.grade.toString(), TextVarient.Bold)
+                if (showPercent && assignment.grade is Grade.Score){
+                    val grade = assignment.grade as Grade.Score
+                    val percent = grade.score / grade.possibleScore * 100
+                    Text("$percent%", TextVarient.Bold) {
+                        color = Theme.Primary
+                        fontSize = 12.sp
+                    }
+                }
             }
             if (assignment.grade is Grade.Score) {
                 GradeCircle(assignment.grade as Grade.Score)

@@ -18,10 +18,12 @@ import ui.common.AssignmentItem
 import ui.common.MaterialIcon
 import ui.common.fliptoolkit.animated
 import ui.common.fliptoolkit.animatorBase
+import ui.common.fliptoolkit.springAnimate
+import ui.common.fliptoolkit.springConfig
 import ui.dp
 import util.displayFlex
 import util.flexbox
-import ui.common.fliptoolkit.spring as animatedSpring
+import ui.common.fliptoolkit.spring as springAnimate
 
 external interface AssignmentTableProps : RProps {
     var assignments: List<Assignment>
@@ -62,7 +64,7 @@ private val AssignmentTable = functionalComponent<AssignmentTableProps> { props 
                                     setExpanded.invoke("")
                                 }
                             }
-                            AssignmentItem(assignment)
+                            AssignmentItem(assignment, isExpanded)
                         }
                     }
 
@@ -71,7 +73,7 @@ private val AssignmentTable = functionalComponent<AssignmentTableProps> { props 
                             flipID = "expandedItem",
                             flippedProps = {
                                 onAppear = { element, index, decisionData ->
-                                    animatedSpring(onComplete = {element.removeAttribute("style")}) { (progress, _) ->
+                                    springAnimate(config = springConfig(0.5), onComplete = {element.removeAttribute("style")}) { (progress, _) ->
                                         element.setAttribute("style", "opacity: ${progress}; transform-origin: 0px ${(-128).dp} 0px; transform: scaleY(${progress});")
                                     }
                                 }
@@ -109,9 +111,18 @@ private fun RBuilder.ExpandedAssignment(assignment: Assignment) {
                 }
 
                 animated("expandedAssignmentDetails", flippedProps = {
-                    scale = "false"
-                    opacity = "true"
-                    translate = "false"
+                    onStart = { element, decisionData ->
+                        val config = springConfig(0.1)
+                        println("spring config = $config")
+                        springAnimate(config = config) {
+                            element.setAttribute("style", "opacity: ${1 - it.currentProgress};")
+                        }
+                    }
+                    onComplete = { element, decisionData ->
+                        springAnimate(onComplete = {element.removeAttribute("style")}) {
+                            element.setAttribute("style", "opacity: ${it.currentProgress};")
+                        }
+                    }
                 }){
                     div {
                         Text("CLASS SCORES", TextVarient.Bold) {
