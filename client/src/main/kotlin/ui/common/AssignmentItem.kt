@@ -55,7 +55,6 @@ private fun RBuilder.GradeCircle(grade: Grade.Score) {
         }
         flexbox(justifyContent = JustifyContent.center) {
             css {
-                position = Position.absolute
                 width = 36.dp
                 height = 36.dp
             }
@@ -67,11 +66,17 @@ private fun RBuilder.GradeCircle(grade: Grade.Score) {
                 +grade.letter
             }
         }
-        Circle {
-            attrs {
-                strokeColor = Theme.Primary.value
-                strokeWidth = ((3.0/36) * 100)
-                percent = (grade.score/grade.possibleScore) * 100
+        styledDiv {
+            css {
+                margin(top = ((-36).dp))
+                width = 36.dp
+            }
+            Circle {
+                attrs {
+                    strokeColor = Theme.Primary.value
+                    strokeWidth = ((3.0/36) * 100)
+                    percent = (grade.score/grade.possibleScore) * 100
+                }
             }
         }
 

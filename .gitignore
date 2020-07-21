@@ -14,3 +14,6 @@
 *.hprof
 response.json
 /app/release
+
+# Local Netlify folder
+.netlify
