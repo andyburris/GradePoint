@@ -22,7 +22,7 @@ jobs:
     steps:
       - checkout
       - run:
-          command: ./gradlew :client:build
+          command: ./gradlew :client:build --stacktrace
 # Orchestrate or schedule a set of jobs
 workflows:
   build-android:
