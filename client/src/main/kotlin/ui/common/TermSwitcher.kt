@@ -53,7 +53,7 @@ class TermSwitcher : RComponent<SwitcherProps, SwitcherState>() {
                                 marginRight = 16.dp
                             }
 
-                            Text("TERM", TextVarient.Bold) {
+                            Text("TERM" + if (state.expanded) "" else " ${props.term}", TextVarient.Bold) {
                                 color = Theme.Primary
                             }
 

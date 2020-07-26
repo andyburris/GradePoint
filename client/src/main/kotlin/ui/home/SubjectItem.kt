@@ -3,6 +3,7 @@ import TermProps
 import com.andb.apps.aspen.models.Subject
 import kotlinx.css.*
 import kotlinx.html.js.onClickFunction
+import org.w3c.dom.events.Event
 import react.RBuilder
 import react.RComponent
 import react.RState
@@ -37,7 +38,9 @@ class SubjectItem : RComponent<SubjectItemProps, RState>() {
                     alignItems = Align.center
                 }
 
-                SubjectIcon(props.subject.config.color, props.subject.config.icon.iconName())
+                SubjectIcon(props.subject.config.color, props.subject.config.icon.iconName()){
+
+                }
 
                 div {
                     Text(props.subject.name, TextVarient.Bold)
@@ -50,7 +53,7 @@ class SubjectItem : RComponent<SubjectItemProps, RState>() {
     }
 }
 
-private fun RBuilder.SubjectIcon(color: Int, iconName: String){
+private fun RBuilder.SubjectIcon(color: Int, iconName: String, onClick: (Event) -> Unit){
     styledDiv {
         css {
             borderRadius = 50.pct
@@ -62,6 +65,11 @@ private fun RBuilder.SubjectIcon(color: Int, iconName: String){
             justifyContent = JustifyContent.center
             alignItems = Align.center
         }
+
+        attrs {
+            this.onClickFunction = onClick
+        }
+
         MaterialIcon(iconName, size = 32.dp)
     }
 }

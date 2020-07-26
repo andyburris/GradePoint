@@ -31,13 +31,13 @@ fun CSSBuilder.h3() {
     fontSize = 36.sp
 }
 
-val Number.sp: LinearDimension get() = clamp(min = this.px * 0.75, between = this.vmin / 12, max = this.px * 2)
+val Number.sp: LinearDimension get() = this.dp
 val Number.dp: LinearDimension
     get() {
         if (this == 0) return 0.px
         return when {
-            this.toDouble() > 0 -> clamp(min = this.px * 0.75, between = this.vmin / 12, max = this.px * 2)
-            else -> clamp(min = this.px * 2, between = this.vmin / 12, max = this.px * 0.75)
+            this.toDouble() > 0 -> clamp(min = this.px * 0.75, between = this.vmin / 10, max = this.px * 2)
+            else -> clamp(min = this.px * 2, between = this.vmin / 10, max = this.px * 0.75)
         }
     }
 

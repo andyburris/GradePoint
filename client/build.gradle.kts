@@ -23,7 +23,7 @@ dependencies {
 
     //Kotlin Styled (chapter 3)
     implementation("org.jetbrains:kotlin-styled:1.0.0-pre.110-kotlin-1.3.72")
-    //implementation("org.jetbrains", "kotlin-css-js", "1.0.0-104-kotlin-1.3.72")
+    implementation("org.jetbrains", "kotlin-css-js", "1.0.0-110-kotlin-1.3.72")
     implementation(npm("styled-components"))
     implementation(npm("inline-style-prefixer"))
 

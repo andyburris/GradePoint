@@ -18,10 +18,12 @@ import ui.common.AssignmentItem
 import ui.common.MaterialIcon
 import ui.common.fliptoolkit.animated
 import ui.common.fliptoolkit.animatorBase
+import ui.common.fliptoolkit.springAnimate
+import ui.common.fliptoolkit.springConfig
 import ui.dp
 import util.displayFlex
 import util.flexbox
-import ui.common.fliptoolkit.spring as animatedSpring
+import ui.common.fliptoolkit.spring as springAnimate
 
 external interface AssignmentTableProps : RProps {
     var assignments: List<Assignment>
@@ -40,7 +42,9 @@ private val AssignmentTable = functionalComponent<AssignmentTableProps> { props 
             }
 
             tbody {
-                AssignmentTableHeader()
+                animated("assignmentHeader"){
+                    AssignmentTableHeader()
+                }
                 for (assignment in props.assignments) {
                     val isExpanded = assignment.id == expanded
 
@@ -60,7 +64,7 @@ private val AssignmentTable = functionalComponent<AssignmentTableProps> { props 
                                     setExpanded.invoke("")
                                 }
                             }
-                            AssignmentItem(assignment)
+                            AssignmentItem(assignment, isExpanded)
                         }
                     }
 
@@ -69,7 +73,7 @@ private val AssignmentTable = functionalComponent<AssignmentTableProps> { props 
                             flipID = "expandedItem",
                             flippedProps = {
                                 onAppear = { element, index, decisionData ->
-                                    animatedSpring(onComplete = {element.removeAttribute("style")}) { (progress, _) ->
+                                    springAnimate(config = springConfig(0.5), onComplete = {element.removeAttribute("style")}) { (progress, _) ->
                                         element.setAttribute("style", "opacity: ${progress}; transform-origin: 0px ${(-128).dp} 0px; transform: scaleY(${progress});")
                                     }
                                 }
@@ -106,16 +110,33 @@ private fun RBuilder.ExpandedAssignment(assignment: Assignment) {
                     border(2.dp, BorderStyle.solid, rgba(0, 0, 0, 0.5), 8.dp)
                 }
 
-                Text("CLASS SCORES", TextVarient.Bold) {
-                    color = Theme.Primary
-                }
+                animated("expandedAssignmentDetails", flippedProps = {
+                    onStart = { element, decisionData ->
+                        val config = springConfig(0.1)
+                        println("spring config = $config")
+                        springAnimate(config = config) {
+                            element.setAttribute("style", "opacity: ${1 - it.currentProgress};")
+                        }
+                    }
+                    onComplete = { element, decisionData ->
+                        springAnimate(onComplete = {element.removeAttribute("style")}) {
+                            element.setAttribute("style", "opacity: ${it.currentProgress};")
+                        }
+                    }
+                }){
+                    div {
+                        Text("CLASS SCORES", TextVarient.Bold) {
+                            color = Theme.Primary
+                        }
 
-                AssignmentStatistics(assignment.statistics)
-                DetailsItem("Feedback", "None", "message"){
-                    marginTop = 32.dp
-                }
-                DetailsItem("Files", "None", "attach_file"){
-                    marginTop = 24.dp
+                        AssignmentStatistics(assignment.statistics)
+                        DetailsItem("Feedback", "None", "message"){
+                            marginTop = 32.dp
+                        }
+                        DetailsItem("Files", "None", "attach_file"){
+                            marginTop = 24.dp
+                        }
+                    }
                 }
             }
         }

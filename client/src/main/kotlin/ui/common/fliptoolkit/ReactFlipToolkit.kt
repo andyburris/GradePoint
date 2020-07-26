@@ -49,7 +49,7 @@ external interface DecisionData {
 internal external val spring : (SpringOptions) -> Unit
 
 internal external interface SpringOptions {
-    var config: String
+    var config: SpringConfig
     var values: dynamic
     var onUpdate: (dynamic) -> Unit
     var delay: Number

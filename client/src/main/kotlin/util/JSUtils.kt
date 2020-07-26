@@ -28,10 +28,10 @@ private val LinearDimension.number: Double get() = value.takeWhile { it in '0'..
 fun CSSBuilder.shimmer(){
     background = "linear-gradient(to right, #eff1f3 4%, #e2e2e2 25%, #eff1f3 36%);"
     backgroundSize = "1000px, 100%"
-    animation(duration = 2.s, iterationCount = IterationCount.infinite){
+/*    animation(duration = 2.s, iterationCount = IterationCount.infinite){
         0 { backgroundPosition = "-1000px 0" }
         100 { backgroundPosition = "1000px 0"}
-    }
+    }*/
 }
 
 fun CSSBuilder.displayFlex(direction: FlexDirection = FlexDirection.inherit, justifyContent: JustifyContent = JustifyContent.inherit, alignItems: Align = Align.center, wrap: FlexWrap = FlexWrap.inherit){

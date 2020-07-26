@@ -5,6 +5,7 @@ orbs:
   # Declare a dependency on the welcome-orb and the android orb
   welcome: circleci/welcome-orb@0.4.1
   android: circleci/android@0.2.1
+  gradle: circleci/gradle@2.1.0
 # Declare jobs
 jobs:
   build-android:
@@ -16,13 +17,17 @@ jobs:
     environment:
       # kotlin.incremental=false and kotlin.compiler.execution.strategy=in-process are required due to an issue with the Kotlin compiler in memory constrained environments: https://youtrack.jetbrains.com/issue/KT-15562
       GRADLE_OPTS: -Xmx1536m -XX:+HeapDumpOnOutOfMemoryError -Dorg.gradle.caching=true -Dorg.gradle.configureondemand=true -Dkotlin.compiler.execution.strategy=in-process -Dkotlin.incremental=false
+  build-web:
+    executor: gradle/default
+    steps:
+      - checkout
+      - run:
+          command: ./gradlew :client:build --stacktrace
 # Orchestrate or schedule a set of jobs
 workflows:
-  # Name the workflow "welcome"
-  welcome:
-    # Run the welcome/run job in its own container
-    jobs:
-      - welcome/run
   build-android:
     jobs:
       - build-android
+  build-web:
+    jobs:
+      - build-web
