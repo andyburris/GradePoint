@@ -46,29 +46,32 @@ kotlin {
                 useExperimentalAnnotation("kotlinx.coroutines.ExperimentalCoroutinesApi")
             }
         }
-    }
 
-    sourceSets["commonMain"].dependencies {
-        implementation(kotlin("stdlib-common", Versions.kotlin))
-        implementation(Deps.SqlDelight.runtime)
-        implementation(Deps.Ktor.commonCore)
-        implementation(Deps.Ktor.commonJson)
-        implementation(Deps.Ktor.commonLogging)
-        implementation(Deps.Coroutines.common)
-        implementation(Deps.stately)
-        implementation(Deps.multiplatformSettings)
-        implementation(Deps.Koin.core)
-        implementation(Deps.Ktor.commonSerialization)
-        implementation(Deps.Klock.common)
-        implementation(Deps.Kissme.common)
-        //implementation("org.jetbrains.kotlinx:kotlinx-serialization-runtime-common:${Versions.serialization}")
-        //implementation("com.michael-bull.kotlin-result:kotlin-result:1.1.7")
-    }
+        val commonMain by getting {
+            dependencies {
+                implementation(kotlin("stdlib-common", Versions.kotlin))
+                implementation(Deps.SqlDelight.runtime)
+                implementation(Deps.Ktor.commonCore)
+                implementation(Deps.Ktor.commonJson)
+                implementation(Deps.Ktor.commonLogging)
+                implementation(Deps.Coroutines.common)
+                implementation(Deps.stately)
+                implementation(Deps.multiplatformSettings)
+                implementation(Deps.Koin.core)
+                implementation(Deps.Ktor.commonSerialization)
+                implementation(Deps.Klock.common)
+                implementation(Deps.Kissme.common)
+                //implementation("com.michael-bull.kotlin-result:kotlin-result:1.1.8")
+            }
+        }
 
-    sourceSets["commonTest"].dependencies {
-        implementation(Deps.multiplatformSettingsTest)
-        implementation(Deps.KotlinTest.common)
-        implementation(Deps.KotlinTest.annotations)
+        val commonTest by getting {
+            dependencies {
+                implementation(Deps.multiplatformSettingsTest)
+                implementation(Deps.KotlinTest.common)
+                implementation(Deps.KotlinTest.annotations)
+            }
+        }
     }
 
     sourceSets["androidMain"].dependencies {

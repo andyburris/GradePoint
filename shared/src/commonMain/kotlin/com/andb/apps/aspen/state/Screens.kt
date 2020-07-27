@@ -2,7 +2,7 @@ package com.andb.apps.aspen.state
 
 import com.andb.apps.aspen.data.repository.AspenRepository
 import com.andb.apps.aspen.models.*
-import com.andb.apps.aspen.newIOThread
+import com.andb.apps.aspen.util.newIOThread
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.map
