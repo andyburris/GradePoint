@@ -1,12 +1,12 @@
 package com.andb.apps.aspen.util
 
-import androidx.ui.graphics.Color
-import androidx.ui.material.ColorPalette
-import androidx.ui.material.darkColorPalette
-import androidx.ui.material.lightColorPalette
-import androidx.ui.unit.Bounds
-import androidx.ui.unit.Density
-import androidx.ui.unit.PxBounds
+import androidx.compose.ui.graphics.Color
+import androidx.compose.material.Colors
+import androidx.compose.material.darkColors
+import androidx.compose.material.lightColors
+import androidx.compose.ui.unit.Bounds
+import androidx.compose.ui.unit.Density
+import androidx.compose.ui.unit.PxBounds
 import com.andb.apps.aspen.state.UserAction
 
 class ActionHandler(val handle: (UserAction) -> Boolean)
@@ -15,7 +15,7 @@ fun PxBounds.toDpBounds(density: Density) = with(density) {
     Bounds(left.toDp(), top.toDp(), right.toDp(), bottom.toDp())
 }
 
-fun ColorPalette.copy(
+fun Colors.copy(
     primary: Color = this.primary,
     primaryVariant: Color = this.primaryVariant,
     secondary: Color = this.secondary,
@@ -29,10 +29,10 @@ fun ColorPalette.copy(
     onSurface: Color = this.onSurface,
     onError: Color = this.onError,
     isLight: Boolean = this.isLight
-): ColorPalette {
+): Colors {
     return if (isLight){
-        lightColorPalette(primary, primaryVariant, secondary, secondaryVariant, background, surface, error, onPrimary, onSecondary, onBackground, onSurface, onError)
+        lightColors(primary, primaryVariant, secondary, secondaryVariant, background, surface, error, onPrimary, onSecondary, onBackground, onSurface, onError)
     } else {
-        darkColorPalette(primary, primaryVariant, secondary, background, surface, error, onPrimary, onSecondary, onBackground, onSurface, onError)
+        darkColors(primary, primaryVariant, secondary, background, surface, error, onPrimary, onSecondary, onBackground, onSurface, onError)
     }
 }

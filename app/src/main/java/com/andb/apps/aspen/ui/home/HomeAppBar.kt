@@ -1,25 +1,26 @@
 package com.andb.apps.aspen.ui.home
 
-import androidx.compose.Composable
-import androidx.ui.core.Layout
-import androidx.ui.core.Modifier
-import androidx.ui.foundation.Box
-import androidx.ui.foundation.Icon
-import androidx.ui.foundation.Text
-import androidx.ui.foundation.drawBackground
-import androidx.ui.foundation.shape.corner.RoundedCornerShape
-import androidx.ui.geometry.Offset
-import androidx.ui.graphics.Color
-import androidx.ui.layout.height
-import androidx.ui.material.BottomAppBar
-import androidx.ui.material.BottomNavigationItem
-import androidx.ui.material.MaterialTheme
-import androidx.ui.material.icons.Icons
-import androidx.ui.material.icons.filled.AccessTime
-import androidx.ui.material.icons.filled.School
-import androidx.ui.material.icons.filled.Settings
-import androidx.ui.unit.dp
+import androidx.compose.foundation.Box
+import androidx.compose.foundation.Icon
+import androidx.compose.foundation.Text
+import androidx.compose.foundation.drawBackground
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.BottomAppBar
+import androidx.compose.material.BottomNavigationItem
+import androidx.compose.material.MaterialTheme
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.AccessTime
+import androidx.compose.material.icons.filled.School
+import androidx.compose.material.icons.filled.Settings
+import androidx.compose.runtime.Composable
+import androidx.compose.ui.Layout
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.geometry.Offset
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.unit.dp
 import com.andb.apps.aspen.models.HomeTab
+
 
 @Composable
 fun HomeAppBar(
@@ -36,32 +37,32 @@ fun HomeAppBar(
         BottomNavigationItem(
             modifier = Modifier.weight(1f),
             icon = { Icon(asset = Icons.Default.School) },
-            text = { Text(text = "Subjects", color = MaterialTheme.colors.onPrimary, maxLines = 1) },
+            label = { Text(text = "Subjects", color = MaterialTheme.colors.onPrimary, maxLines = 1) },
             selected = selectedTab == HomeTab.SUBJECTS,
-            onSelected = { onItemSelected.invoke(HomeTab.SUBJECTS) },
+            onSelect = { onItemSelected.invoke(HomeTab.SUBJECTS) },
             alwaysShowLabels = false
         )
         BottomNavigationItem(
             modifier = Modifier.weight(1f),
             icon = { Icon(asset = Icons.Default.AccessTime) },
-            text = { Text(text = "Recents", color = MaterialTheme.colors.onPrimary, maxLines = 1) },
+            label = { Text(text = "Recents", color = MaterialTheme.colors.onPrimary, maxLines = 1) },
             selected = selectedTab == HomeTab.RECENTS,
-            onSelected = { onItemSelected.invoke(HomeTab.RECENTS) },
+            onSelect = { onItemSelected.invoke(HomeTab.RECENTS) },
             alwaysShowLabels = false
         )
         BottomNavigationItem(
             modifier = Modifier.weight(1f),
             icon = { Icon(asset = Icons.Default.Settings) },
-            text = { Text(text = "Settings", color = MaterialTheme.colors.onPrimary, maxLines = 1) },
+            label = { Text(text = "Settings", color = MaterialTheme.colors.onPrimary, maxLines = 1) },
             selected = selectedTab == HomeTab.SETTINGS,
-            onSelected = { onItemSelected.invoke(HomeTab.SETTINGS) },
+            onSelect = { onItemSelected.invoke(HomeTab.SETTINGS) },
             alwaysShowLabels = false
         )
 
         Layout(children = {
             fab()
             Box(modifier = Modifier.drawBackground(Color.Blue))
-        }) { measurables, constraints, _ ->
+        }) { measurables, constraints ->
             val (fabMeasurable, boxMeasurable) = measurables.map { it.measure(constraints) }
             layout(fabMeasurable.width, fabMeasurable.height) {
                 boxMeasurable.place(Offset.Zero)

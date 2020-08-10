@@ -1,4 +1,4 @@
-pluginManagement {
+/*pluginManagement {
     resolutionStrategy {
         eachPlugin {
             if (requested.id.id == "kotlin2js") {
@@ -6,7 +6,7 @@ pluginManagement {
             }
         }
     }
-}
-include(":app", ":client", ":shared")
-rootProject.name = "Aspen"
+}*/
+include(":app", ":web", ":shared")
+rootProject.name = "GradePoint"
 enableFeaturePreview("GRADLE_METADATA")

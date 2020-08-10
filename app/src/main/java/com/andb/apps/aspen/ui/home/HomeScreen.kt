@@ -1,13 +1,13 @@
 package com.andb.apps.aspen.ui.home
 
-import androidx.animation.transitionDefinition
-import androidx.compose.Composable
-import androidx.ui.animation.DpPropKey
-import androidx.ui.animation.Transition
-import androidx.ui.core.Modifier
-import androidx.ui.layout.offset
-import androidx.ui.material.Scaffold
-import androidx.ui.unit.dp
+import androidx.compose.animation.DpPropKey
+import androidx.compose.animation.Transition
+import androidx.compose.animation.core.transitionDefinition
+import androidx.compose.foundation.layout.offset
+import androidx.compose.material.Scaffold
+import androidx.compose.runtime.Composable
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.unit.dp
 import com.andb.apps.aspen.models.Assignment
 import com.andb.apps.aspen.models.HomeTab
 import com.andb.apps.aspen.models.Subject

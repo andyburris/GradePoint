@@ -1,16 +1,20 @@
 package com.andb.apps.aspen.ui.common.shimmer
 
-import androidx.animation.AnimationClockObservable
-import androidx.compose.remember
-import androidx.ui.animation.asDisposableClock
-import androidx.ui.core.*
-import androidx.ui.geometry.Rect
-import androidx.ui.geometry.Size
-import androidx.ui.graphics.Paint
-import androidx.ui.graphics.drawscope.drawCanvas
-import androidx.ui.graphics.withSaveLayer
+import androidx.compose.animation.asDisposableClock
+import androidx.compose.animation.core.AnimationClockObservable
+import androidx.compose.runtime.remember
+import androidx.compose.ui.*
+import androidx.compose.ui.geometry.Rect
+import androidx.compose.ui.geometry.Size
+import androidx.compose.ui.graphics.Paint
+import androidx.compose.ui.graphics.drawscope.drawCanvas
+import androidx.compose.ui.graphics.withSaveLayer
+import androidx.compose.ui.platform.AnimationClockAmbient
+import androidx.compose.ui.unit.Constraints
+import androidx.compose.ui.unit.LayoutDirection
 import com.andb.apps.aspen.ui.common.shimmer.RepeatMode.RESTART
 import com.andb.apps.aspen.ui.common.shimmer.RepeatMode.REVERSE
+
 
 /**
  * Shimmer is a [Modifier] which adds a shimmering effect to any widget.
@@ -92,8 +96,7 @@ internal class ShimmerModifier(
 
     override fun MeasureScope.measure(
         measurable: Measurable,
-        constraints: Constraints,
-        layoutDirection: LayoutDirection
+        constraints: Constraints
     ): MeasureScope.MeasureResult {
         val placeable = measurable.measure(constraints)
         size = Size(width = placeable.width.toFloat(), height = placeable.height.toFloat())

@@ -60,7 +60,7 @@ android {
     buildToolsVersion = "30.0.0"
 
     composeOptions {
-        kotlinCompilerVersion = "1.3.70-dev-withExperimentalGoogleExtensions-20200424"
+        kotlinCompilerVersion = "1.4.0-rc"
         kotlinCompilerExtensionVersion = Versions.jetpackCompose
     }
 
@@ -74,9 +74,7 @@ android {
 }
 
 dependencies {
-    implementation(Deps.kotlin)
     implementation(project(":shared"))
-    implementation("androidx.recyclerview:recyclerview:1.1.0")
     implementation(Deps.material_x)
     implementation(Deps.app_compat_x)
     implementation(Deps.core_ktx)
@@ -84,9 +82,6 @@ dependencies {
     implementation(Deps.constraintlayout)
     implementation(Deps.SqlDelight.runtimeJdk)
     implementation(Deps.SqlDelight.driverAndroid)
-    implementation(Deps.Coroutines.jdk)
-    implementation(Deps.Coroutines.android)
-    implementation(Deps.multiplatformSettings)
     implementation(Deps.Koin.core)
     implementation(Deps.Koin.viewModel)
     testImplementation(Deps.junit)
@@ -100,5 +95,11 @@ dependencies {
     implementation(Deps.JetpackCompose.test)
     implementation(Deps.JetpackCompose.icons)
     implementation(Deps.Klock.android)
-    implementation(Deps.composeShimmer)
+}
+
+tasks.withType(org.jetbrains.kotlin.gradle.tasks.KotlinCompile::class.java).configureEach {
+    kotlinOptions {
+        jvmTarget = "1.8"
+        freeCompilerArgs += arrayOf("-Xallow-jvm-ir-dependencies", "-Xskip-prerelease-check")
+    }
 }

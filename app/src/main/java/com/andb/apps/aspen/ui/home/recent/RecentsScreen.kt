@@ -1,12 +1,12 @@
 package com.andb.apps.aspen.ui.home.recent
 
-import androidx.compose.Composable
-import androidx.ui.core.Modifier
-import androidx.ui.foundation.Box
-import androidx.ui.foundation.clickable
-import androidx.ui.foundation.lazy.LazyColumnItems
-import androidx.ui.layout.padding
-import androidx.ui.unit.dp
+import androidx.compose.runtime.Composable
+import androidx.compose.ui.Modifier
+import androidx.compose.foundation.Box
+import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.lazy.LazyColumnItems
+import androidx.compose.ui.unit.dp
 import com.andb.apps.aspen.models.Assignment
 import com.andb.apps.aspen.models.Screen
 import com.andb.apps.aspen.state.UserAction

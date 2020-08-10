@@ -1,26 +1,26 @@
 package com.andb.apps.aspen.ui.home.subjectlist
 
-import androidx.compose.Composable
-import androidx.compose.state
-import androidx.ui.core.DensityAmbient
-import androidx.ui.core.Modifier
-import androidx.ui.foundation.Icon
-import androidx.ui.foundation.Text
-import androidx.ui.foundation.clickable
-import androidx.ui.foundation.gestures.DragDirection
-import androidx.ui.foundation.lazy.LazyColumnItems
-import androidx.ui.layout.Column
-import androidx.ui.layout.Spacer
-import androidx.ui.layout.height
-import androidx.ui.material.DropdownMenu
-import androidx.ui.material.DropdownMenuItem
-import androidx.ui.material.IconButton
-import androidx.ui.material.MaterialTheme
-import androidx.ui.material.icons.Icons
-import androidx.ui.material.icons.filled.Edit
-import androidx.ui.material.icons.filled.MoreVert
-import androidx.ui.unit.Position
-import androidx.ui.unit.dp
+import androidx.compose.foundation.Icon
+import androidx.compose.foundation.Text
+import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.lazy.LazyColumnItems
+import androidx.compose.material.DropdownMenu
+import androidx.compose.material.DropdownMenuItem
+import androidx.compose.material.IconButton
+import androidx.compose.material.MaterialTheme
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Edit
+import androidx.compose.material.icons.filled.MoreVert
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.state
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.gesture.scrollorientationlocking.Orientation
+import androidx.compose.ui.platform.DensityAmbient
+import androidx.compose.ui.unit.Position
+import androidx.compose.ui.unit.dp
 import com.andb.apps.aspen.models.Screen
 import com.andb.apps.aspen.models.Subject
 import com.andb.apps.aspen.models.Term
@@ -30,6 +30,7 @@ import com.andb.apps.aspen.ui.common.inbox.inboxItem
 import com.andb.apps.aspen.ui.common.swipeable
 import com.andb.apps.aspen.ui.home.HomeHeader
 import com.andb.apps.aspen.util.ActionHandler
+
 
 @Composable
 fun SubjectsScreen(subjects: List<Subject>, term: Int, actionHandler: ActionHandler) {
@@ -60,7 +61,7 @@ fun SubjectsScreen(subjects: List<Subject>, term: Int, actionHandler: ActionHand
                 config = subject.config,
                 grade = subject.terms.filterIsInstance<Term.WithGrades>().find { it.term == term }!!.grade,
                 modifier = Modifier.swipeable(
-                    DragDirection.Horizontal,
+                    Orientation.Horizontal,
                     DensityAmbient.current,
                     SwipeStep(
                         width = SwipeStep.Width.Size(256.dp),

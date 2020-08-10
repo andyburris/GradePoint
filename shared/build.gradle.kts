@@ -10,6 +10,8 @@ plugins {
 
 android {
     compileSdkVersion(29)
+    buildToolsVersion("29.0.3")
+
     defaultConfig {
         minSdkVersion(Versions.min_sdk)
         targetSdkVersion(Versions.target_sdk)
@@ -17,9 +19,10 @@ android {
         versionName = "1.0"
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
-    compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_1_8
-        targetCompatibility = JavaVersion.VERSION_1_8
+    buildTypes {
+        getByName("release") {
+            minifyEnabled(false)
+        }
     }
 }
 
@@ -49,16 +52,16 @@ kotlin {
     }
 
     sourceSets["commonMain"].dependencies {
-        implementation(kotlin("stdlib-common", Versions.kotlin))
+        //implementation(kotlin("stdlib-common", Versions.kotlin))
+        implementation(Deps.serialization)
         implementation(Deps.SqlDelight.runtime)
         implementation(Deps.Ktor.commonCore)
         implementation(Deps.Ktor.commonJson)
         implementation(Deps.Ktor.commonLogging)
+        implementation(Deps.Ktor.commonSerialization)
         implementation(Deps.Coroutines.common)
         implementation(Deps.stately)
-        implementation(Deps.multiplatformSettings)
         implementation(Deps.Koin.core)
-        implementation(Deps.Ktor.commonSerialization)
         implementation(Deps.Klock.common)
         implementation(Deps.Kissme.common)
         //implementation("org.jetbrains.kotlinx:kotlinx-serialization-runtime-common:${Versions.serialization}")
@@ -66,13 +69,13 @@ kotlin {
     }
 
     sourceSets["commonTest"].dependencies {
-        implementation(Deps.multiplatformSettingsTest)
         implementation(Deps.KotlinTest.common)
         implementation(Deps.KotlinTest.annotations)
+        implementation(Deps.Coroutines.common)
     }
 
     sourceSets["androidMain"].dependencies {
-        implementation(kotlin("stdlib", Versions.kotlin))
+        //implementation(kotlin("stdlib", Versions.kotlin))
         implementation(Deps.SqlDelight.driverAndroid)
         implementation(Deps.Ktor.androidCore)
         implementation(Deps.Ktor.androidSerialization)
@@ -80,9 +83,8 @@ kotlin {
         implementation(Deps.Ktor.jvmJson)
         implementation(Deps.Ktor.jvmLogging)
         implementation(Deps.slf4j)
-        implementation(Deps.Coroutines.jdk)
-        implementation(Deps.Coroutines.android)
         implementation(Deps.Kissme.android)
+        implementation(Deps.Koin.android)
     }
 
     sourceSets["androidTest"].dependencies {
@@ -92,7 +94,6 @@ kotlin {
         implementation(Deps.AndroidXTest.junit)
         implementation(Deps.AndroidXTest.runner)
         implementation(Deps.AndroidXTest.rules)
-        implementation(Deps.Coroutines.test)
         implementation("org.robolectric:robolectric:4.3")
     }
 
@@ -103,23 +104,17 @@ kotlin {
         implementation(Deps.Ktor.iosJson)
         implementation(Deps.Ktor.iosSerialization)
         implementation(Deps.Ktor.iosLogging)
-        implementation(Deps.Coroutines.native) {
-            version {
-                strictly("1.3.5-native-mt")
-            }
-        }
         implementation(Deps.Kissme.ios)
     }
 
     sourceSets["jsMain"].dependencies {
-        implementation(kotlin("stdlib-js"))
-        implementation(Deps.Coroutines.js)
         implementation("org.jetbrains.kotlinx:kotlinx-serialization-runtime-js:${Versions.serialization}")
         implementation(Deps.Ktor.js)
         implementation(Deps.Ktor.jsCore)
         implementation(Deps.Ktor.jsJson)
         implementation(Deps.Ktor.jsSerialization)
         implementation(Deps.Ktor.jsLogging)
+        implementation(Deps.Koin.js)
         //implementation(Deps.SqlDelight.driverJS)
     }
 

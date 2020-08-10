@@ -1,6 +1,6 @@
 package com.andb.apps.aspen.ui.common.shimmer
 
-import androidx.animation.AnimationClockObservable
+import androidx.compose.animation.core.AnimationClockObservable
 
 interface ShimmerEffectFactory {
 

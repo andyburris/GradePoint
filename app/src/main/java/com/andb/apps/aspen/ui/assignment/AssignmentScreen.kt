@@ -1,32 +1,35 @@
 package com.andb.apps.aspen.ui.assignment
 
-import androidx.compose.Composable
-import androidx.ui.core.Alignment
-import androidx.ui.core.Modifier
-import androidx.ui.foundation.*
-import androidx.ui.foundation.shape.corner.CircleShape
-import androidx.ui.graphics.Color
-import androidx.ui.graphics.vector.VectorAsset
-import androidx.ui.layout.*
-import androidx.ui.material.LinearProgressIndicator
-import androidx.ui.material.MaterialTheme
-import androidx.ui.material.Surface
-import androidx.ui.material.icons.Icons
-import androidx.ui.material.icons.filled.Clear
-import androidx.ui.material.icons.filled.Event
-import androidx.ui.material.icons.filled.NotInterested
-import androidx.ui.text.style.TextAlign
-import androidx.ui.text.style.TextOverflow
+import androidx.compose.foundation.*
+import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.material.LinearProgressIndicator
+import androidx.compose.material.MaterialTheme
+import androidx.compose.material.Surface
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Clear
+import androidx.compose.material.icons.filled.Event
+import androidx.compose.material.icons.filled.NotInterested
+import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.vector.VectorAsset
+import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.text.style.TextOverflow
+import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.ui.tooling.preview.Preview
-import androidx.ui.unit.dp
-import androidx.ui.unit.sp
 import com.andb.apps.aspen.AndroidSettings
 import com.andb.apps.aspen.models.Assignment
 import com.andb.apps.aspen.models.Grade
 import com.andb.apps.aspen.models.SubjectGrade
 import com.andb.apps.aspen.state.UserAction
-import com.andb.apps.aspen.util.*
+import com.andb.apps.aspen.util.ActionHandler
+import com.andb.apps.aspen.util.getIconFromCategory
 import com.soywiz.klock.Date
+import com.andb.apps.aspen.util.*
+
 
 @Composable
 fun AssignmentScreen(assignment: Assignment, actionHandler: ActionHandler) {
@@ -36,7 +39,7 @@ fun AssignmentScreen(assignment: Assignment, actionHandler: ActionHandler) {
                 assignment = assignment,
                 onCloseClick = { actionHandler.handle(UserAction.Back) }
             )
-            VerticalScroller(modifier = Modifier.padding(horizontal = 24.dp)) {
+            ScrollableColumn(modifier = Modifier.padding(horizontal = 24.dp)) {
                 Stack(modifier = Modifier.padding(top = 24.dp)) {
                     when (assignment.grade) {
                         is Grade.Score, is Grade.Missing -> ExtendedScoreItem(grade = assignment.grade)

@@ -1,10 +1,11 @@
 package com.andb.apps.aspen.ui.common
 
-import androidx.compose.state
-import androidx.ui.core.*
-import androidx.ui.geometry.Offset
-import androidx.ui.unit.Density
-import androidx.ui.unit.IntSize
+import androidx.compose.runtime.state
+import androidx.compose.ui.*
+import androidx.compose.ui.geometry.Offset
+import androidx.compose.ui.unit.Constraints
+import androidx.compose.ui.unit.Density
+import androidx.compose.ui.unit.IntSize
 
 /*
 fun Modifier.scale(x: Float, y: Float, density: Density): Modifier = composed {
@@ -42,10 +43,9 @@ fun Modifier.scaleConstraints(x: Float = 1f, y: Float = 1f) = this + ScaleConstr
 private class MeasureModifier(val onMeasure: (IntSize) -> Unit) : LayoutModifier{
     override fun MeasureScope.measure(
         measurable: Measurable,
-        constraints: Constraints,
-        layoutDirection: LayoutDirection
+        constraints: Constraints
     ): MeasureScope.MeasureResult {
-        val placeable = measurable.measure(constraints, layoutDirection)
+        val placeable = measurable.measure(constraints)
         onMeasure.invoke(IntSize(placeable.width, placeable.height))
         return layout(placeable.width, placeable.height){
             placeable.place(Offset.Zero)
@@ -64,8 +64,7 @@ private data class Scale(
 ) : LayoutModifier {
     override fun MeasureScope.measure(
         measurable: Measurable,
-        constraints: Constraints,
-        layoutDirection: LayoutDirection
+        constraints: Constraints
     ): MeasureScope.MeasureResult {
         //println("scale - minSize = $minSize")
         val scaledConstraints = lastMeasure?.let {
@@ -73,7 +72,7 @@ private data class Scale(
             val height = (it.height - minSize.height) * y + minSize.height
             Constraints.fixed(width.toInt(), height.toInt())
         } ?: constraints
-        val placeable: Placeable = measurable.measure(scaledConstraints, layoutDirection)
+        val placeable: Placeable = measurable.measure(scaledConstraints)
         onMeasure.invoke(IntSize(placeable.width, placeable.height))
         //lastMeasure.value = IntSize(placeable.width, placeable.height)
         //Log.d("scaleModifier", "constraints = $constraints, scaledConstraints = $scaledConstraints; placeable - width = ${placeable.width}, height = ${placeable.height}")
@@ -87,8 +86,7 @@ private data class Scale(
 private data class ScaleConstraints(private val x: Float, private val y: Float) : LayoutModifier{
     override fun MeasureScope.measure(
         measurable: Measurable,
-        constraints: Constraints,
-        layoutDirection: LayoutDirection
+        constraints: Constraints
     ): MeasureScope.MeasureResult {
         val scaledConstraints = Constraints(
             minWidth = (constraints.minWidth * x).toInt(),
@@ -103,7 +101,7 @@ private data class ScaleConstraints(private val x: Float, private val y: Float) 
             maxHeight = 500
         )
 
-        val placeable: Placeable = measurable.measure(scaledConstraints, layoutDirection)
+        val placeable: Placeable = measurable.measure(scaledConstraints)
         return layout(width = (placeable.width * x).toInt(), height = (placeable.height * y).toInt()){
             placeable.place(
                 x = (-placeable.width / 2 * (1 - x)).toInt(),

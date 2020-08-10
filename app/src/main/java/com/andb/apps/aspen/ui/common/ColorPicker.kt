@@ -1,29 +1,30 @@
 package com.andb.apps.aspen.ui.common
 
-import androidx.compose.Composable
-import androidx.compose.state
-import androidx.compose.stateFor
+import androidx.compose.animation.animate
+import androidx.compose.foundation.*
+import androidx.compose.foundation.gestures.draggable
+import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.material.FilledTextField
+import androidx.compose.material.MaterialTheme
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Colorize
+import androidx.compose.material.icons.filled.Done
+import androidx.compose.material.icons.filled.KeyboardArrowDown
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.state
+import androidx.compose.runtime.stateFor
+import androidx.compose.ui.*
+import androidx.compose.ui.geometry.RRect
+import androidx.compose.ui.geometry.Radius
+import androidx.compose.ui.geometry.toRect
+import androidx.compose.ui.gesture.scrollorientationlocking.Orientation
+import androidx.compose.ui.graphics.*
+import androidx.compose.ui.platform.DensityAmbient
+import androidx.compose.ui.unit.dp
+import androidx.compose.ui.util.toHexString
 import androidx.core.graphics.ColorUtils
 import androidx.core.graphics.toColorInt
-import androidx.ui.animation.animate
-import androidx.ui.core.*
-import androidx.ui.foundation.*
-import androidx.ui.foundation.gestures.DragDirection
-import androidx.ui.foundation.gestures.draggable
-import androidx.ui.foundation.shape.corner.CircleShape
-import androidx.ui.geometry.RRect
-import androidx.ui.geometry.Radius
-import androidx.ui.geometry.toRect
-import androidx.ui.graphics.*
-import androidx.ui.layout.*
-import androidx.ui.material.FilledTextField
-import androidx.ui.material.MaterialTheme
-import androidx.ui.material.icons.Icons
-import androidx.ui.material.icons.filled.Colorize
-import androidx.ui.material.icons.filled.Done
-import androidx.ui.material.icons.filled.KeyboardArrowDown
-import androidx.ui.unit.dp
-import androidx.ui.util.toHexString
 import com.andb.apps.aspen.models.Subject
 
 
@@ -108,7 +109,7 @@ fun ColorGradientPicker(selected: Int, onSelect: (color: Int) -> Unit) {
 
     Stack(
         //Drag stack to allow user to click anywhere on gradient and go there
-        Modifier.draggable(DragDirection.Horizontal) { delta ->
+        Modifier.draggable(Orientation.Horizontal) { delta ->
             draggedPx.value = (draggedPx.value + delta).coerceIn(0f..gradientWidth.value.toFloat())
             delta
         }.padding(end = 32.dp)

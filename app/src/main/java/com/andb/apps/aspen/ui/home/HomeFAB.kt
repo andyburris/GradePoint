@@ -1,21 +1,23 @@
 package com.andb.apps.aspen.ui.home
 
-import androidx.animation.FloatPropKey
-import androidx.animation.transitionDefinition
-import androidx.compose.Composable
-import androidx.ui.animation.DpPropKey
-import androidx.ui.animation.Transition
-import androidx.ui.core.Alignment
-import androidx.ui.core.Modifier
-import androidx.ui.core.drawLayer
-import androidx.ui.foundation.Text
-import androidx.ui.layout.Row
-import androidx.ui.layout.padding
-import androidx.ui.material.ExtendedFloatingActionButton
-import androidx.ui.material.MaterialTheme
-import androidx.ui.unit.dp
+import androidx.compose.animation.DpPropKey
+import androidx.compose.animation.Transition
+import androidx.compose.animation.core.FloatPropKey
+import androidx.compose.animation.core.transitionDefinition
+import androidx.compose.animation.core.tween
+import androidx.compose.foundation.Text
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.padding
+import androidx.compose.material.ExtendedFloatingActionButton
+import androidx.compose.material.MaterialTheme
+import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.drawLayer
+import androidx.compose.ui.unit.dp
 import com.andb.apps.aspen.ui.common.scale
 import com.andb.apps.aspen.ui.common.scaleConstraints
+
 
 enum class FabState {
     HIDDEN, COLLAPSED, EXPANDED
@@ -42,8 +44,8 @@ private val definition = transitionDefinition<FabState> {
     }
 
     transition {
-        fabSize using tween { duration = 199 }
-        termExpansion using tween { duration = 199 }
+        fabSize using tween (durationMillis = 199)
+        termExpansion using tween(durationMillis = 199)
     }
 }
 

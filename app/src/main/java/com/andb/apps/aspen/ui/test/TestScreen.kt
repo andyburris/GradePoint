@@ -1,40 +1,38 @@
 package com.andb.apps.aspen.ui.test
 
-import androidx.animation.FastOutSlowInEasing
-import androidx.animation.FloatPropKey
-import androidx.animation.LinearEasing
-import androidx.animation.transitionDefinition
-import androidx.compose.Composable
-import androidx.compose.remember
-import androidx.compose.state
-import androidx.ui.animation.DpPropKey
-import androidx.ui.animation.Transition
-import androidx.ui.core.Alignment
-import androidx.ui.core.DensityAmbient
-import androidx.ui.core.Modifier
-import androidx.ui.core.drawLayer
-import androidx.ui.foundation.*
-import androidx.ui.foundation.gestures.DragDirection
-import androidx.ui.foundation.shape.corner.CircleShape
-import androidx.ui.graphics.Color
-import androidx.ui.layout.*
-import androidx.ui.material.MaterialTheme
-import androidx.ui.material.TopAppBar
-import androidx.ui.material.icons.Icons
-import androidx.ui.material.icons.filled.Settings
-import androidx.ui.material.icons.filled.UnfoldLess
-import androidx.ui.material.icons.filled.UnfoldMore
+import androidx.compose.animation.DpPropKey
+import androidx.compose.animation.Transition
+import androidx.compose.animation.core.*
+import androidx.compose.foundation.*
+import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.material.MaterialTheme
+import androidx.compose.material.TopAppBar
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Settings
+import androidx.compose.material.icons.filled.UnfoldLess
+import androidx.compose.material.icons.filled.UnfoldMore
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.state
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.drawLayer
+import androidx.compose.ui.gesture.scrollorientationlocking.Orientation
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.DensityAmbient
+import androidx.compose.ui.unit.IntSize
+import androidx.compose.ui.unit.dp
 import androidx.ui.tooling.preview.Preview
-import androidx.ui.unit.IntSize
-import androidx.ui.unit.dp
 import com.andb.apps.aspen.models.Subject
 import com.andb.apps.aspen.ui.common.*
 import com.andb.apps.aspen.ui.settings.SettingsItem
 import com.andb.apps.aspen.util.toggle
 
+
 @Composable
 fun TestScreen() {
-    VerticalScroller(modifier = Modifier.fillMaxSize()) {
+    ScrollableColumn(modifier = Modifier.fillMaxSize()) {
         TopAppBar(
             title = { Text(text = "Test", style = MaterialTheme.typography.h6) },
             backgroundColor = MaterialTheme.colors.primary
@@ -44,7 +42,7 @@ fun TestScreen() {
             icon = Icons.Default.Settings,
             modifier = Modifier
                 .swipeable(
-                    DragDirection.Horizontal,
+                    Orientation.Horizontal,
                     DensityAmbient.current,
                     SwipeStep(SwipeStep.Width.Size(48.dp), Color.Blue, Icons.Default.Settings)
                 )
@@ -67,10 +65,10 @@ private val transition = transitionDefinition<Boolean> {
         this[offset] = 0.dp
     }
     transition {
-        offset using tween {
-            easing = LinearEasing
-            duration = 1000
-        }
+        offset using tween(
+            easing = LinearEasing,
+            durationMillis = 1000
+        )
     }
 }
 
@@ -120,17 +118,17 @@ private fun TestInboxItem() {
     val oldAlpha = remember { FloatPropKey() }
     val newAlpha = remember { FloatPropKey() }
     val transitionDefinition = remember {
-        transitionDefinition {
+        transitionDefinition<Boolean> {
             state(false) { this[percentExpanded] = 0f; this[oldAlpha] = 1f; this[newAlpha] = 0f }
             state(true) { this[percentExpanded] = 1f; this[oldAlpha] = 0f; this[newAlpha] = 1f }
             transition {
-                percentExpanded using tween<Float> { duration = 1000 }
-                oldAlpha using keyframes<Float> {
-                    duration = 1000
+                percentExpanded using tween(durationMillis = 1000)
+                oldAlpha using keyframes {
+                    durationMillis = 1000
                     0f at 500 with FastOutSlowInEasing
                 }
                 newAlpha using keyframes<Float> {
-                    duration = 1000
+                    durationMillis = 1000
                     0f at 500 with FastOutSlowInEasing
                 }
             }

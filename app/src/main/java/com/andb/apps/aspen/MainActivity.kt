@@ -2,27 +2,26 @@ package com.andb.apps.aspen
 
 import android.os.Bundle
 import android.util.Log
-import androidx.animation.TweenBuilder
 import androidx.appcompat.app.AppCompatActivity
-import androidx.compose.Composable
-import androidx.compose.collectAsState
-import androidx.compose.state
-import androidx.ui.core.Alignment
-import androidx.ui.core.Modifier
-import androidx.ui.core.drawLayer
-import androidx.ui.core.setContent
-import androidx.ui.foundation.Box
-import androidx.ui.foundation.Text
-import androidx.ui.graphics.Color
-import androidx.ui.layout.*
-import androidx.ui.material.MaterialTheme
-import androidx.ui.material.Surface
-import androidx.ui.material.darkColorPalette
-import androidx.ui.material.lightColorPalette
-import androidx.ui.text.TextStyle
-import androidx.ui.text.font.FontWeight
-import androidx.ui.unit.dp
-import androidx.ui.unit.sp
+import androidx.compose.animation.core.TweenSpec
+import androidx.compose.foundation.Box
+import androidx.compose.foundation.Text
+import androidx.compose.foundation.layout.*
+import androidx.compose.material.MaterialTheme
+import androidx.compose.material.Surface
+import androidx.compose.material.darkColors
+import androidx.compose.material.lightColors
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.state
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.drawLayer
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.setContent
+import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import com.andb.apps.aspen.android.BuildConfig
 import com.andb.apps.aspen.models.Screen
 import com.andb.apps.aspen.models.recents
@@ -33,8 +32,14 @@ import com.andb.apps.aspen.ui.home.HomeScreen
 import com.andb.apps.aspen.ui.login.LoginScreen
 import com.andb.apps.aspen.ui.subject.SubjectScreen
 import com.andb.apps.aspen.ui.test.TestScreen
-import com.andb.apps.aspen.util.*
+import com.andb.apps.aspen.util.ActionHandler
+import com.andb.apps.aspen.util.NavigationBar
+import com.andb.apps.aspen.util.StatusBar
 import org.koin.android.viewmodel.ext.android.viewModel
+import androidx.compose.runtime.collectAsState
+import com.andb.apps.aspen.util.*
+
+
 
 class MainActivity : AppCompatActivity() {
     companion object {
@@ -76,7 +81,7 @@ fun AppContent(screen: Screen?, actionHandler: ActionHandler) {
                 newState = screen,
                 newTag = screen?.toInboxTag() ?: "",
                 areEquivalent = { old, new -> old?.toInboxTag() == new?.toInboxTag() },
-                animation = TweenBuilder<Float>().also { it.duration = 1000 }
+                animation = TweenSpec<Float>(durationMillis = 1000)
             ) { screen ->
                 when (screen) {
                     is Screen.Login -> LoginScreen(actionHandler)
@@ -103,12 +108,12 @@ fun AppTheme(content: @Composable() () -> Unit) {
     val fontSize = AndroidSettings.fontSizeFlow.collectAsState()
 
     val colors = when (darkMode.value.isDark()) {
-        false -> lightColorPalette(
+        false -> lightColors(
             primary = Color(0xFF388E3C),
             primaryVariant = Color(0xFF1B5E20),
             onSecondary = Color.Black.copy(alpha = .6f)
         )
-        true -> darkColorPalette(
+        true -> darkColors(
             primary = Color(0xFF388E3C),
             primaryVariant = Color(0xFF1B5E20),
             onPrimary = Color.White,

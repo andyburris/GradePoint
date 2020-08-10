@@ -1,19 +1,24 @@
 package com.andb.apps.aspen.ui.common.inbox
 
-import androidx.animation.AnimatedFloat
-import androidx.animation.AnimationBuilder
-import androidx.animation.AnimationEndReason
-import androidx.animation.TweenBuilder
-import androidx.compose.*
-import androidx.ui.animation.animatedFloat
-import androidx.ui.core.*
-import androidx.ui.layout.Stack
-import androidx.ui.layout.height
-import androidx.ui.layout.offset
-import androidx.ui.unit.Bounds
-import androidx.ui.unit.height
-import androidx.ui.unit.width
+import androidx.compose.animation.animatedFloat
+import androidx.compose.animation.core.AnimatedFloat
+import androidx.compose.animation.core.AnimationEndReason
+import androidx.compose.animation.core.AnimationSpec
+import androidx.compose.animation.core.TweenSpec
+import androidx.compose.foundation.layout.Stack
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.offset
+import androidx.compose.runtime.*
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.drawLayer
+import androidx.compose.ui.layout.globalBounds
+import androidx.compose.ui.onChildPositioned
+import androidx.compose.ui.platform.DensityAmbient
+import androidx.compose.ui.unit.Bounds
+import androidx.compose.ui.unit.height
+import androidx.compose.ui.unit.width
 import com.andb.apps.aspen.util.toDpBounds
+
 
 private class InboxState<T> {
     var current: T? = null
@@ -39,7 +44,7 @@ fun <T> InboxParent(
     new: T,
     currentTag: String,
     areEquivalent: (old: T?, new: T) -> Boolean = ReferentiallyEqual,
-    animation: AnimationBuilder<Float> = TweenBuilder(),
+    animation: AnimationSpec<Float> = TweenSpec(),
     children: @Composable() (T) -> Unit
 ) {
     InboxControllerProvider {
@@ -118,7 +123,7 @@ fun <T> InboxParent2(
     newState: T,
     newTag: String,
     areEquivalent: (old: T?, new: T) -> Boolean = ReferentiallyEqual,
-    animation: AnimationBuilder<Float> = TweenBuilder(),
+    animation: AnimationSpec<Float> = TweenSpec(),
     children: @Composable() (T) -> Unit
 ) {
     InboxControllerProvider {
@@ -157,7 +162,7 @@ private fun InboxControllerProvider(children: @Composable() () -> Unit){
 
 @Composable
 private fun animatedScale(
-    animation: AnimationBuilder<Float>,
+    animation: AnimationSpec<Float>,
     visible: Boolean,
     onAnimationFinish: () -> Unit = {}
 ): AnimatedFloat {
