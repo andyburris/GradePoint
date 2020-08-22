@@ -60,7 +60,7 @@ android {
     buildToolsVersion = "30.0.0"
 
     composeOptions {
-        kotlinCompilerVersion = "1.4.0-rc"
+        kotlinCompilerVersion = "1.4.0"
         kotlinCompilerExtensionVersion = Versions.jetpackCompose
     }
 

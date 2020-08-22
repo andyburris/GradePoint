@@ -8,7 +8,6 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.material.AlertDialog
 import androidx.compose.material.Button
 import androidx.compose.material.MaterialTheme
-import androidx.compose.material.RadioGroup
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.FormatSize
 import androidx.compose.material.icons.filled.Palette
@@ -29,6 +28,7 @@ import com.andb.apps.aspen.model.DarkMode
 import com.andb.apps.aspen.models.Screen
 import com.andb.apps.aspen.state.UserAction
 import com.andb.apps.aspen.ui.common.Chip
+import com.andb.apps.aspen.ui.common.RadioItem
 import com.andb.apps.aspen.ui.home.HomeHeader
 import com.andb.apps.aspen.util.ActionHandler
 import com.andb.apps.aspen.util.*
@@ -143,23 +143,23 @@ fun DarkModeDialog(showing: Boolean, onClose: () -> Unit) {
     val selectedMode = state { AndroidSettings.darkMode }
     if (showing) {
         AlertDialog(
-            onCloseRequest = onClose,
+            onDismissRequest = onClose,
             title = { Text(text = "Dark Mode") },
             text = {
-                RadioGroup {
-                    RadioGroupTextItem(
+                Column {
+                    RadioItem(
                         selected = selectedMode.value == DarkMode.LIGHT,
                         onSelect = { selectedMode.value = DarkMode.LIGHT },
                         radioColor = MaterialTheme.colors.primary,
                         text = "Light"
                     )
-                    RadioGroupTextItem(
+                    RadioItem(
                         selected = selectedMode.value == DarkMode.DARK,
                         onSelect = { selectedMode.value = DarkMode.DARK },
                         radioColor = MaterialTheme.colors.primary,
                         text = "Dark"
                     )
-                    RadioGroupTextItem(
+                    RadioItem(
                         selected = selectedMode.value == DarkMode.SYSTEM,
                         onSelect = { selectedMode.value = DarkMode.SYSTEM },
                         radioColor = MaterialTheme.colors.primary,

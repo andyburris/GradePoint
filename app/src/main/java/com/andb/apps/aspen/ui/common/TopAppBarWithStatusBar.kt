@@ -3,7 +3,7 @@ package com.andb.apps.aspen.ui.common
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.foundation.Box
-import androidx.compose.foundation.drawBackground
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.RowScope
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -28,7 +28,7 @@ fun TopAppBarWithStatusBar(
 ) {
     Column {
         Box(
-            modifier = Modifier.fillMaxWidth().height(24.dp).drawBackground(color = statusColor)
+            modifier = Modifier.fillMaxWidth().height(24.dp).background(color = statusColor)
         )
         TopAppBar(
             title,

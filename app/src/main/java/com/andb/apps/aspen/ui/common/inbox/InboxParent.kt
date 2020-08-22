@@ -12,7 +12,6 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.drawLayer
 import androidx.compose.ui.layout.globalBounds
-import androidx.compose.ui.onChildPositioned
 import androidx.compose.ui.platform.DensityAmbient
 import androidx.compose.ui.unit.Bounds
 import androidx.compose.ui.unit.height
@@ -93,11 +92,11 @@ fun <T> InboxParent(
                         } else {
                             val density = DensityAmbient.current
                             Stack(
-                                modifier = Modifier.onChildPositioned {
+                                modifier = Modifier/*.onChildPositioned {
                                     if (pageBounds.value == null){
                                         pageBounds.value = it.globalBounds.toDpBounds(density)
                                     }
-                                }.drawLayer(alpha = 0f),
+                                }*/.drawLayer(alpha = 0f),
                                 children = { children() }
                             )
                         }

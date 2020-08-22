@@ -4,6 +4,7 @@ import androidx.compose.animation.DpPropKey
 import androidx.compose.animation.Transition
 import androidx.compose.animation.core.transitionDefinition
 import androidx.compose.foundation.layout.offset
+import androidx.compose.material.FabPosition
 import androidx.compose.material.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
@@ -52,7 +53,7 @@ fun HomeScreen(
 
     Scaffold(
         floatingActionButton = fab,
-        floatingActionButtonPosition = Scaffold.FabPosition.End,
+        floatingActionButtonPosition = FabPosition.End,
         isFloatingActionButtonDocked = true,
         bottomBar = {
             Transition(definition = appBarOffsetDefinition, toState = fabStateFromTab(tab, expanded)) { state ->

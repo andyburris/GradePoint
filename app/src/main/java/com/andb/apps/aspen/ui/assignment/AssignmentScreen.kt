@@ -34,7 +34,7 @@ import com.andb.apps.aspen.util.*
 @Composable
 fun AssignmentScreen(assignment: Assignment, actionHandler: ActionHandler) {
     AssignmentTextSize {
-        Column(modifier = Modifier.drawBackground(MaterialTheme.colors.background).fillMaxSize()) {
+        Column(modifier = Modifier.background(MaterialTheme.colors.background).fillMaxSize()) {
             Header(
                 assignment = assignment,
                 onCloseClick = { actionHandler.handle(UserAction.Back) }
@@ -176,7 +176,7 @@ private fun DetailItem(title: String, text: String, icon: VectorAsset, modifier:
     Row(verticalGravity = Alignment.CenterVertically, horizontalArrangement = Arrangement.SpaceBetween, modifier = modifier) {
         Row(verticalGravity = Alignment.CenterVertically) {
             Stack(
-                modifier = Modifier.size(32.dp).drawBackground(MaterialTheme.colors.primary, shape = CircleShape)
+                modifier = Modifier.size(32.dp).background(MaterialTheme.colors.primary, shape = CircleShape)
             ) {
                 Icon(
                     asset = icon.copy(defaultHeight = 16.dp, defaultWidth = 16.dp),

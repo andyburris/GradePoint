@@ -1,7 +1,7 @@
 package com.andb.apps.aspen
 
-import com.andb.apps.aspen.db.KampstarterDb
-import com.andb.apps.aspen.db.SubjectConfig
+import com.andb.apps.aspen.SubjectConfigDb
+import com.andb.apps.aspen.SubjectConfig
 import com.andb.apps.aspen.models.Subject
 import com.squareup.sqldelight.Query
 import com.squareup.sqldelight.db.SqlDriver
@@ -18,7 +18,7 @@ interface DatabaseHelper {
 }
 
 class DatabaseHelperImpl(sqlDriver: SqlDriver) : DatabaseHelper {
-    private val dbRef: KampstarterDb = KampstarterDb(sqlDriver)
+    private val dbRef: SubjectConfigDb = SubjectConfigDb(sqlDriver)
 
     override fun selectAllItems(): List<SubjectConfig> = dbRef.tableQueries.selectAll().executeAsList()
 

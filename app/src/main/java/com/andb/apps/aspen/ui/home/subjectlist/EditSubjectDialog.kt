@@ -20,7 +20,7 @@ import com.andb.apps.aspen.ui.common.IconPicker
 fun EditSubjectDialog(subject: Subject, onClose: () -> Unit, onConfigChange: (Subject.Config) -> Unit) {
     val currentConfig = savedInstanceState { subject.config }
     AlertDialog(
-        onCloseRequest = { onClose.invoke() },
+        onDismissRequest = { onClose.invoke() },
         title = { Text(text = "Edit Subject: ${subject.name}") },
         text = {
             ScrollableColumn(modifier = Modifier.weight(1f)) {

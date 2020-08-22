@@ -5,8 +5,8 @@ import androidx.compose.foundation.*
 import androidx.compose.foundation.gestures.draggable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.CircleShape
-import androidx.compose.material.FilledTextField
 import androidx.compose.material.MaterialTheme
+import androidx.compose.material.TextField
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Colorize
 import androidx.compose.material.icons.filled.Done
@@ -43,7 +43,7 @@ fun ColorPicker(selected: Int, modifier: Modifier = Modifier, onSelect: (color: 
                 for (color in Subject.COLOR_PRESETS) {
                     Box(shape = CircleShape,
                         backgroundColor = Color(color),
-                        border = Border(1.dp, MaterialTheme.colors.onBackground),
+                        border = BorderStroke(1.dp, MaterialTheme.colors.onBackground),
                         gravity = ContentGravity.Center,
                         modifier = Modifier.padding(end = 4.dp, bottom = 4.dp).size(32.dp)
                             .clickable(
@@ -77,7 +77,7 @@ fun ColorPickerTextField(selected: Int, onValid: (color: Int) -> Unit) {
     val currentText =
         stateFor(v1 = selected, init = { selected.toHexString().replace("0xff", "#") })
 
-    FilledTextField(
+    TextField(
         value = currentText.value,
         onValueChange = { text ->
             currentText.value = text
@@ -142,7 +142,7 @@ fun ColorGradientPicker(selected: Int, onSelect: (color: Int) -> Unit) {
                     (draggedPx.value).toDp()
                 }),
             shape = CircleShape,
-            border = Border(2.dp, MaterialTheme.colors.onBackground),
+            border = BorderStroke(2.dp, MaterialTheme.colors.onBackground),
             backgroundColor = colors.getColorAtPercent(draggedPx.value / gradientWidth.value)
         )
     }

@@ -16,8 +16,8 @@ fun Modifier.inboxItem(id: String): Modifier = composed {
     } else {
         val density = DensityAmbient.current
         return@composed this + onPositioned {
-            val bounds = it.globalBounds.toDpBounds(density)
-            controller.animationItems[id] = InboxAnimationConfig(bounds)
+           // val bounds = it.globalBounds.toDpBounds(density)
+           // controller.animationItems[id] = InboxAnimationConfig(bounds)
         }
     }
 }

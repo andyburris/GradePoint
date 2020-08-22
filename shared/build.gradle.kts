@@ -27,17 +27,21 @@ android {
 }
 
 kotlin {
-    android()
+    targets {
+        android()
+        //Revert to just ios() when gradle plugin can properly resolve it
+        val onPhone = System.getenv("SDK_NAME")?.startsWith("iphoneos")?:false
+        if(onPhone){
+            iosArm64("ios")
+        }else{
+            iosX64("ios")
+        }
+    }
+
     js {
         browser { }
     }
-    //Revert to just ios() when gradle plugin can properly resolve it
-    val onPhone = System.getenv("SDK_NAME")?.startsWith("iphoneos")?:false
-    if(onPhone){
-        iosArm64("ios")
-    }else{
-        iosX64("ios")
-    }
+
     targets.getByName<KotlinNativeTarget>("ios").compilations["main"].kotlinOptions.freeCompilerArgs +=
         listOf("-Xobjc-generics", "-Xg0")
 
@@ -77,11 +81,11 @@ kotlin {
     sourceSets["androidMain"].dependencies {
         //implementation(kotlin("stdlib", Versions.kotlin))
         implementation(Deps.SqlDelight.driverAndroid)
-        implementation(Deps.Ktor.androidCore)
-        implementation(Deps.Ktor.androidSerialization)
-        implementation(Deps.Ktor.jvmCore)
-        implementation(Deps.Ktor.jvmJson)
-        implementation(Deps.Ktor.jvmLogging)
+//        implementation(Deps.Ktor.androidCore)
+//        implementation(Deps.Ktor.androidSerialization)
+//        implementation(Deps.Ktor.jvmCore)
+//        implementation(Deps.Ktor.jvmJson)
+//        implementation(Deps.Ktor.jvmLogging)
         implementation(Deps.slf4j)
         implementation(Deps.Kissme.android)
         implementation(Deps.Koin.android)
@@ -100,22 +104,22 @@ kotlin {
     sourceSets["iosMain"].dependencies {
         implementation(Deps.SqlDelight.driverIos)
         implementation(Deps.Ktor.ios)
-        implementation(Deps.Ktor.iosCore)
-        implementation(Deps.Ktor.iosJson)
-        implementation(Deps.Ktor.iosSerialization)
-        implementation(Deps.Ktor.iosLogging)
+//        implementation(Deps.Ktor.iosCore)
+//        implementation(Deps.Ktor.iosJson)
+//        implementation(Deps.Ktor.iosSerialization)
+//        implementation(Deps.Ktor.iosLogging)
         implementation(Deps.Kissme.ios)
     }
 
     sourceSets["jsMain"].dependencies {
-        implementation("org.jetbrains.kotlinx:kotlinx-serialization-runtime-js:${Versions.serialization}")
+        //implementation("org.jetbrains.kotlinx:kotlinx-serialization-runtime-js:${Versions.serialization}")
         implementation(Deps.Ktor.js)
         implementation(Deps.Ktor.jsCore)
         implementation(Deps.Ktor.jsJson)
         implementation(Deps.Ktor.jsSerialization)
         implementation(Deps.Ktor.jsLogging)
         implementation(Deps.Koin.js)
-        //implementation(Deps.SqlDelight.driverJS)
+        implementation(Deps.SqlDelight.runtimeJS)
     }
 
     sourceSets["jsTest"].dependencies {
@@ -130,7 +134,7 @@ kotlin {
 }
 
 sqldelight {
-    database("KampstarterDb") {
-        packageName = "com.andb.apps.aspen.db"
+    database("SubjectConfigDb") {
+        packageName = "com.andb.apps.aspen"
     }
 }

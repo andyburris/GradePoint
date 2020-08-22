@@ -7,7 +7,7 @@ import androidx.compose.animation.core.tween
 import androidx.compose.foundation.Box
 import androidx.compose.foundation.Text
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.drawBackground
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.MaterialTheme
@@ -35,7 +35,7 @@ fun SubjectTermSelector(modifier: Modifier = Modifier, onSelect: (term: Int) -> 
 
         Stack(
             modifier = Modifier.height(24.dp)
-                .drawBackground(MaterialTheme.colors.primary, RoundedCornerShape(12.dp))
+                .background(MaterialTheme.colors.primary, RoundedCornerShape(12.dp))
         ) {
             val termKey = DpPropKey()
             val definition = transitionDefinition<Int> {

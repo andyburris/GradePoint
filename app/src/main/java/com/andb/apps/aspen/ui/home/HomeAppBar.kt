@@ -3,7 +3,7 @@ package com.andb.apps.aspen.ui.home
 import androidx.compose.foundation.Box
 import androidx.compose.foundation.Icon
 import androidx.compose.foundation.Text
-import androidx.compose.foundation.drawBackground
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.BottomAppBar
@@ -61,7 +61,7 @@ fun HomeAppBar(
 
         Layout(children = {
             fab()
-            Box(modifier = Modifier.drawBackground(Color.Blue))
+            Box(modifier = Modifier.background(Color.Blue))
         }) { measurables, constraints ->
             val (fabMeasurable, boxMeasurable) = measurables.map { it.measure(constraints) }
             layout(fabMeasurable.width, fabMeasurable.height) {

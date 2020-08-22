@@ -67,7 +67,7 @@ fun LoginScreen(actionHandler: ActionHandler) {
             },
             modifier = Modifier.padding(top = 32.dp),
             shape = RoundedCornerShape(32.dp),
-            padding = InnerPadding(start = 24.dp, end = 24.dp, top = 16.dp, bottom = 16.dp)
+            contentPadding = InnerPadding(start = 24.dp, end = 24.dp, top = 16.dp, bottom = 16.dp)
 
         ) {
             Text(text = "Log in".toUpperCase(), color = MaterialTheme.colors.onPrimary)
