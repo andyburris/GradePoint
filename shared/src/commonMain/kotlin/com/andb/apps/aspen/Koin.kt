@@ -2,6 +2,7 @@ package com.andb.apps.aspen
 
 import com.andb.apps.aspen.data.remote.AspenApi
 import com.andb.apps.aspen.data.remote.AspenApiImpl
+import com.andb.apps.aspen.data.remote.AspenApiMock
 import com.andb.apps.aspen.data.repository.AspenRepository
 import org.koin.core.context.startKoin
 import org.koin.core.module.Module
@@ -14,7 +15,7 @@ fun initKoin(appDeclaration: KoinAppDeclaration = {}) = startKoin {
 }
 
 private val coreModule = module {
-    single<AspenApi> { AspenApiImpl() }
+    single<AspenApi> { AspenApiMock() }
     single<AspenRepository> { AspenRepository() }
 }
 

@@ -17,6 +17,7 @@ import androidx.ui.foundation.*
 import androidx.ui.foundation.gestures.DragDirection
 import androidx.ui.foundation.shape.corner.CircleShape
 import androidx.ui.graphics.Color
+import androidx.ui.graphics.toArgb
 import androidx.ui.layout.*
 import androidx.ui.material.MaterialTheme
 import androidx.ui.material.TopAppBar
@@ -29,8 +30,11 @@ import androidx.ui.unit.IntSize
 import androidx.ui.unit.dp
 import com.andb.apps.aspen.models.Subject
 import com.andb.apps.aspen.ui.common.*
+import com.andb.apps.aspen.ui.common.color.ExpandedColorPicker
 import com.andb.apps.aspen.ui.settings.SettingsItem
+import com.andb.apps.aspen.util.toHSB
 import com.andb.apps.aspen.util.toggle
+import kotlin.random.Random
 
 @Composable
 fun TestScreen() {
@@ -93,11 +97,25 @@ private fun TestAnimation(moved: Boolean, onClick: () -> Unit) {
 @Preview
 @Composable
 private fun TestColorPicker() {
-    val currentColor = state { 0xFFEF5350.toInt() }
-    ColorPicker(
-        selected = currentColor.value,
+    val currentColor = state { Color(0xFF6202EE.toInt()) }
+    ExpandedColorPicker(
+        _selected = currentColor.value,
         modifier = Modifier.padding(horizontal = 24.dp),
-        onSelect = { currentColor.value = it })
+        onSelect = {
+            println("color updated: hsb = ${it.toHSB()}")
+            currentColor.value = it
+        }
+    )
+    Box(
+        modifier = Modifier
+            .padding(top = 16.dp)
+            .size(64.dp)
+            .clickable(onClick = {
+                currentColor.value = Random(21387).run {
+                    Color(nextInt(255), nextInt(255), nextInt(255))
+                }
+            }),
+        backgroundColor = currentColor.value)
 }
 
 @Preview
