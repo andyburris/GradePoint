@@ -12,7 +12,7 @@ import org.koin.core.inject
 class Screens : KoinComponent{
     private val aspenRepository: AspenRepository by inject()
 
-    private val stack: MutableStateFlow<List<Screen>> = MutableStateFlow(listOf())
+    val stack: MutableStateFlow<List<Screen>> = MutableStateFlow(listOf())
     val currentScreen: Flow<Screen> get() = stack.map { it.last() }
 
     init {

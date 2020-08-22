@@ -1,7 +1,6 @@
 package com.andb.apps.aspen.ui.home
 
-import androidx.compose.animation.DpPropKey
-import androidx.compose.animation.Transition
+import androidx.compose.animation.*
 import androidx.compose.animation.core.FloatPropKey
 import androidx.compose.animation.core.transitionDefinition
 import androidx.compose.animation.core.tween
@@ -14,6 +13,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.drawLayer
+import androidx.compose.ui.platform.AnimationClockAmbient
 import androidx.compose.ui.unit.dp
 import com.andb.apps.aspen.ui.common.scale
 import com.andb.apps.aspen.ui.common.scaleConstraints
@@ -44,45 +44,43 @@ private val definition = transitionDefinition<FabState> {
     }
 
     transition {
-        fabSize using tween (durationMillis = 199)
+        fabSize using tween(durationMillis = 199)
         termExpansion using tween(durationMillis = 199)
     }
 }
 
 
+@OptIn(ExperimentalAnimationApi::class)
 @Composable
 fun HomeFab(fabState: FabState, currentTerm: Int, onFabExpandedChanged: (Boolean) -> Unit, onTermChanged: (Int) -> Unit) {
-    Transition(definition = definition, toState = fabState) { transitionState ->
-        ExtendedFloatingActionButton(
-            /*icon = {
-                Icon(asset = Icons.Default.FilterList, modifier = Modifier.size(0.dp))
-            },*/
-            text = {
-                Row(verticalGravity = Alignment.CenterVertically) {
-                    Text(
-                        text = "Term ${if (transitionState[termExpansion] < .5f) currentTerm else " "}".toUpperCase(),
-                        maxLines = 1,
-                        color = MaterialTheme.colors.onPrimary
-                    )
+    val transitionState = transition(definition, fabState)
+    ExtendedFloatingActionButton(
+        /*icon = {
+            Icon(asset = Icons.Default.FilterList, modifier = Modifier.size(0.dp))
+        },*/
+        text = {
+            Row(verticalGravity = Alignment.CenterVertically) {
+                Text(
+                    text = "Term ${if (transitionState[termExpansion] < .5f) currentTerm else " "}".toUpperCase(),
+                    maxLines = 1,
+                    color = MaterialTheme.colors.onPrimary
+                )
+                AnimatedVisibility(visible = fabState == FabState.EXPANDED, enter = expandHorizontally()) {
                     HomeTermSwitcher(
                         currentTerm = currentTerm,
-                        modifier = Modifier
-                            .scale(x = transitionState[termExpansion])
-                            .drawLayer(alpha = transitionState[termExpansion])
-                            .padding(start = 16.dp),
+                        modifier = Modifier.padding(start = 16.dp),
                         onTermSwitch = onTermChanged
                     )
                 }
-            },
-            backgroundColor = MaterialTheme.colors.primary,
-            onClick = {
-                onFabExpandedChanged.invoke(fabState != FabState.EXPANDED)
-            },
-            modifier = Modifier
-                .padding(top = transitionState[fabOffsetKey])
-                .scaleConstraints(transitionState[fabSize], transitionState[fabSize])
-                //.scaleConstraints(0.001f, 0.001f)
-        )
-
-    }
+            }
+        },
+        backgroundColor = MaterialTheme.colors.primary,
+        onClick = {
+            onFabExpandedChanged.invoke(fabState != FabState.EXPANDED)
+        },
+        modifier = Modifier
+            .padding(top = transitionState[fabOffsetKey])
+            .scaleConstraints(transitionState[fabSize], transitionState[fabSize])
+        //.scaleConstraints(0.001f, 0.001f)
+    )
 }

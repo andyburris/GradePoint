@@ -55,18 +55,18 @@ fun AssignmentItem(assignment: Assignment, summaryText: String, modifier: Modifi
                     Text(
                         text = "${score.trimTrailingZeroes()}/${possibleScore.trimTrailingZeroes()}",
                         style = MaterialTheme.typography.subtitle1,
-                        modifier = Modifier.padding(end = 4.dp)
+                        modifier = Modifier.padding(end = 8.dp)
                     )
-                    Stack(Modifier.offset(x = 4.dp)) {
+                    Stack {
                         CircularProgressIndicator(
                             progress = 1f,
-                            modifier = Modifier.size(36.dp),
+                            modifier = Modifier.size(32.dp),
                             strokeWidth = 3.dp,
                             color = MaterialTheme.colors.primary.copy(alpha = 0.24f)
                         )
                         CircularProgressIndicator(
                             progress = (score / possibleScore).coerceAtMost(1.0).toFloat(),
-                            modifier = Modifier.size(36.dp),
+                            modifier = Modifier.size(32.dp),
                             strokeWidth = 3.dp
                         )
                         Text(

@@ -21,7 +21,7 @@ object Versions {
     const val kissme = "0.2.5"
     const val composeShimmer = "1.0.1"
     const val kotlinResult = "1.1.8"
-    const val composeBackstack = "0.4.0"
+    const val composeBackstack = "0.5.0+dev16"
 }
 
 object Deps {

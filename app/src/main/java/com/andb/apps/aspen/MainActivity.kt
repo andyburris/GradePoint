@@ -38,7 +38,7 @@ import com.andb.apps.aspen.util.StatusBar
 import org.koin.android.viewmodel.ext.android.viewModel
 import androidx.compose.runtime.collectAsState
 import com.andb.apps.aspen.util.*
-
+import com.zachklipp.compose.backstack.Backstack
 
 
 class MainActivity : AppCompatActivity() {
@@ -55,9 +55,9 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContent {
             AppTheme {
-                val currentScreen = viewModel.screens.currentScreen.collectAsState(initial = null)
-                StatusBar(currentScreen = currentScreen.value)
-                NavigationBar(currentScreen = currentScreen.value)
+                val currentScreen = viewModel.screens.stack.collectAsState(initial = listOf())
+                StatusBar(currentScreen = currentScreen.value.firstOrNull())
+                NavigationBar(currentScreen = currentScreen.value.firstOrNull())
                 AppContent(currentScreen.value, handler)
             }
         }
@@ -73,27 +73,25 @@ class MainActivity : AppCompatActivity() {
 }
 
 @Composable
-fun AppContent(screen: Screen?, actionHandler: ActionHandler) {
+fun AppContent(stack: List<Screen>, actionHandler: ActionHandler) {
 
     Surface(color = MaterialTheme.colors.background) {
         Stack(Modifier.fillMaxSize()) {
-            InboxParent2(
-                newState = screen,
-                newTag = screen?.toInboxTag() ?: "",
-                areEquivalent = { old, new -> old?.toInboxTag() == new?.toInboxTag() },
-                animation = TweenSpec<Float>(durationMillis = 1000)
-            ) { screen ->
-                when (screen) {
-                    is Screen.Login -> LoginScreen(actionHandler)
-                    is Screen.Home -> {
-                        val expanded = state { false }
-                        HomeScreen(screen.subjects, screen.recents, screen.term, screen.tab, expanded.value, { expanded.value = !expanded.value }, actionHandler)
+            if (stack.isNotEmpty()){
+                Backstack(backstack = stack) { screen ->
+                    when (screen) {
+                        is Screen.Login -> LoginScreen(actionHandler)
+                        is Screen.Home -> {
+                            val expanded = state { false }
+                            HomeScreen(screen.subjects, screen.recents, screen.term, screen.tab, expanded.value, { expanded.value = !expanded.value }, actionHandler)
+                        }
+                        is Screen.Subject -> SubjectScreen(screen.subject, screen.term, actionHandler)
+                        is Screen.Assignment -> AssignmentScreen(screen.assignment, actionHandler)
+                        is Screen.Test -> TestScreen()
                     }
-                    is Screen.Subject -> SubjectScreen(screen.subject, screen.term, actionHandler)
-                    is Screen.Assignment -> AssignmentScreen(screen.assignment, actionHandler)
-                    is Screen.Test -> TestScreen()
                 }
             }
+
             if (BuildConfig.DEBUG) {
                 VersionRibbon(Modifier.gravity(Alignment.TopEnd))
             }

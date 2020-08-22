@@ -94,6 +94,7 @@ dependencies {
     implementation(Deps.JetpackCompose.animation)
     implementation(Deps.JetpackCompose.test)
     implementation(Deps.JetpackCompose.icons)
+    implementation(Deps.composeBackstack)
     implementation(Deps.Klock.android)
 }
 
