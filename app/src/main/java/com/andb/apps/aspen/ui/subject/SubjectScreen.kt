@@ -1,27 +1,27 @@
 package com.andb.apps.aspen.ui.subject
 
-import androidx.compose.Composable
-import androidx.compose.state
-import androidx.ui.core.Alignment
-import androidx.ui.core.Modifier
-import androidx.ui.foundation.*
-import androidx.ui.graphics.toArgb
-import androidx.ui.layout.*
-import androidx.ui.material.*
-import androidx.ui.material.icons.Icons
-import androidx.ui.material.icons.filled.Clear
-import androidx.ui.material.icons.filled.FilterList
-import androidx.ui.text.style.TextOverflow
+import androidx.compose.foundation.*
+import androidx.compose.foundation.layout.*
+import androidx.compose.material.*
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Clear
+import androidx.compose.material.icons.filled.FilterList
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.state
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.toArgb
+import androidx.compose.ui.text.style.TextOverflow
+import androidx.compose.ui.unit.dp
 import androidx.ui.tooling.preview.Preview
-import androidx.ui.unit.dp
 import com.andb.apps.aspen.models.*
 import com.andb.apps.aspen.state.UserAction
 import com.andb.apps.aspen.ui.common.AssignmentItem
 import com.andb.apps.aspen.ui.common.inbox.inboxItem
 import com.andb.apps.aspen.util.ActionHandler
-import com.andb.apps.aspen.util.icon
 import com.andb.apps.aspen.util.trimTrailingZeroes
 import com.soywiz.klock.Date
+import com.andb.apps.aspen.util.*
 
 @Composable
 fun SubjectScreen(subject: Subject, selectedTerm: Int, actionHandler: ActionHandler) {
@@ -80,7 +80,7 @@ fun SubjectScreen(subject: Subject, selectedTerm: Int, actionHandler: ActionHand
         bodyContent = {
             if (subject.hasTerm(selectedTerm)) {
                 val termGrades = subject.termGrades(selectedTerm)
-                VerticalScroller {
+                ScrollableColumn {
                     CategoriesCard(categories = termGrades.categories, termGrade = termGrades.grade)
                     AssignmentTable(assignments = termGrades.assignments) {
                         val screen = Screen.Assignment(it)

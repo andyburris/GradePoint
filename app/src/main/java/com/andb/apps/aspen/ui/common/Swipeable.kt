@@ -1,21 +1,21 @@
 package com.andb.apps.aspen.ui.common
 
-import androidx.ui.animation.animatedFloat
-import androidx.ui.core.Modifier
-import androidx.ui.core.composed
-import androidx.ui.core.drawBehind
-import androidx.ui.foundation.gestures.DragDirection
-import androidx.ui.foundation.gestures.draggable
-import androidx.ui.geometry.Size
-import androidx.ui.graphics.Color
-import androidx.ui.graphics.vector.VectorAsset
-import androidx.ui.layout.offset
-import androidx.ui.unit.Density
-import androidx.ui.unit.Dp
-import androidx.ui.unit.dp
+import androidx.compose.animation.animatedFloat
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.composed
+import androidx.compose.ui.drawBehind
+import androidx.compose.ui.gesture.scrollorientationlocking.Orientation
+import androidx.compose.foundation.gestures.draggable
+import androidx.compose.foundation.layout.offset
+import androidx.compose.ui.geometry.Size
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.vector.VectorAsset
+import androidx.compose.ui.unit.Density
+import androidx.compose.ui.unit.Dp
+import androidx.compose.ui.unit.dp
 
 fun Modifier.swipeable(
-    direction: DragDirection,
+    direction: Orientation,
     density: Density,
     vararg steps: SwipeStep,
     threshold: Dp = 24.dp
@@ -36,7 +36,7 @@ fun Modifier.swipeable(
         }
         .offset(x = with(density) { dragPx.value.toDp() })
         .draggable(
-            dragDirection = direction,
+            orientation = direction,
             onDragStarted = { println("drag started") },
             onDragStopped = {
                 if (with(density) { dragPx.value.toDp() } > threshold) {

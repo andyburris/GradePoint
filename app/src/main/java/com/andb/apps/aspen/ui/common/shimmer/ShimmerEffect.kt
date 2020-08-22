@@ -1,7 +1,7 @@
 package com.andb.apps.aspen.ui.common.shimmer
 
-import androidx.ui.geometry.Size
-import androidx.ui.graphics.Canvas
+import androidx.compose.ui.geometry.Size
+import androidx.compose.ui.graphics.Canvas
 
 
 interface ShimmerEffect {

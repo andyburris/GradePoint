@@ -3,24 +3,24 @@ object Versions {
     const val target_sdk = 29
     const val compile_sdk = 29
 
-    const val kotlin = "1.3.72"
+    const val kotlin = "1.4.0"
     const val android_x = "1.1.0"
-    const val android_gradle_plugin = "4.2.0-alpha02"
+    const val android_gradle_plugin = "4.2.0-alpha05"
     const val junit = "4.12"
-    const val sqlDelight = "1.3.0"
-    const val ktor = "1.3.2"
-    const val stately = "1.0.2"
+    const val sqlDelight = "1.4.1"
+    const val ktor = "1.4.0"
+    const val stately = "1.1.0"
     const val multiplatformSettings = "0.6"
-    const val coroutines = "1.3.7"
-    const val koin = "3.0.0-alpha-9"
-    const val serialization = "0.20.0"
+    const val coroutines = "1.3.9"
+    const val koin = "3.0.0-alpha-2"
+    const val serialization = "1.0.0-RC"
     const val cocoapodsext = "0.6"
-    const val jetpackCompose = "0.1.0-dev14"
-    const val klock = "1.10.3"
+    const val jetpackCompose = "0.1.0-dev17"
+    const val klock = "1.12.0"
     const val slf4j = "1.7.30"
     const val kissme = "0.2.5"
     const val composeShimmer = "1.0.1"
-    const val kotlinResult = "1.1.7"
+    const val kotlinResult = "1.1.8"
     const val composeBackstack = "0.4.0"
 }
 
@@ -38,11 +38,14 @@ object Deps {
     const val cocoapodsext = "co.touchlab:kotlinnativecocoapods:${Versions.cocoapodsext}"
     const val slf4j = "org.slf4j:slf4j-simple:${Versions.slf4j}"
     const val composeShimmer = "com.github.kazemihabib:compose-shimmer:${Versions.composeShimmer}"
+    const val serialization = "org.jetbrains.kotlinx:kotlinx-serialization-core:${Versions.serialization}"
     const val kotlinResult = "com.michael-bull.kotlin-result:kotlin-result:${Versions.kotlinResult}"
     const val composeBackstack = "com.zachklipp:compose-backstack:${Versions.composeBackstack}"
 
     object Koin {
         const val core = "org.koin:koin-core:${Versions.koin}"
+        const val android = "org.koin:koin-android:${Versions.koin}"
+        const val js = "org.koin:koin-core-js:${Versions.koin}"
         const val viewModel = "org.koin:koin-android-viewmodel:${Versions.koin}"
     }
 
@@ -53,15 +56,15 @@ object Deps {
     }
 
     object JetpackCompose {
-        const val runtime = "androidx.compose:compose-runtime:${Versions.jetpackCompose}"
-        const val core = "androidx.ui:ui-core:${Versions.jetpackCompose}"
+        const val runtime = "androidx.compose.runtime:runtime:${Versions.jetpackCompose}"
+        const val core = "androidx.compose.ui:ui:${Versions.jetpackCompose}"
         const val tooling = "androidx.ui:ui-tooling:${Versions.jetpackCompose}"
-        const val layout = "androidx.ui:ui-layout:${Versions.jetpackCompose}"
-        const val material = "androidx.ui:ui-material:${Versions.jetpackCompose}"
-        const val foundation = "androidx.ui:ui-foundation:${Versions.jetpackCompose}"
-        const val animation = "androidx.ui:ui-animation:${Versions.jetpackCompose}"
+        const val layout = "androidx.compose.foundation:foundation-layout:${Versions.jetpackCompose}"
+        const val material = "androidx.compose.material:material:${Versions.jetpackCompose}"
+        const val foundation = "androidx.compose.foundation:foundation:${Versions.jetpackCompose}"
+        const val animation = "androidx.compose.animation:animation:${Versions.jetpackCompose}"
         const val test = "androidx.ui:ui-test:${Versions.jetpackCompose}"
-        const val icons = "androidx.ui:ui-material-icons-extended:${Versions.jetpackCompose}"
+        const val icons = "androidx.compose.material:material-icons-extended:${Versions.jetpackCompose}"
     }
 
     object AndroidXTest {
@@ -80,10 +83,7 @@ object Deps {
     }
 
     object Coroutines {
-        const val common = "org.jetbrains.kotlinx:kotlinx-coroutines-core-common:${Versions.coroutines}"
-        const val jdk = "org.jetbrains.kotlinx:kotlinx-coroutines-core:${Versions.coroutines}"
-        const val native = "org.jetbrains.kotlinx:kotlinx-coroutines-core-native:${Versions.coroutines}"
-        const val android = "org.jetbrains.kotlinx:kotlinx-coroutines-android:${Versions.coroutines}"
+        const val common = "org.jetbrains.kotlinx:kotlinx-coroutines-core:${Versions.coroutines}"
         const val js = "org.jetbrains.kotlinx:kotlinx-coroutines-core-js:${Versions.coroutines}"
         const val test = "org.jetbrains.kotlinx:kotlinx-coroutines-test:${Versions.coroutines}"
     }
@@ -92,6 +92,7 @@ object Deps {
         const val gradle = "com.squareup.sqldelight:gradle-plugin:${Versions.sqlDelight}"
         const val runtime = "com.squareup.sqldelight:runtime:${Versions.sqlDelight}"
         const val runtimeJdk = "com.squareup.sqldelight:runtime-jvm:${Versions.sqlDelight}"
+        const val runtimeJS = "com.squareup.sqldelight:runtime-js:${Versions.sqlDelight}"
         const val driverIos = "com.squareup.sqldelight:native-driver:${Versions.sqlDelight}"
         const val driverAndroid = "com.squareup.sqldelight:android-driver:${Versions.sqlDelight}"
         const val driverJS = "com.squareup.sqldelight:sqljs-driver:${Versions.sqlDelight}"

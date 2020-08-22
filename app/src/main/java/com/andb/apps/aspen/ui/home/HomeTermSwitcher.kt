@@ -1,20 +1,21 @@
 package com.andb.apps.aspen.ui.home
 
-import androidx.animation.FloatPropKey
-import androidx.animation.transitionDefinition
-import androidx.compose.Composable
-import androidx.ui.animation.Transition
-import androidx.ui.core.Alignment
-import androidx.ui.core.Modifier
-import androidx.ui.foundation.Box
-import androidx.ui.foundation.Text
-import androidx.ui.foundation.clickable
-import androidx.ui.foundation.shape.corner.CircleShape
-import androidx.ui.layout.*
-import androidx.ui.material.MaterialTheme
-import androidx.ui.text.style.TextAlign
-import androidx.ui.unit.dp
-import androidx.ui.unit.sp
+import androidx.compose.animation.Transition
+import androidx.compose.animation.core.FloatPropKey
+import androidx.compose.animation.core.transitionDefinition
+import androidx.compose.foundation.Box
+import androidx.compose.foundation.Text
+import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.material.MaterialTheme
+import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
+
 
 private val termBackgroundKey = FloatPropKey()
 private val termTransition = transitionDefinition<Int> {

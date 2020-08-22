@@ -1,28 +1,29 @@
 package com.andb.apps.aspen.ui.home.subjectlist
 
-import androidx.compose.Composable
-import androidx.ui.core.Modifier
-import androidx.ui.foundation.Text
-import androidx.ui.foundation.VerticalScroller
-import androidx.ui.graphics.Color
-import androidx.ui.layout.*
-import androidx.ui.layout.ColumnScope.weight
-import androidx.ui.material.AlertDialog
-import androidx.ui.material.Button
-import androidx.ui.savedinstancestate.savedInstanceState
-import androidx.ui.unit.dp
+import androidx.compose.foundation.Text
+import androidx.compose.foundation.ScrollableColumn
+import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.ColumnScope.weight
+import androidx.compose.material.AlertDialog
+import androidx.compose.material.Button
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.savedinstancestate.savedInstanceState
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.unit.dp
 import com.andb.apps.aspen.models.Subject
 import com.andb.apps.aspen.ui.common.ColorPicker
 import com.andb.apps.aspen.ui.common.IconPicker
+
 
 @Composable
 fun EditSubjectDialog(subject: Subject, onClose: () -> Unit, onConfigChange: (Subject.Config) -> Unit) {
     val currentConfig = savedInstanceState { subject.config }
     AlertDialog(
-        onCloseRequest = { onClose.invoke() },
+        onDismissRequest = { onClose.invoke() },
         title = { Text(text = "Edit Subject: ${subject.name}") },
         text = {
-            VerticalScroller(modifier = Modifier.weight(1f)) {
+            ScrollableColumn(modifier = Modifier.weight(1f)) {
                 ColorPicker(selected = currentConfig.value.color) {
                     currentConfig.value = currentConfig.value.copy(color = it)
                 }
@@ -32,13 +33,13 @@ fun EditSubjectDialog(subject: Subject, onClose: () -> Unit, onConfigChange: (Su
             }
             Row(Modifier.fillMaxWidth().padding(vertical = 8.dp).offset(x = 8.dp), horizontalArrangement = Arrangement.End) {
                 Button(
-                    text = { Text("Cancel".toUpperCase()) },
+                    content = { Text("Cancel".toUpperCase()) },
                     onClick = { onClose.invoke() },
                     backgroundColor = Color.Unset,
                     elevation = 0.dp
                 )
                 Button(
-                    text = { Text("Done".toUpperCase()) },
+                    content = { Text("Done".toUpperCase()) },
                     onClick = {
                         onConfigChange.invoke(currentConfig.value)
                         onClose.invoke()

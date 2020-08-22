@@ -1,15 +1,16 @@
 package com.andb.apps.aspen.ui.common.shimmer
 
-import androidx.animation.*
-import androidx.compose.getValue
-import androidx.compose.mutableStateOf
-import androidx.compose.setValue
+import androidx.compose.animation.core.*
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.setValue
+import androidx.compose.ui.geometry.Offset
+import androidx.compose.ui.geometry.Rect
+import androidx.compose.ui.geometry.Size
+import androidx.compose.ui.graphics.*
 import androidx.core.graphics.transform
-import androidx.ui.geometry.Offset
-import androidx.ui.geometry.Rect
-import androidx.ui.geometry.Size
-import androidx.ui.graphics.*
 import kotlin.math.tan
+
 
 /**
  * Used to specify this type of [ShimmerEffect] for [shimmer].
@@ -77,8 +78,8 @@ private class DefaultLinearShimmerEffect(
 
     private val paint = Paint().apply {
         isAntiAlias = true
-        style = PaintingStyle.fill
-        blendMode = BlendMode.dstIn
+        style = PaintingStyle.Fill
+        blendMode = BlendMode.DstIn
     }
 
     init {
@@ -130,7 +131,7 @@ private class DefaultLinearShimmerEffect(
             )
 
         }
-        paint.shader?.nativeShader?.transform {
+        paint.shader?.transform {
             reset()
             postRotate(tilt, size.width / 2f, size.height / 2f)
             postTranslate(dx, dy)
@@ -183,7 +184,7 @@ private object ShimmerTransition {
     fun definition(
         durationMs: Int,
         delay: Int
-    ) = transitionDefinition {
+    ) = transitionDefinition<State> {
 
         state(State.Begin) {
             this[progress] = 0f
@@ -200,18 +201,17 @@ private object ShimmerTransition {
         snapTransition(State.End to State.Reset, nextState = State.Begin)
 
         transition(fromState = State.Begin, toState = State.End) {
-            progress using tween<Float> {
-                duration = durationMs
-                this.delay = delay
-            }
+            progress using tween (
+                durationMillis = durationMs,
+                delayMillis = delay
+            )
         }
 
         transition(fromState = State.End, toState = State.Begin) {
-            progress using tween<Float> {
-                duration = durationMs
-                this.delay = delay
-            }
-
+            progress using tween<Float>(
+                durationMillis = durationMs,
+                delayMillis = delay
+            )
         }
 
     }

@@ -1,6 +1,6 @@
 package com.andb.apps.aspen.models
 
-import com.andb.apps.aspen.db.SubjectConfig
+import com.andb.apps.aspen.SubjectConfig
 import com.andb.apps.aspen.util.replace
 import kotlinx.serialization.Serializable
 

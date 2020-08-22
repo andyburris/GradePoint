@@ -2,7 +2,7 @@ package com.andb.apps.aspen
 
 import org.w3c.dom.get
 import org.w3c.dom.set
-import kotlin.browser.sessionStorage
+import kotlinx.browser.sessionStorage
 
 class StorageJS : Storage {
     override val loggedIn: Boolean

@@ -1,7 +1,7 @@
 package com.andb.apps.aspen.ui.common.shimmer
 
 import androidx.annotation.FloatRange
-import androidx.compose.ambientOf
+import androidx.compose.runtime.ambientOf
 
 /**
  * Defines the appearance and the behavior for [shimmer]s.

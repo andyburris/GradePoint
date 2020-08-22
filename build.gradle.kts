@@ -5,9 +5,9 @@ buildscript {
         google()
         mavenCentral()
         jcenter()
+        maven("https://dl.bintray.com/ekito/koin")
     }
     dependencies {
-        classpath(Deps.android_gradle_plugin)
         classpath(Deps.SqlDelight.gradle)
         classpath(Deps.cocoapodsext)
         classpath("org.jetbrains.kotlin:kotlin-serialization:${Versions.kotlin}")
@@ -31,6 +31,7 @@ allprojects {
         maven(url = "https://oss.sonatype.org/content/repositories/snapshots/")
         maven(url = "https://www.jitpack.io")
         maven("https://dl.bintray.com/cfraser/muirwik")
+        maven("https://dl.bintray.com/ekito/koin")
     }
 }
 

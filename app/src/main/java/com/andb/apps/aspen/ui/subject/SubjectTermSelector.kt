@@ -1,21 +1,23 @@
 package com.andb.apps.aspen.ui.subject
 
-import androidx.animation.transitionDefinition
-import androidx.compose.Composable
-import androidx.compose.mutableStateOf
-import androidx.ui.animation.DpPropKey
-import androidx.ui.animation.Transition
-import androidx.ui.core.Alignment
-import androidx.ui.core.Modifier
-import androidx.ui.foundation.*
-import androidx.ui.foundation.shape.corner.RoundedCornerShape
-import androidx.ui.layout.*
-import androidx.ui.material.MaterialTheme
-import androidx.ui.text.font.FontWeight
-import androidx.ui.text.style.TextAlign
+import androidx.compose.animation.DpPropKey
+import androidx.compose.animation.Transition
+import androidx.compose.animation.core.transitionDefinition
+import androidx.compose.animation.core.tween
+import androidx.compose.foundation.Box
+import androidx.compose.foundation.Text
+import androidx.compose.foundation.clickable
+import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.MaterialTheme
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.unit.dp
 import androidx.ui.tooling.preview.Preview
-import androidx.ui.unit.dp
-import androidx.ui.unit.sp
 
 @Preview
 @Composable
@@ -33,7 +35,7 @@ fun SubjectTermSelector(modifier: Modifier = Modifier, onSelect: (term: Int) -> 
 
         Stack(
             modifier = Modifier.height(24.dp)
-                .drawBackground(MaterialTheme.colors.primary, RoundedCornerShape(12.dp))
+                .background(MaterialTheme.colors.primary, RoundedCornerShape(12.dp))
         ) {
             val termKey = DpPropKey()
             val definition = transitionDefinition<Int> {
@@ -43,7 +45,7 @@ fun SubjectTermSelector(modifier: Modifier = Modifier, onSelect: (term: Int) -> 
                 state(4) { this[termKey] = 80.dp }
 
                 transition {
-                    termKey using tween { duration = 200 }
+                    termKey using tween(durationMillis = 200)
                 }
             }
 

@@ -1,11 +1,12 @@
 package com.andb.apps.aspen.ui.common
 
-import androidx.compose.Composable
-import androidx.ui.core.Alignment
-import androidx.ui.core.Layout
-import androidx.ui.core.Modifier
-import androidx.ui.core.Placeable
-import androidx.ui.geometry.Offset
+import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.Layout
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.Placeable
+import androidx.compose.ui.geometry.Offset
+
 
 @Composable
 fun Flexbox(
@@ -13,7 +14,7 @@ fun Flexbox(
     verticalGravity: Alignment.Vertical = Alignment.Top,
     children: @Composable() () -> Unit
 ) {
-    Layout( modifier = modifier, children = children) { measurables, constraints, _ ->
+    Layout( modifier = modifier, children = children) { measurables, constraints ->
         val placeables = measurables.map { it.measure(constraints) }
 
         var placedWidth = 0

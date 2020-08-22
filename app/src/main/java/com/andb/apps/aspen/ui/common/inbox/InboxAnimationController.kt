@@ -1,7 +1,7 @@
 package com.andb.apps.aspen.ui.common.inbox
 
-import androidx.compose.ambientOf
-import androidx.ui.unit.Bounds
+import androidx.compose.runtime.ambientOf
+import androidx.compose.ui.unit.Bounds
 
 class InboxAnimationController(){
     val animationItems = mutableMapOf<String, InboxAnimationConfig>()

@@ -1,12 +1,13 @@
 package com.andb.apps.aspen.ui.home
 
-import androidx.compose.Composable
-import androidx.compose.Providers
-import androidx.ui.core.Modifier
-import androidx.ui.layout.Column
+import androidx.compose.foundation.layout.Column
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.Providers
+import androidx.compose.ui.Modifier
 import com.andb.apps.aspen.ui.common.LoadingAssignmentsItem
 import com.andb.apps.aspen.ui.common.shimmer.*
 import com.andb.apps.aspen.ui.home.subjectlist.LoadingSubjectsItem
+
 
 private val shimmer = ShimmerTheme(
     factory = DefaultLinearShimmerEffectFactory,

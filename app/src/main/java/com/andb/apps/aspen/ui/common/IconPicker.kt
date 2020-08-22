@@ -1,15 +1,16 @@
 package com.andb.apps.aspen.ui.common
 
-import androidx.compose.Composable
-import androidx.ui.core.Modifier
-import androidx.ui.foundation.Box
-import androidx.ui.foundation.Text
-import androidx.ui.layout.Column
-import androidx.ui.layout.padding
-import androidx.ui.material.MaterialTheme
-import androidx.ui.unit.dp
+import androidx.compose.foundation.Box
+import androidx.compose.foundation.Text
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.padding
+import androidx.compose.material.MaterialTheme
+import androidx.compose.runtime.Composable
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.unit.dp
 import com.andb.apps.aspen.models.Subject
-import com.andb.apps.aspen.util.toVectorAsset
+import com.andb.apps.aspen.util.*
+
 
 @Composable
 fun IconPicker(selected: Subject.Icon, modifier: Modifier = Modifier, onSelect: (Subject.Icon) -> Unit) {

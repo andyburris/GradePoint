@@ -1,19 +1,19 @@
 package com.andb.apps.aspen.ui.common
 
-import androidx.compose.Composable
-import androidx.ui.core.Modifier
-import androidx.ui.foundation.Box
-import androidx.ui.foundation.drawBackground
-import androidx.ui.graphics.Color
-import androidx.ui.layout.Column
-import androidx.ui.layout.RowScope
-import androidx.ui.layout.fillMaxWidth
-import androidx.ui.layout.height
-import androidx.ui.material.MaterialTheme
-import androidx.ui.material.TopAppBar
-import androidx.ui.material.contentColorFor
-import androidx.ui.unit.Dp
-import androidx.ui.unit.dp
+import androidx.compose.runtime.Composable
+import androidx.compose.ui.Modifier
+import androidx.compose.foundation.Box
+import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.RowScope
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.ui.graphics.Color
+import androidx.compose.material.MaterialTheme
+import androidx.compose.material.TopAppBar
+import androidx.compose.material.contentColorFor
+import androidx.compose.ui.unit.Dp
+import androidx.compose.ui.unit.dp
 
 @Composable
 fun TopAppBarWithStatusBar(
@@ -28,7 +28,7 @@ fun TopAppBarWithStatusBar(
 ) {
     Column {
         Box(
-            modifier = Modifier.fillMaxWidth().height(24.dp).drawBackground(color = statusColor)
+            modifier = Modifier.fillMaxWidth().height(24.dp).background(color = statusColor)
         )
         TopAppBar(
             title,
