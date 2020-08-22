@@ -1,24 +1,28 @@
 package com.andb.apps.aspen.ui.common.color
 
-import androidx.compose.Composable
-import androidx.compose.state
-import androidx.compose.stateFor
-import androidx.ui.core.*
-import androidx.ui.core.gesture.pressIndicatorGestureFilter
-import androidx.ui.foundation.Border
-import androidx.ui.foundation.Box
-import androidx.ui.foundation.gestures.DragDirection
-import androidx.ui.foundation.gestures.draggable
-import androidx.ui.foundation.shape.corner.CircleShape
-import androidx.ui.geometry.Radius
-import androidx.ui.graphics.Color
-import androidx.ui.graphics.ColorStop
-import androidx.ui.graphics.HorizontalGradient
-import androidx.ui.graphics.VerticalGradient
-import androidx.ui.layout.offset
-import androidx.ui.layout.size
-import androidx.ui.unit.IntSize
-import androidx.ui.unit.dp
+import androidx.compose.foundation.BorderStroke
+import androidx.compose.foundation.Box
+import androidx.compose.foundation.gestures.draggable
+import androidx.compose.foundation.layout.offset
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.state
+import androidx.compose.runtime.stateFor
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.drawShadow
+import androidx.compose.ui.drawBehind
+import androidx.compose.ui.geometry.Radius
+import androidx.compose.ui.gesture.pressIndicatorGestureFilter
+import androidx.compose.ui.gesture.scrollorientationlocking.Orientation
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.ColorStop
+import androidx.compose.ui.graphics.HorizontalGradient
+import androidx.compose.ui.graphics.VerticalGradient
+import androidx.compose.ui.onPositioned
+import androidx.compose.ui.platform.DensityAmbient
+import androidx.compose.ui.unit.IntSize
+import androidx.compose.ui.unit.dp
 import com.andb.apps.aspen.util.HSB
 import com.andb.apps.aspen.util.toColor
 
@@ -37,13 +41,13 @@ fun SaturationBrightnessPicker(hue: Float, saturation: Float, brightness: Float,
 
     Box(
         modifier = modifier
-            .draggable(DragDirection.Horizontal) { delta ->
+            .draggable(Orientation.Horizontal) { delta ->
                 val newPx = (dragPosition.value.first + delta).coerceIn(0f..boxSize.width.toFloat())
                 dragPosition.value = dragPosition.value.copy(first = newPx)
                 update()
                 delta
             }
-            .draggable(DragDirection.Vertical) { delta ->
+            .draggable(Orientation.Vertical) { delta ->
                 val newPx = (dragPosition.value.second + delta).coerceIn(0f..boxSize.height.toFloat())
                 dragPosition.value = dragPosition.value.copy(second = newPx)
                 update()
@@ -87,7 +91,7 @@ fun SaturationBrightnessPicker(hue: Float, saturation: Float, brightness: Float,
                 .drawShadow(2.dp, shape = CircleShape),
             shape = CircleShape,
             backgroundColor = HSB(hue, saturation, brightness).toColor(),
-            border = Border(3.dp, Color.White)
+            border = BorderStroke(3.dp, Color.White)
         )
     }
 }

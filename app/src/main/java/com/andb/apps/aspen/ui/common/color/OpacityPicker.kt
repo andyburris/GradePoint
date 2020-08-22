@@ -1,28 +1,26 @@
 package com.andb.apps.aspen.ui.common.color
 
-import androidx.compose.Composable
-import androidx.compose.stateFor
-import androidx.ui.core.Alignment
-import androidx.ui.core.Modifier
-import androidx.ui.core.drawBehind
-import androidx.ui.core.drawShadow
-import androidx.ui.foundation.Border
-import androidx.ui.foundation.Box
-import androidx.ui.foundation.shape.corner.CircleShape
-import androidx.ui.geometry.Offset
-import androidx.ui.geometry.RRect
-import androidx.ui.geometry.Radius
-import androidx.ui.geometry.Size
-import androidx.ui.graphics.Color
-import androidx.ui.graphics.HorizontalGradient
-import androidx.ui.graphics.Path
-import androidx.ui.graphics.drawscope.DrawScope
-import androidx.ui.graphics.drawscope.clipPath
-import androidx.ui.layout.*
-import androidx.ui.material.FilledTextField
-import androidx.ui.material.MaterialTheme
-import androidx.ui.unit.Dp
-import androidx.ui.unit.dp
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.drawBehind
+import androidx.compose.foundation.BorderStroke
+import androidx.compose.foundation.Box
+import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.material.MaterialTheme
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.stateFor
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.drawShadow
+import androidx.compose.ui.geometry.Offset
+import androidx.compose.ui.geometry.RRect
+import androidx.compose.ui.geometry.Radius
+import androidx.compose.ui.geometry.Size
+import androidx.compose.ui.gesture.scrollorientationlocking.Orientation
+import androidx.compose.ui.graphics.*
+import androidx.compose.ui.graphics.drawscope.DrawScope
+import androidx.compose.ui.graphics.drawscope.clipPath
+import androidx.compose.ui.unit.Dp
+import androidx.compose.ui.unit.dp
 import com.andb.apps.aspen.ui.common.AlternativeSlider
 
 @Composable
@@ -63,7 +61,7 @@ private fun OpacitySlider(color: Color, alpha: Float, modifier: Modifier = Modif
                         drawTiles(2, 14.dp)
                     },
                 shape = CircleShape,
-                border = Border(3.dp, MaterialTheme.colors.background),
+                border = BorderStroke(3.dp, MaterialTheme.colors.background),
                 backgroundColor = color.copy(alpha = alpha)
             )
         },
@@ -88,7 +86,7 @@ private fun DrawScope.drawTiles(rows: Int, radius: Dp, color1: Color = Color.Lig
             val tilesPerRow = (size.width/tileSize).toInt() + 1
             for (col in 0 until tilesPerRow){
                 val grey = (row + col) % 2 == 0
-                drawRect(if (grey) color1 else color2, topLeft = Offset(col * tileSize, row * tileSize), size = Size.square(tileSize))
+                drawRect(if (grey) color1 else color2, topLeft = Offset(col * tileSize, row * tileSize), size = Size(tileSize, tileSize))
             }
         }
     }

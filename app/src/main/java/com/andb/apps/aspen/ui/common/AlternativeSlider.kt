@@ -1,27 +1,23 @@
 package com.andb.apps.aspen.ui.common
 
-import androidx.compose.Composable
-import androidx.compose.remember
-import androidx.compose.state
-import androidx.compose.stateFor
-import androidx.ui.core.DensityAmbient
-import androidx.ui.core.Layout
-import androidx.ui.core.Modifier
-import androidx.ui.core.gesture.pressIndicatorGestureFilter
-import androidx.ui.core.onPositioned
-import androidx.ui.foundation.Box
-import androidx.ui.foundation.drawBackground
-import androidx.ui.foundation.gestures.DragDirection
-import androidx.ui.foundation.gestures.draggable
-import androidx.ui.geometry.Offset
-import androidx.ui.graphics.Color
-import androidx.ui.layout.*
-import androidx.ui.material.Slider
-import androidx.ui.unit.Dp
-import androidx.ui.unit.dp
+import androidx.compose.foundation.Box
+import androidx.compose.foundation.gestures.draggable
+import androidx.compose.foundation.layout.Stack
+import androidx.compose.foundation.layout.StackScope
+import androidx.compose.foundation.layout.offset
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.state
+import androidx.compose.runtime.stateFor
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.gesture.pressIndicatorGestureFilter
+import androidx.compose.ui.gesture.scrollorientationlocking.Orientation
+import androidx.compose.ui.onPositioned
+import androidx.compose.ui.platform.DensityAmbient
+import androidx.compose.ui.unit.dp
+
 
 @Composable
-fun AlternativeSlider(position: Float, orientation: DragDirection = DragDirection.Horizontal, modifier: Modifier = Modifier, track: @Composable() StackScope.() -> Unit, thumb: @Composable() StackScope.() -> Unit, onChange: (Float) -> Unit){
+fun AlternativeSlider(position: Float, orientation: Orientation = Orientation.Horizontal, modifier: Modifier = Modifier, track: @Composable() StackScope.() -> Unit, thumb: @Composable() StackScope.() -> Unit, onChange: (Float) -> Unit){
     val (trackSize, setTrackSize) = state { 0 }
     val (thumbSize, setThumbSize) = state { 0 }
     val draggedPx = stateFor(trackSize, thumbSize) { (trackSize - thumbSize) * position }
@@ -37,7 +33,7 @@ fun AlternativeSlider(position: Float, orientation: DragDirection = DragDirectio
             update()
             delta
         }.pressIndicatorGestureFilter(onStart = {
-            val position = if (orientation == DragDirection.Horizontal) it.x else it.y
+            val position = if (orientation == Orientation.Horizontal) it.x else it.y
             val onThumb = position in draggedPx.value..(draggedPx.value + thumbSize)
             if (!onThumb) {
                 draggedPx.value = position.coerceIn(0f..(trackSize - thumbSize).toFloat())
@@ -45,16 +41,16 @@ fun AlternativeSlider(position: Float, orientation: DragDirection = DragDirectio
             }
         })
     ) {
-        Box(Modifier.onPositioned { setTrackSize(it.size.run { if(orientation == DragDirection.Horizontal) width else height }) }) {
+        Box(Modifier.onPositioned { setTrackSize(it.size.run { if(orientation == Orientation.Horizontal) width else height }) }) {
             track()
         }
         val offset = with(DensityAmbient.current) { draggedPx.value.toDp() }
         Box(
             modifier = Modifier
-                .onPositioned { setThumbSize(it.size.run { if(orientation == DragDirection.Horizontal) width else height }) }
+                .onPositioned { setThumbSize(it.size.run { if(orientation == Orientation.Horizontal) width else height }) }
                 .offset(
-                    x = if (orientation == DragDirection.Horizontal) offset else 0.dp,
-                    y = if (orientation == DragDirection.Vertical) offset else 0.dp
+                    x = if (orientation == Orientation.Horizontal) offset else 0.dp,
+                    y = if (orientation == Orientation.Vertical) offset else 0.dp
                 )
         ) {
             thumb()

@@ -1,24 +1,24 @@
 package com.andb.apps.aspen.ui.common.color
 
-import androidx.compose.Composable
-import androidx.ui.core.Alignment
-import androidx.ui.core.Modifier
-import androidx.ui.core.drawBehind
-import androidx.ui.core.drawShadow
-import androidx.ui.foundation.Border
-import androidx.ui.foundation.Box
-import androidx.ui.foundation.gestures.DragDirection
-import androidx.ui.foundation.shape.corner.CircleShape
-import androidx.ui.geometry.Radius
-import androidx.ui.graphics.Color
-import androidx.ui.graphics.ColorStop
-import androidx.ui.graphics.VerticalGradient
-import androidx.ui.layout.fillMaxHeight
-import androidx.ui.layout.padding
-import androidx.ui.layout.size
-import androidx.ui.layout.width
-import androidx.ui.material.MaterialTheme
-import androidx.ui.unit.dp
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.drawBehind
+import androidx.compose.foundation.BorderStroke
+import androidx.compose.foundation.Box
+import androidx.compose.foundation.layout.fillMaxHeight
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.material.MaterialTheme
+import androidx.compose.runtime.Composable
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.drawShadow
+import androidx.compose.ui.geometry.Radius
+import androidx.compose.ui.gesture.scrollorientationlocking.Orientation
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.ColorStop
+import androidx.compose.ui.graphics.VerticalGradient
+import androidx.compose.ui.unit.dp
 import com.andb.apps.aspen.ui.common.AlternativeSlider
 import com.andb.apps.aspen.util.HSB
 import com.andb.apps.aspen.util.toColor
@@ -29,7 +29,7 @@ fun HuePicker(colors: List<Color>, hue: Float, modifier: Modifier = Modifier, on
 
     AlternativeSlider(
         position = hue,
-        orientation = DragDirection.Vertical,
+        orientation = Orientation.Vertical,
         track = {
             Box(modifier = Modifier
                 .width(32.dp)
@@ -53,7 +53,7 @@ fun HuePicker(colors: List<Color>, hue: Float, modifier: Modifier = Modifier, on
                     .size(28.dp)
                     .drawShadow(2.dp, shape = CircleShape),
                 shape = CircleShape,
-                border = Border(3.dp, MaterialTheme.colors.background),
+                border = BorderStroke(3.dp, MaterialTheme.colors.background),
                 backgroundColor = HSB(hue, 1f, 1f).toColor()
             )
         },
