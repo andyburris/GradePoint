@@ -27,8 +27,8 @@ android {
 }
 
 kotlin {
+    android()
     targets {
-        android()
         //Revert to just ios() when gradle plugin can properly resolve it
         val onPhone = System.getenv("SDK_NAME")?.startsWith("iphoneos")?:false
         if(onPhone){
@@ -46,6 +46,13 @@ kotlin {
         listOf("-Xobjc-generics", "-Xg0")
 
     version = "1.1"
+
+    targets.all {
+        compilations.all {
+            kotlinOptions.freeCompilerArgs += listOf("-Xallow-result-return-type")
+        }
+    }
+
 
     sourceSets {
         all {
@@ -69,7 +76,7 @@ kotlin {
         implementation(Deps.Klock.common)
         implementation(Deps.Kissme.common)
         //implementation("org.jetbrains.kotlinx:kotlinx-serialization-runtime-common:${Versions.serialization}")
-        //implementation("com.michael-bull.kotlin-result:kotlin-result:1.1.7")
+        //implementation("com.michael-bull.kotlin-result:kotlin-result:1.1.8")
     }
 
     sourceSets["commonTest"].dependencies {
@@ -135,6 +142,7 @@ kotlin {
 
 sqldelight {
     database("SubjectConfigDb") {
-        packageName = "com.andb.apps.aspen"
+        packageName = "com.andb.apps.aspen.db"
+        //sourceFolders = listOf("sqldelight")
     }
 }

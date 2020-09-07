@@ -84,7 +84,7 @@ fun Subject.Icon.toVectorAsset() = when (this) {
 }
 
 fun Screen.toInboxTag() = when(this){
-    Screen.Login -> "Login"
+    is Screen.Login -> "Login"
     is Screen.Home -> "Home"
     is Screen.Subject -> this.subject.id
     is Screen.Assignment -> this.assignment.id
@@ -106,9 +106,10 @@ fun DarkMode.isDark(): Boolean{
 
 @Composable
 fun Activity.StatusBar(currentScreen: Screen?){
+    val settings = SettingsAmbient.current
     when (currentScreen) {
         is Screen.Login, is Screen.Home -> {
-            window.decorView.systemUiVisibility = if (AndroidSettings.darkMode.isDark()) 0 else View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR
+            window.decorView.systemUiVisibility = if (settings.darkMode.isDark()) 0 else View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR
             window.statusBarColor = MaterialTheme.colors.background.toArgb()
         }
         is Screen.Subject, is Screen.Test -> {
@@ -116,8 +117,8 @@ fun Activity.StatusBar(currentScreen: Screen?){
             window.statusBarColor = MaterialTheme.colors.primaryVariant.toArgb()
         }
         is Screen.Assignment -> {
-            window.decorView.systemUiVisibility = if (AndroidSettings.darkMode.isDark() || AndroidSettings.assignmentHeaderColor) 0 else View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR
-            window.statusBarColor = if (AndroidSettings.assignmentHeaderColor) MaterialTheme.colors.primaryVariant.toArgb() else MaterialTheme.colors.background.toArgb()
+            window.decorView.systemUiVisibility = if (settings.darkMode.isDark() || settings.assignmentHeaderColor) 0 else View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR
+            window.statusBarColor = if (settings.assignmentHeaderColor) MaterialTheme.colors.primaryVariant.toArgb() else MaterialTheme.colors.background.toArgb()
         }
     }
 }

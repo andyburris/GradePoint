@@ -1,5 +1,7 @@
 package com.andb.apps.aspen.ui.common
 
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.runtime.state
 import androidx.compose.ui.*
 import androidx.compose.ui.geometry.Offset
@@ -34,7 +36,7 @@ fun Modifier.scale(
     minSize: IntSize = IntSize(0, 0),
     transformOrigin: TransformOrigin = TransformOrigin.Center
 ) = composed {
-    val lastMeasure = state<IntSize?> { null }
+    val lastMeasure = remember { mutableStateOf<IntSize?>(null) }
     this + Scale(x, y, transformOrigin, minSize, lastMeasure.value) { if (lastMeasure.value == null) lastMeasure.value = it }
 }
 

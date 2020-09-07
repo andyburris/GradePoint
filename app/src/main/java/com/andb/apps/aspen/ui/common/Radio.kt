@@ -25,7 +25,7 @@ fun RadioItem(
     ) {
     Row(
         verticalGravity = Alignment.CenterVertically,
-        modifier = modifier.clickable(onClick = { onSelect.invoke(!selected) })
+        modifier = modifier.clickable(onClick = { onSelect.invoke(!selected) }).padding(vertical = 8.dp)
     ) {
         RadioButton(
             selected = selected,

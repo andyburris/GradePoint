@@ -12,7 +12,7 @@ data class CourseResponse(
     val room: String,
     val currentTermGrade: String,
     val code: String,
-    val postedGrades: HashMap<String, String>,
-    val categoryTable: Map<String, List<Category>>,
-    val assignments: List<AssignmentResponse>
+    val postedGrades: Map<String, String> = mapOf("1" to "", "2" to "", "3" to "", "4" to ""),
+    val categoryTable: Map<String, List<Category>> = mapOf("1" to emptyList(), "2" to emptyList(), "3" to emptyList(), "4" to emptyList()),
+    val assignments: List<AssignmentResponse> = emptyList()
 )

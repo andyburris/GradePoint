@@ -6,13 +6,14 @@ import androidx.compose.foundation.gestures.draggable
 import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.CircleShape
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.state
-import androidx.compose.runtime.stateFor
+import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.drawShadow
 import androidx.compose.ui.drawBehind
+import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.geometry.Radius
+import androidx.compose.ui.gesture.DragObserver
+import androidx.compose.ui.gesture.dragGestureFilter
 import androidx.compose.ui.gesture.pressIndicatorGestureFilter
 import androidx.compose.ui.gesture.scrollorientationlocking.Orientation
 import androidx.compose.ui.graphics.Color
@@ -28,7 +29,7 @@ import com.andb.apps.aspen.util.toColor
 
 @Composable
 fun SaturationBrightnessPicker(hue: Float, saturation: Float, brightness: Float, modifier: Modifier = Modifier, onChange: (saturation: Float, lightness: Float) -> Unit) {
-    val (boxSize, setBoxSize) = state { IntSize(0, 0) }
+    val (boxSize, setBoxSize) = remember { mutableStateOf(IntSize(0, 0)) }
     val dragPosition = stateFor(boxSize) { Pair(boxSize.width * saturation, boxSize.height * (1f - brightness)) }
     val thumbSize = with(DensityAmbient.current) { 24.dp.toIntPx() }
 
@@ -41,7 +42,16 @@ fun SaturationBrightnessPicker(hue: Float, saturation: Float, brightness: Float,
 
     Box(
         modifier = modifier
-            .draggable(Orientation.Horizontal) { delta ->
+            .dragGestureFilter(object : DragObserver {
+                override fun onDrag(dragDistance: Offset): Offset {
+                    val newX = (dragPosition.value.first + dragDistance.x).coerceIn(0f..boxSize.width.toFloat())
+                    val newY = (dragPosition.value.second + dragDistance.y).coerceIn(0f..boxSize.height.toFloat())
+                    dragPosition.value = Pair(newX, newY)
+                    update()
+                    return super.onDrag(dragDistance)
+                }
+            })
+/*            .draggable(Orientation.Horizontal) { delta ->
                 val newPx = (dragPosition.value.first + delta).coerceIn(0f..boxSize.width.toFloat())
                 dragPosition.value = dragPosition.value.copy(first = newPx)
                 update()
@@ -52,7 +62,7 @@ fun SaturationBrightnessPicker(hue: Float, saturation: Float, brightness: Float,
                 dragPosition.value = dragPosition.value.copy(second = newPx)
                 update()
                 delta
-            }
+            }*/
             .pressIndicatorGestureFilter(onStart = { pointer ->
                 val onThumb = dragPosition.value.let { pointer.x in it.first..(it.first + thumbSize) && pointer.y in it.second..(it.second + thumbSize) }
                 if (!onThumb) {

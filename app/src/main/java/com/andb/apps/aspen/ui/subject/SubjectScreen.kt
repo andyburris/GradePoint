@@ -7,7 +7,9 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Clear
 import androidx.compose.material.icons.filled.FilterList
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.state
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.savedinstancestate.savedInstanceState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.toArgb
@@ -17,7 +19,9 @@ import androidx.ui.tooling.preview.Preview
 import com.andb.apps.aspen.models.*
 import com.andb.apps.aspen.state.UserAction
 import com.andb.apps.aspen.ui.common.AssignmentItem
-import com.andb.apps.aspen.ui.common.inbox.inboxItem
+import com.andb.apps.aspen.ui.home.EmptyItem
+import com.andb.apps.aspen.ui.common.FabState
+import com.andb.apps.aspen.ui.common.TermSwitcherFAB
 import com.andb.apps.aspen.util.ActionHandler
 import com.andb.apps.aspen.util.trimTrailingZeroes
 import com.soywiz.klock.Date
@@ -45,36 +49,17 @@ fun SubjectScreen(subject: Subject, selectedTerm: Int, actionHandler: ActionHand
                         maxLines = 1,
                         overflow = TextOverflow.Ellipsis
                     )
-                },
-                actions = {
-                    val termPickerExpanded = state { false }
-                    DropdownMenu(
-                        toggle = {
-                            Row(
-                                modifier = Modifier
-                                    .clickable(onClick = { termPickerExpanded.value = true })
-                                    .fillMaxHeight()
-                                    .padding(start = 16.dp, end = 8.dp),
-                                verticalGravity = Alignment.CenterVertically
-                            ) {
-                                Text(text = "Term $selectedTerm".toUpperCase(), style = MaterialTheme.typography.button, color = MaterialTheme.colors.onPrimary)
-                                Icon(asset = Icons.Default.FilterList, modifier = Modifier.padding(start = 16.dp), tint = MaterialTheme.colors.onPrimary)
-                            }
-                        },
-                        expanded = termPickerExpanded.value,
-                        onDismissRequest = { termPickerExpanded.value = false })
-                    {
-                        subject.terms.filterIsInstance<Term.WithGrades>().forEach {
-                            DropdownMenuItem(
-                                onClick = {
-                                    actionHandler.handle(UserAction.SwitchTerm(it.term))
-                                }
-                            ) {
-                                Text(text = "Term ${it.term}")
-                            }
-                        }
-                    }
                 }
+            )
+        },
+        floatingActionButton = {
+            val expanded = savedInstanceState { false }
+            TermSwitcherFAB(
+                fabState = if (expanded.value) FabState.EXPANDED else FabState.COLLAPSED,
+                currentTerm = selectedTerm,
+                possibleTerms = subject.terms.filter { subject.hasTerm(it.term) }.map { it.term },
+                onFabExpandedChanged = { expanded.value = it},
+                onTermChanged = { actionHandler.handle(UserAction.SwitchTerm(it))}
             )
         },
         bodyContent = {
@@ -87,7 +72,6 @@ fun SubjectScreen(subject: Subject, selectedTerm: Int, actionHandler: ActionHand
                         actionHandler.handle(UserAction.OpenScreen(screen))
                     }
                 }
-            } else {
             }
         }
     )
@@ -176,8 +160,11 @@ fun AssignmentTable(assignments: List<Assignment>, onAssignmentClick: (Assignmen
                     onAssignmentClick.invoke(assignment)
                 })
             ) {
-                AssignmentItem(assignment = assignment, summaryText = assignment.category, modifier = Modifier.inboxItem(assignment.id))
+                AssignmentItem(assignment = assignment, summaryText = assignment.category, modifier = Modifier/*.inboxItem(assignment.id)*/)
             }
+        }
+        if (assignments.isEmpty()){
+            EmptyItem(message = "No Grades Yet")
         }
     }
 }
@@ -209,7 +196,7 @@ private fun Preview() {
             "0",
             "Subject Name",
             "Teacher Name",
-            Subject.Config("0", Subject.Icon.SCHOOL, MaterialTheme.colors.primary.toArgb()),
+            Subject.Config("0", Subject.Icon.SCHOOL, MaterialTheme.colors.primary.toArgb(), false),
             listOf(
                 Term.WithGrades(
                     4,

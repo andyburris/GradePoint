@@ -4,6 +4,8 @@ import androidx.compose.foundation.Text
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.MaterialTheme
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.runtime.state
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -19,10 +21,10 @@ private val hues: List<Color> = (0..360).map { HSB(it / 360f, 1f, 1f).toColor() 
 
 @Composable
 fun ExpandedColorPicker(_selected: Color, modifier: Modifier = Modifier, onSelect: (color: Color) -> Unit) {
-    val (hue, setHue) = state { _selected.toHSB().hue }
-    val (saturation, setSaturation) = state { _selected.toHSB().saturation }
-    val (brightness, setBrightness) = state { _selected.toHSB().brightness }
-    val (alpha, setAlpha) = state { 1f }
+    val (hue, setHue) = remember { mutableStateOf(_selected.toHSB().hue) }
+    val (saturation, setSaturation) = remember { mutableStateOf(_selected.toHSB().saturation) }
+    val (brightness, setBrightness) = remember { mutableStateOf(_selected.toHSB().brightness) }
+    val (alpha, setAlpha) = remember { mutableStateOf(1f) }
     val hsb = HSB(hue, saturation, brightness)
 
     fun update(newHue: Float = hue, newSaturation: Float = saturation, newBrightness: Float = brightness, newAlpha: Float = alpha) {
@@ -33,7 +35,7 @@ fun ExpandedColorPicker(_selected: Color, modifier: Modifier = Modifier, onSelec
     Column(modifier) {
         Text(text = "Pick Color".toUpperCase(), style = MaterialTheme.typography.subtitle1, modifier = Modifier.padding(bottom = 32.dp))
         Row {
-            val rowHeight = state { 0 } // track height of SaturationLightnessPicker and give it to HuePicker since fillMaxHeight doesn't work as row has Constraints.Infinite so fillMax doesn't work
+            val rowHeight = remember { mutableStateOf(0) } // track height of SaturationLightnessPicker and give it to HuePicker since fillMaxHeight doesn't work as row has Constraints.Infinite so fillMax doesn't work
             SaturationBrightnessPicker(
                 hue, saturation, brightness,
                 modifier = Modifier.weight(1f).aspectRatio(1f).padding(end = 32.dp).onPositioned { rowHeight.value = it.size.height }

@@ -76,7 +76,7 @@ fun LoadingSubjectsItem(modifier: Modifier = Modifier) {
             Box(
                 shape = CircleShape,
                 modifier = Modifier.size(48.dp),
-                backgroundColor = Color.Gray
+                backgroundColor = MaterialTheme.colors.onSecondary
             )
 
             Column(
@@ -84,21 +84,21 @@ fun LoadingSubjectsItem(modifier: Modifier = Modifier) {
                 verticalArrangement = Arrangement.SpaceBetween
             ) {
                 Box(
-                    shape = RoundedCornerShape(8.dp),
+                    shape = CircleShape,
                     modifier = Modifier.height(14.dp).width(120.dp),
-                    backgroundColor = Color.Gray
+                    backgroundColor = MaterialTheme.colors.onSecondary
                 )
                 Box(
-                    shape = RoundedCornerShape(8.dp),
+                    shape = CircleShape,
                     modifier = Modifier.height(14.dp).width(72.dp),
-                    backgroundColor = Color.Gray
+                    backgroundColor = MaterialTheme.colors.onSecondary
                 )
             }
         }
         Box(
-            shape = RoundedCornerShape(8.dp),
+            shape = CircleShape,
             modifier = Modifier.height(16.dp).width(48.dp),
-            backgroundColor = Color.Gray
+            backgroundColor = MaterialTheme.colors.onSecondary
         )
     }
 }

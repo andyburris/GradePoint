@@ -85,7 +85,7 @@ private fun AssignmentTextSize(children: @Composable() () -> Unit){
 
 @Composable
 private fun Header(assignment: Assignment, modifier: Modifier = Modifier, onCloseClick: ()->Unit){
-    val colorful = AndroidSettings.assignmentHeaderColorFlow.collectAsState()
+    val colorful = SettingsAmbient.current.assignmentHeaderColorFlow.collectAsState()
     MaterialTheme(
         colors = MaterialTheme.colors.copy(
             primary = if (colorful.value) MaterialTheme.colors.primary else MaterialTheme.colors.background,

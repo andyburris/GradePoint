@@ -1,8 +1,10 @@
 package com.andb.apps.aspen
 
 import com.netguru.kissme.Kissme
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.MutableStateFlow
 
-class StorageAndroid(val kissme: Kissme) : Storage{
+open class StorageAndroid(val kissme: Kissme) : Storage{
     override val loggedIn: Boolean
         get() = kissme.contains("username") && kissme.contains("password")
     override var username: String
@@ -16,8 +18,17 @@ class StorageAndroid(val kissme: Kissme) : Storage{
             kissme.putString("password", value)
         }
 
-    override fun clear() {
+    override fun clearLogin() {
         kissme.remove("username")
         kissme.remove("password")
     }
+
+    override var showHidden: Boolean
+        get() = kissme.getBoolean("showHidden", true)
+        set(value) {
+            kissme.putBoolean("showHidden", value)
+            showHiddenFlow.value = value
+        }
+
+    val showHiddenFlow = MutableStateFlow(showHidden)
 }

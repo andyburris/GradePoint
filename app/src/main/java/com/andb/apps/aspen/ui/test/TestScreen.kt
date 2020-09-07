@@ -1,8 +1,8 @@
 package com.andb.apps.aspen.ui.test
 
 import androidx.compose.animation.DpPropKey
-import androidx.compose.animation.Transition
 import androidx.compose.animation.core.*
+import androidx.compose.animation.transition
 import androidx.compose.foundation.*
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.CircleShape
@@ -13,8 +13,8 @@ import androidx.compose.material.icons.filled.Settings
 import androidx.compose.material.icons.filled.UnfoldLess
 import androidx.compose.material.icons.filled.UnfoldMore
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.state
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.drawLayer
@@ -50,7 +50,7 @@ fun TestScreen() {
                     SwipeStep(SwipeStep.Width.Size(48.dp), Color.Blue, Icons.Default.Settings)
                 )
         )
-        val moved = state { false }
+        val moved = remember { mutableStateOf(false) }
         TestAnimation(moved.value) { moved.value = !moved.value }
         TestColorPicker()
         TestInboxItem()
@@ -78,23 +78,22 @@ private val transition = transitionDefinition<Boolean> {
 
 @Composable
 private fun TestAnimation(moved: Boolean, onClick: () -> Unit) {
-    Transition(definition = transition, toState = moved) { transitionState ->
-        println("transitionState[offset] = ${transitionState[offset]}")
-        Box(
-            modifier = Modifier
-                .clickable(onClick = onClick)
-                .padding(start = transitionState[offset])
-                .size(56.dp),
-            shape = CircleShape,
-            backgroundColor = Color.Blue
-        )
-    }
+    val transitionState = transition(transition, moved)
+    println("transitionState[offset] = ${transitionState[offset]}")
+    Box(
+        modifier = Modifier
+            .clickable(onClick = onClick)
+            .padding(start = transitionState[offset])
+            .size(56.dp),
+        shape = CircleShape,
+        backgroundColor = Color.Blue
+    )
 }
 
 @Preview
 @Composable
 private fun TestColorPicker() {
-    val currentColor = state { Color(0xFF6202EE.toInt()) }
+    val currentColor = remember { mutableStateOf(Color(0xFF6202EE.toInt())) }
     ExpandedColorPicker(
         _selected = currentColor.value,
         modifier = Modifier.padding(horizontal = 24.dp),
@@ -118,7 +117,7 @@ private fun TestColorPicker() {
 @Preview
 @Composable
 private fun TestIconPicker() {
-    val currentIcon = state { Subject.Icon.SCHOOL }
+    val currentIcon = remember { mutableStateOf(Subject.Icon.SCHOOL) }
     IconPicker(
         selected = currentIcon.value,
         modifier = Modifier.padding(start = 24.dp, end = 24.dp, top = 24.dp).fillMaxWidth(),
@@ -129,7 +128,7 @@ private fun TestIconPicker() {
 @Composable
 private fun TestInboxItem() {
 
-    val expanded = state { false }
+    val expanded = remember { mutableStateOf(false) }
 
     val percentExpanded = remember { FloatPropKey() }
     val oldAlpha = remember { FloatPropKey() }
@@ -153,30 +152,30 @@ private fun TestInboxItem() {
     }
 
     Stack(Modifier.fillMaxWidth().clickable(onClick = { expanded.toggle() })) {
-        Transition(definition = transitionDefinition, toState = expanded.value) { transition ->
+        val transitionState = transition(transitionDefinition, expanded.value)
+
+        Row(
+            modifier = Modifier.drawLayer(alpha = transitionState[oldAlpha]),
+            verticalGravity = Alignment.CenterVertically
+        ) {
+            Icon(asset = Icons.Default.UnfoldMore, modifier = Modifier.padding(24.dp))
+            Text(text = "Expand", style = MaterialTheme.typography.subtitle1)
+        }
+
+        if (transitionState[percentExpanded] != 0f) {
             Row(
-                modifier = Modifier.drawLayer(alpha = transition[oldAlpha]),
+                modifier = Modifier
+                    .scale(
+                        y = transitionState[percentExpanded],
+                        //y = 0f,
+                        minSize = IntSize(48, with(DensityAmbient.current) { 48.dp.toIntPx() })
+                    )
+                    .drawLayer(alpha = transitionState[newAlpha])
+                    .fillMaxHeight(),
                 verticalGravity = Alignment.CenterVertically
             ) {
-                Icon(asset = Icons.Default.UnfoldMore, modifier = Modifier.padding(24.dp))
-                Text(text = "Expand", style = MaterialTheme.typography.subtitle1)
-            }
-
-            if (transition[percentExpanded] != 0f) {
-                Row(
-                    modifier = Modifier
-                        .scale(
-                            y = transition[percentExpanded],
-                            //y = 0f,
-                            minSize = IntSize(48, with(DensityAmbient.current) { 48.dp.toIntPx() })
-                        )
-                        .drawLayer(alpha = transition[newAlpha])
-                        .fillMaxHeight(),
-                    verticalGravity = Alignment.CenterVertically
-                ) {
-                    Icon(asset = Icons.Default.UnfoldLess, modifier = Modifier.padding(24.dp))
-                    Text(text = "Expanded", style = MaterialTheme.typography.subtitle1)
-                }
+                Icon(asset = Icons.Default.UnfoldLess, modifier = Modifier.padding(24.dp))
+                Text(text = "Expanded", style = MaterialTheme.typography.subtitle1)
             }
         }
     }

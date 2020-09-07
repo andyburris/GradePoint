@@ -2,31 +2,32 @@ package com.andb.apps.aspen.data.remote
 
 import com.andb.apps.aspen.models.Category
 import com.andb.apps.aspen.response.*
+import com.andb.apps.aspen.util.result.SuspendableResult
 
 class AspenApiMock : AspenApi {
     var jsonRequested = false
-    var throwOnRequest = false
+    var throwOnRequest = true
 
-    override suspend fun checkLogin(username: String, password: String): CheckLoginResponse {
+    override suspend fun checkLogin(username: String, password: String): SuspendableResult<CheckLoginResponse, Exception> = SuspendableResult.of {
         if (throwOnRequest) throw Exception()
         jsonRequested = true
-        return CheckLoginResponse(
+        return@of CheckLoginResponse(
             errors = ErrorResponse(0, null, null),
             data = username == "username" && password == "password",
             asOf = 0
         )
     }
 
-    override suspend fun getSubjects(username: String, password: String, term: Int?): CourseListResponse {
+    override suspend fun getSubjects(username: String, password: String, term: Int?): SuspendableResult<CourseListResponse, Exception> = SuspendableResult.of {
         if (throwOnRequest) throw Exception()
         jsonRequested = true
-        return courseListResponse
+        return@of courseListResponse
     }
 
-    override suspend fun getRecentAssignments(username: String, password: String): RecentResponse {
+    override suspend fun getRecentAssignments(username: String, password: String): SuspendableResult<RecentResponse, Exception> = SuspendableResult.of {
         if (throwOnRequest) throw Exception()
         jsonRequested = true
-        return recentResponse
+        return@of recentResponse
     }
 }
 

@@ -20,6 +20,7 @@ import androidx.compose.ui.unit.sp
 import androidx.ui.tooling.preview.Preview
 import com.andb.apps.aspen.models.Assignment
 import com.andb.apps.aspen.models.Grade
+import com.andb.apps.aspen.ui.common.shimmer.shimmer
 import com.andb.apps.aspen.util.trimTrailingZeroes
 import com.soywiz.klock.Date
 
@@ -89,19 +90,19 @@ fun AssignmentItem(assignment: Assignment, summaryText: String, modifier: Modifi
 }
 
 @Composable
-fun LoadingAssignmentsItem(modifier: Modifier = Modifier) {
+fun LoadingAssignmentsItem(modifier: Modifier = Modifier, color: Color = MaterialTheme.colors.onSecondary) {
     Row(
-        modifier = modifier.fillMaxWidth().padding(horizontal = 24.dp, vertical = 12.dp),
+        modifier = modifier.fillMaxWidth(),
         horizontalArrangement = Arrangement.SpaceBetween,
         verticalGravity = Alignment.CenterVertically
     ) {
         Column {
-            Box(Modifier.size(width = 120.dp, height = 14.dp), backgroundColor = Color.Gray, shape = RoundedCornerShape(8.dp))
-            Box(Modifier.padding(top = 4.dp).size(width = 72.dp, height = 14.dp), backgroundColor = Color.Gray, shape = RoundedCornerShape(8.dp))
+            Box(Modifier.size(width = 120.dp, height = 14.dp), backgroundColor = color, shape = CircleShape)
+            Box(Modifier.padding(top = 4.dp).size(width = 72.dp, height = 14.dp), backgroundColor = color, shape = CircleShape)
         }
         Row(verticalGravity = Alignment.CenterVertically) {
-            Box(modifier = Modifier.padding(end = 8.dp).size(width = 32.dp, height = 14.dp), backgroundColor = Color.Gray, shape = RoundedCornerShape(8.dp))
-            Box(Modifier.size(32.dp), backgroundColor = Color.Gray, shape = CircleShape)
+            Box(modifier = Modifier.padding(end = 8.dp).size(width = 32.dp, height = 14.dp), backgroundColor = color, shape = CircleShape)
+            Box(Modifier.size(32.dp), backgroundColor = color, shape = CircleShape)
         }
     }
 }

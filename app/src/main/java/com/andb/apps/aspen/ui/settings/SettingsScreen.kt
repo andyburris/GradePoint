@@ -8,20 +8,22 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.material.AlertDialog
 import androidx.compose.material.Button
 import androidx.compose.material.MaterialTheme
+import androidx.compose.material.Switch
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.FormatSize
 import androidx.compose.material.icons.filled.Palette
 import androidx.compose.material.icons.filled.Settings
+import androidx.compose.material.icons.filled.VisibilityOff
 import androidx.compose.material.icons.outlined.Info
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.state
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.VectorAsset
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.unit.dp
-import com.andb.apps.aspen.AndroidSettings
 import com.andb.apps.aspen.android.BuildConfig
 import com.andb.apps.aspen.android.R
 import com.andb.apps.aspen.model.DarkMode
@@ -35,11 +37,12 @@ import com.andb.apps.aspen.util.*
 
 @Composable
 fun SettingsScreen(actionHandler: ActionHandler) {
+    val settings = SettingsAmbient.current
     Column {
         HomeHeader(title = "Settings")
         Spacer(modifier = Modifier.height(8.dp))
         SettingsHeaderItem(title = "Theme", topPadding = false)
-        val darkModeDialogShown = state { false }
+        val darkModeDialogShown = remember { mutableStateOf(false) }
         SettingsItem(
             title = "Dark Mode",
             icon = vectorResource(id = R.drawable.ic_weather_night),
@@ -47,8 +50,18 @@ fun SettingsScreen(actionHandler: ActionHandler) {
         )
         DarkModeDialog(
             showing = darkModeDialogShown.value,
-            onClose = { darkModeDialogShown.value = false }
+            currentMode = settings.darkMode,
+            onClose = {
+                settings.darkMode = it
+                darkModeDialogShown.value = false
+            }
         )
+
+        SettingsHeaderItem(title = "General")
+        val showHidden = settings.showHiddenFlow.collectAsState()
+        SettingsItem(title = "Hidden Classes Dropdown", icon = Icons.Default.VisibilityOff) {
+            Switch(checked = showHidden.value, onCheckedChange = { settings.showHidden = it} )
+        }
 
         SettingsHeaderItem(title = "Experiments")
         SettingsItem(
@@ -57,17 +70,17 @@ fun SettingsScreen(actionHandler: ActionHandler) {
         ) {
             Chip(
                 text = "14sp (default)",
-                selected = AndroidSettings.fontSize == 14,
-                onClick = { AndroidSettings.fontSize = 14 },
+                selected = settings.fontSize == 14,
+                onClick = { settings.fontSize = 14 },
                 modifier = Modifier.padding(end = 4.dp)
             )
             Chip(
                 text = "16sp",
-                selected = AndroidSettings.fontSize == 16,
-                onClick = { AndroidSettings.fontSize = 16 })
+                selected = settings.fontSize == 16,
+                onClick = { settings.fontSize = 16 })
         }
 
-        val color = AndroidSettings.assignmentHeaderColorFlow.collectAsState()
+        val color = settings.assignmentHeaderColorFlow.collectAsState()
         SettingsItem(
             title = "Assignment Page Header Color",
             icon = Icons.Default.Palette
@@ -75,13 +88,13 @@ fun SettingsScreen(actionHandler: ActionHandler) {
             Chip(
                 text = "Background",
                 selected = !color.value,
-                onClick = { AndroidSettings.assignmentHeaderColor = false },
+                onClick = { settings.assignmentHeaderColor = false },
                 modifier = Modifier.padding(end = 4.dp)
             )
             Chip(
                 text = "Green",
                 selected = color.value,
-                onClick = { AndroidSettings.assignmentHeaderColor = true })
+                onClick = { settings.assignmentHeaderColor = true })
         }
 
         if (BuildConfig.DEBUG) {
@@ -139,11 +152,11 @@ fun SettingsHeaderItem(title: String, topPadding: Boolean = true) {
 }
 
 @Composable
-fun DarkModeDialog(showing: Boolean, onClose: () -> Unit) {
-    val selectedMode = state { AndroidSettings.darkMode }
+fun DarkModeDialog(showing: Boolean, currentMode: DarkMode, onClose: (selectedMode: DarkMode) -> Unit) {
+    val selectedMode = remember { mutableStateOf(currentMode) }
     if (showing) {
         AlertDialog(
-            onDismissRequest = onClose,
+            onDismissRequest = { onClose.invoke(currentMode) },
             title = { Text(text = "Dark Mode") },
             text = {
                 Column {
@@ -168,15 +181,14 @@ fun DarkModeDialog(showing: Boolean, onClose: () -> Unit) {
                 }
             },
             dismissButton = {
-                Button(onClick = onClose, backgroundColor = Color.Unset, elevation = 0.dp) {
+                Button(onClick = { onClose.invoke(currentMode) }, backgroundColor = Color.Unset, elevation = 0.dp) {
                     Text(text = "Cancel".toUpperCase())
                 }
             },
             confirmButton = {
                 Button(
                     onClick = {
-                        AndroidSettings.darkMode = selectedMode.value
-                        onClose.invoke()
+                        onClose.invoke(selectedMode.value)
                     },
                     backgroundColor = Color.Unset,
                     elevation = 0.dp

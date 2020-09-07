@@ -6,9 +6,7 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import org.koin.core.KoinComponent
 import org.koin.core.inject
 
-object AndroidSettings : KoinComponent{
-    private val storage: Kissme by inject()
-
+class AndroidSettings(val storage: Kissme) : StorageAndroid(storage){
     var darkMode: DarkMode
         get() = DarkMode.valueOf(storage.getString("darkMode", DarkMode.LIGHT.name) ?: DarkMode.LIGHT.name)
         set(value) {
@@ -35,7 +33,5 @@ object AndroidSettings : KoinComponent{
         }
 
     val assignmentHeaderColorFlow = MutableStateFlow(assignmentHeaderColor)
-
-
 }
 

@@ -4,6 +4,7 @@ import co.touchlab.stately.ensureNeverFrozen
 import com.andb.apps.aspen.response.CheckLoginResponse
 import com.andb.apps.aspen.response.CourseListResponse
 import com.andb.apps.aspen.response.RecentResponse
+import com.andb.apps.aspen.util.result.SuspendableResult
 import io.ktor.client.HttpClient
 import io.ktor.client.features.HttpTimeout
 import io.ktor.client.features.json.JsonFeature
@@ -33,36 +34,42 @@ class AspenApiImpl : AspenApi {
         ensureNeverFrozen()
     }
 
-    override suspend fun checkLogin(username: String, password: String): CheckLoginResponse {
-        return client.get<CheckLoginResponse>("$BASE_URL/checkLogin"){
-            header("ASPEN_UNAME", username)
-            header("ASPEN_PASS", password)
-            timeout {
-                socketTimeoutMillis = 30 * 1000
+    override suspend fun checkLogin(username: String, password: String): SuspendableResult<CheckLoginResponse, Exception> =
+        SuspendableResult.of {
+            client.get<CheckLoginResponse>("$BASE_URL/checkLogin") {
+                header("ASPEN_UNAME", username)
+                header("ASPEN_PASS", password)
+                timeout {
+                    socketTimeoutMillis = 30 * 1000
+                }
             }
         }
+
+    override suspend fun getSubjects(username: String, password: String, term: Int?): SuspendableResult<CourseListResponse, Exception> {
+        val response: SuspendableResult<CourseListResponse, Exception> = SuspendableResult.of {
+            val termParam = if (term != null) "&term=$term" else ""
+            return@of client.get<CourseListResponse>("$BASE_URL/course?moreData=true$termParam") {
+                header("ASPEN_UNAME", username)
+                header("ASPEN_PASS", password)
+                timeout {
+                    socketTimeoutMillis = 30 * 1000
+                }
+            }
+        }
+        println("response = $response")
+        return response
     }
 
-    override suspend fun getSubjects(username: String, password: String, term: Int?): CourseListResponse {
-        val termParam = if (term!=null) "&term=$term" else ""
-        return client.get<CourseListResponse>("$BASE_URL/course?moreData=true$termParam"){
-            header("ASPEN_UNAME", username)
-            header("ASPEN_PASS", password)
-            timeout {
-                socketTimeoutMillis = 30 * 1000
+    override suspend fun getRecentAssignments(username: String, password: String): SuspendableResult<RecentResponse, Exception> =
+        SuspendableResult.of {
+            client.get<RecentResponse>("$BASE_URL/recent") {
+                header("ASPEN_UNAME", username)
+                header("ASPEN_PASS", password)
+                timeout {
+                    socketTimeoutMillis = 30 * 1000
+                }
             }
         }
-    }
-
-    override suspend fun getRecentAssignments(username: String, password: String): RecentResponse{
-        return client.get<RecentResponse>("$BASE_URL/recent"){
-            header("ASPEN_UNAME", username)
-            header("ASPEN_PASS", password)
-            timeout {
-                socketTimeoutMillis = 30 * 1000
-            }
-        }
-    }
 
     companion object {
         const val DISTRICT_ID = "dcps"

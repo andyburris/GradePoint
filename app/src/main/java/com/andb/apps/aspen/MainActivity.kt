@@ -3,7 +3,7 @@ package com.andb.apps.aspen
 import android.os.Bundle
 import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
-import androidx.compose.animation.core.TweenSpec
+import androidx.compose.animation.Crossfade
 import androidx.compose.foundation.Box
 import androidx.compose.foundation.Text
 import androidx.compose.foundation.layout.*
@@ -11,34 +11,30 @@ import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Surface
 import androidx.compose.material.darkColors
 import androidx.compose.material.lightColors
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.state
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.drawLayer
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.DensityAmbient
 import androidx.compose.ui.platform.setContent
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.unit.Density
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.andb.apps.aspen.android.BuildConfig
 import com.andb.apps.aspen.models.Screen
-import com.andb.apps.aspen.models.recents
 import com.andb.apps.aspen.state.UserAction
 import com.andb.apps.aspen.ui.assignment.AssignmentScreen
-import com.andb.apps.aspen.ui.common.inbox.InboxParent2
+import com.andb.apps.aspen.ui.common.BetterCrossfade
 import com.andb.apps.aspen.ui.home.HomeScreen
 import com.andb.apps.aspen.ui.login.LoginScreen
 import com.andb.apps.aspen.ui.subject.SubjectScreen
 import com.andb.apps.aspen.ui.test.TestScreen
-import com.andb.apps.aspen.util.ActionHandler
-import com.andb.apps.aspen.util.NavigationBar
-import com.andb.apps.aspen.util.StatusBar
-import org.koin.android.viewmodel.ext.android.viewModel
-import androidx.compose.runtime.collectAsState
 import com.andb.apps.aspen.util.*
-import com.zachklipp.compose.backstack.Backstack
+import org.koin.android.ext.android.inject
+import org.koin.android.viewmodel.ext.android.viewModel
 
 
 class MainActivity : AppCompatActivity() {
@@ -47,6 +43,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     private val viewModel: MainActivityViewModel by viewModel()
+    private val settings: AndroidSettings by inject()
     private val handler = ActionHandler {
         viewModel.screens.handleAction(it)
     }
@@ -54,11 +51,13 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
-            AppTheme {
-                val currentScreen = viewModel.screens.stack.collectAsState(initial = listOf())
-                StatusBar(currentScreen = currentScreen.value.firstOrNull())
-                NavigationBar(currentScreen = currentScreen.value.firstOrNull())
-                AppContent(currentScreen.value, handler)
+            SettingsProvider(settings = settings) {
+                AppTheme {
+                    val currentScreen = viewModel.screens.stack.collectAsState(initial = listOf())
+                    StatusBar(currentScreen = currentScreen.value.lastOrNull())
+                    NavigationBar(currentScreen = currentScreen.value.lastOrNull())
+                    AppContent(currentScreen.value, handler)
+                }
             }
         }
     }
@@ -78,18 +77,18 @@ fun AppContent(stack: List<Screen>, actionHandler: ActionHandler) {
     Surface(color = MaterialTheme.colors.background) {
         Stack(Modifier.fillMaxSize()) {
             if (stack.isNotEmpty()){
-                Backstack(backstack = stack) { screen ->
-                    when (screen) {
+                //BetterCrossfade(stack.last(), animateIf = { old, new -> old != new }) { screen ->
+                    when (val screen = stack.last()) {
                         is Screen.Login -> LoginScreen(actionHandler)
                         is Screen.Home -> {
-                            val expanded = state { false }
-                            HomeScreen(screen.subjects, screen.recents, screen.term, screen.tab, expanded.value, { expanded.value = !expanded.value }, actionHandler)
+                            val expanded = remember { mutableStateOf(false) }
+                            HomeScreen(screen.subjects, screen.recentState, screen.terms, screen.selectedTerm, screen.tab, expanded.value, { expanded.value = !expanded.value }, actionHandler)
                         }
                         is Screen.Subject -> SubjectScreen(screen.subject, screen.term, actionHandler)
                         is Screen.Assignment -> AssignmentScreen(screen.assignment, actionHandler)
                         is Screen.Test -> TestScreen()
                     }
-                }
+                //}
             }
 
             if (BuildConfig.DEBUG) {
@@ -101,9 +100,16 @@ fun AppContent(stack: List<Screen>, actionHandler: ActionHandler) {
 }
 
 @Composable
+private fun SettingsProvider(settings: AndroidSettings, content: @Composable() () -> Unit){
+    Providers(SettingsAmbient provides settings, children = content)
+}
+
+
+
+@Composable
 fun AppTheme(content: @Composable() () -> Unit) {
-    val darkMode = AndroidSettings.darkModeFlow.collectAsState()
-    val fontSize = AndroidSettings.fontSizeFlow.collectAsState()
+    val darkMode = SettingsAmbient.current.darkModeFlow.collectAsState()
+    val fontSize = SettingsAmbient.current.fontSizeFlow.collectAsState()
 
     val colors = when (darkMode.value.isDark()) {
         false -> lightColors(

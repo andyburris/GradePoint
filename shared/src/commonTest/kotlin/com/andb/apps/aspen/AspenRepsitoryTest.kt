@@ -5,10 +5,7 @@ import com.andb.apps.aspen.data.repository.AspenRepository
 import com.andb.apps.aspen.models.Subject
 import com.andb.apps.aspen.models.toConfig
 import com.netguru.kissme.Kissme
-import kotlin.test.AfterTest
-import kotlin.test.BeforeTest
-import kotlin.test.Test
-import kotlin.test.assertEquals
+import kotlin.test.*
 
 class AspenRepsitoryTest : BaseTest() {
 
@@ -30,15 +27,17 @@ class AspenRepsitoryTest : BaseTest() {
     fun saveSubjectConfigTest() = runTest {
         val subjects = repository.getTerm(null)
         val subjectConfig = dbHelper.selectAllItems().first().toConfig()
-        assertEquals(subjectConfig, subjects.first().config)
+        assertTrue(subjects.isSuccess)
+        assertEquals(subjectConfig, subjects.get().first().config)
     }
 
     @Test
     fun useSavedSubjectConfigTest() = runTest {
-        val savedConfig = Subject.Config("id", Subject.Icon.BOOK, 0xFFAAABAC.toInt())
+        val savedConfig = Subject.Config("id", Subject.Icon.BOOK, 0xFFAAABAC.toInt(), false)
         dbHelper.upsertSubjectConfig(savedConfig)
         val subjects = repository.getTerm(null)
-        assertEquals(subjects.first().config, savedConfig)
+        assertTrue(subjects.isSuccess)
+        assertEquals(subjects.get().first().config, savedConfig)
     }
 
     @Test
@@ -46,7 +45,8 @@ class AspenRepsitoryTest : BaseTest() {
         val subjects = repository.getTerm(null)
         fun savedConfig() = dbHelper.selectAllItems().first().toConfig()
 
-        val downloadedConfig = subjects.first().config
+        assertTrue(subjects.isSuccess)
+        val downloadedConfig = subjects.get().first().config
         assertEquals(savedConfig(), downloadedConfig)
 
         val iconChangeConfig = downloadedConfig.copy(icon = Subject.Icon.FLASK)
@@ -56,13 +56,15 @@ class AspenRepsitoryTest : BaseTest() {
         val colorChangeConfig = downloadedConfig.copy(color = 0xFF123456.toInt())
         dbHelper.upsertSubjectConfig(colorChangeConfig)
         assertEquals(savedConfig(), downloadedConfig)
+
+
     }
 
     @Test
     fun notifyErrorOnException() = runTest {
         aspenApi.throwOnRequest = true
-        repository.getTerm(null)
-        //TODO implement kotlin-result when it becomes multiplatform and check that error
+        val subjects = repository.getTerm(null)
+        assertTrue(subjects.isFailure)
     }
 
     @AfterTest

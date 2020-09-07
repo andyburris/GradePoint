@@ -1,0 +1,1 @@
+ALTER TABLE SubjectConfig ADD COLUMN hidden INTEGER DEFAULT 0;

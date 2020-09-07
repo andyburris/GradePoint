@@ -16,8 +16,14 @@ class StorageiOS(val kissme: Kissme) : Storage{
             kissme.putString("password", value)
         }
 
-    override fun clear() {
+    override fun clearLogin() {
         kissme.remove("username")
         kissme.remove("password")
     }
+
+    override var showHidden: Boolean
+        get() = kissme.getBoolean("showHidden", true)
+        set(value) {
+            kissme.putBoolean("showHidden", value)
+        }
 }

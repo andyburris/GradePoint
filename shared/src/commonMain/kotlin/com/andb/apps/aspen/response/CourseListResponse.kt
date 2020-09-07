@@ -8,15 +8,15 @@ import kotlinx.serialization.Serializable
 @Serializable
 data class CourseListResponse(
     val errors: ErrorResponse,
-    val config: ResponseConfig = ResponseConfig("dcps", "4"),
+    val config: ResponseConfig = ResponseConfig("dcps", "1"),
     val data: List<CourseResponse>,
     val asOf: Int
 )
 
 fun CourseListResponse.toSubjectList(savedConfigs: List<Subject.Config>, term: Int = config.term.toInt()): List<Subject> {
     return data.map { courseResponse ->
-        val (last, first) = courseResponse.teacher.split(", ")
-        val config = savedConfigs.find { it.id == courseResponse.id } ?: Subject.Config(courseResponse.id, courseResponse.name.toIcon(), 0xFF4CAF50.toInt())
+        val (last, first) = if (courseResponse.teacher.contains(",")) courseResponse.teacher.split(",").map { it.trim() } else listOf("", courseResponse.teacher)
+        val config = savedConfigs.find { it.id == courseResponse.id } ?: Subject.Config(courseResponse.id, courseResponse.name.toIcon(), 0xFF4CAF50.toInt(), false)
         Subject(
             id = courseResponse.id,
             name = courseResponse.name,

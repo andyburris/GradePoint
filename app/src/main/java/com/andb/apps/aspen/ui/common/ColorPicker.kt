@@ -11,9 +11,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Colorize
 import androidx.compose.material.icons.filled.Done
 import androidx.compose.material.icons.filled.KeyboardArrowDown
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.state
-import androidx.compose.runtime.stateFor
+import androidx.compose.runtime.*
 import androidx.compose.ui.*
 import androidx.compose.ui.geometry.RRect
 import androidx.compose.ui.geometry.Radius
@@ -34,7 +32,7 @@ import com.andb.apps.aspen.util.toHSL
 
 @Composable
 fun ColorPicker(selected: Int, modifier: Modifier = Modifier, onSelect: (color: Int) -> Unit) {
-    val expanded = state { false }
+    val expanded = remember { mutableStateOf(false) }
     Column(modifier) {
         Text(
             text = "Color",

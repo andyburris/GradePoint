@@ -67,7 +67,7 @@ fun <T> InboxParent(
                             return@InboxAnimationItem
                         }
 
-                        val pageBounds = state<Bounds?> { null }
+                        val pageBounds = remember { mutableStateOf<Bounds?>(null) }
                         if (pageBounds.value != null) {
                             val scale = animatedScale(
                                 animation = animation,

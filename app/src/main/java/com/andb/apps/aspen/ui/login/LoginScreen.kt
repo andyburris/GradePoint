@@ -66,7 +66,7 @@ fun LoginScreen(actionHandler: ActionHandler) {
                 actionHandler.handle(UserAction.Login(sanitizedUsername, sanitizedPassword))
             },
             modifier = Modifier.padding(top = 32.dp),
-            shape = RoundedCornerShape(32.dp),
+            shape = RoundedCornerShape(24.dp),
             contentPadding = InnerPadding(start = 24.dp, end = 24.dp, top = 16.dp, bottom = 16.dp)
 
         ) {

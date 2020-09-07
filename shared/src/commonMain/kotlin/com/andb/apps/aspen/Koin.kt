@@ -15,7 +15,7 @@ fun initKoin(appDeclaration: KoinAppDeclaration = {}) = startKoin {
 }
 
 private val coreModule = module {
-    single<AspenApi> { AspenApiMock() }
+    single<AspenApi> { AspenApiImpl() }
     single<AspenRepository> { AspenRepository() }
 }
 

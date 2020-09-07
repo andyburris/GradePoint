@@ -1,6 +1,6 @@
 package com.andb.apps.aspen.models
 
-import com.andb.apps.aspen.SubjectConfig
+import com.andb.apps.aspen.db.SubjectConfig
 import com.andb.apps.aspen.util.replace
 import kotlinx.serialization.Serializable
 
@@ -60,7 +60,7 @@ data class Subject(
     }
 
     @Serializable
-    data class Config(val id: String, val icon: Icon, val color: Int)
+    data class Config(val id: String, val icon: Icon, val color: Int, val isHidden: Boolean)
 
     companion object {
         val COLOR_PRESETS = listOf(
@@ -76,7 +76,7 @@ data class Subject(
     }
 }
 
-fun SubjectConfig.toConfig() = Subject.Config(id, Subject.Icon.valueOf(iconName), color.toInt())
+fun SubjectConfig.toConfig() = Subject.Config(id, Subject.Icon.valueOf(iconName), color.toInt(), hidden == 1L)
 
 fun List<Subject>.combineWith(other: List<Subject>): List<Subject>{
     val allSubjects = this.toMutableList()

@@ -1,9 +1,11 @@
 package com.andb.apps.aspen.ui.home
 
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.Providers
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.unit.dp
 import com.andb.apps.aspen.ui.common.LoadingAssignmentsItem
 import com.andb.apps.aspen.ui.common.shimmer.*
 import com.andb.apps.aspen.ui.home.subjectlist.LoadingSubjectsItem
@@ -39,7 +41,7 @@ fun RecentsLoadingScreen(){
         HomeHeader(title = "Recent")
         Providers(ShimmerThemeAmbient provides shimmer) {
             repeat(12){
-                LoadingAssignmentsItem(modifier = Modifier.shimmer())
+                LoadingAssignmentsItem(Modifier.shimmer().padding(horizontal = 24.dp, vertical = 12.dp))
             }
         }
     }
