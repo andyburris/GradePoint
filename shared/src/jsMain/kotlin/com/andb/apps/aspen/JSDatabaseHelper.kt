@@ -1,6 +1,6 @@
 package com.andb.apps.aspen
 
-import com.andb.apps.aspen.SubjectConfig
+import com.andb.apps.aspen.db.SubjectConfig
 import com.andb.apps.aspen.models.Subject
 import com.andb.apps.aspen.models.toConfig
 import kotlinx.serialization.json.Json
@@ -20,7 +20,7 @@ class JSDatabaseHelper : DatabaseHelper {
 
     override fun selectAllItems(): List<SubjectConfig> {
         val serialized = localStorage[STORAGE_KEY] ?: return emptyList()
-        return json.parseList<Subject.Config>(serialized).map { SubjectConfig(it.id, it.icon.name, it.color.toLong()) }
+        return json.parseList<Subject.Config>(serialized).map { SubjectConfig(it.id, it.icon.name, it.color.toLong(), it.isHidden.toLong()) }
     }
 
     override fun selectAllItemsByIds(ids: List<String>): List<SubjectConfig> {
