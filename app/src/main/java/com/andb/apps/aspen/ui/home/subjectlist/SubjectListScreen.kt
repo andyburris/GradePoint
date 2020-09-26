@@ -134,7 +134,7 @@ private fun SubjectListHeader(onLogout: ()->Unit){
 private fun HiddenHeader(hiddenSubjectCount: Int, expanded: Boolean, onToggle: () -> Unit){
     Row(
         horizontalArrangement = Arrangement.SpaceBetween,
-        verticalGravity = Alignment.CenterVertically,
+        verticalAlignment = Alignment.CenterVertically,
         modifier = Modifier.fillMaxWidth().clickable(onClick = onToggle).padding(vertical = 16.dp, horizontal = 24.dp)
     ) {
         Text(

@@ -92,7 +92,7 @@ fun AppContent(stack: List<Screen>, actionHandler: ActionHandler) {
             }
 
             if (BuildConfig.DEBUG) {
-                VersionRibbon(Modifier.gravity(Alignment.TopEnd))
+                VersionRibbon(Modifier.align(Alignment.TopEnd))
             }
         }
     }
@@ -147,12 +147,12 @@ fun VersionRibbon(modifier: Modifier = Modifier) {
             .drawLayer(rotationZ = 45f, translationX = 75f, translationY = -75f)
     ) {
         Box(
-            modifier = Modifier.height(24.dp).fillMaxWidth().gravity(Alignment.Center),
+            modifier = Modifier.height(24.dp).fillMaxWidth().align(Alignment.Center),
             backgroundColor = MaterialTheme.colors.primary
         )
         Text(
             text = BuildConfig.VERSION_NAME,
-            modifier = Modifier.gravity(Alignment.Center),
+            modifier = Modifier.align(Alignment.Center),
             style = TextStyle(fontSize = 10.sp),
             color = MaterialTheme.colors.onPrimary
         )

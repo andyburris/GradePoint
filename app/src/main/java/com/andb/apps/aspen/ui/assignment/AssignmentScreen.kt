@@ -95,7 +95,7 @@ private fun Header(assignment: Assignment, modifier: Modifier = Modifier, onClos
     ) {
         Surface(elevation = 4.dp, color = MaterialTheme.colors.primary) {
             Column(modifier = modifier.fillMaxWidth().padding(horizontal = 24.dp)) {
-                Row(Modifier.padding(top = 24.dp), verticalGravity = Alignment.CenterVertically) {
+                Row(Modifier.padding(top = 24.dp), verticalAlignment = Alignment.CenterVertically) {
                     Icon(
                         asset = Icons.Default.Clear,
                         modifier = Modifier.clickable(onClick = onCloseClick),
@@ -145,7 +145,7 @@ private fun ExtendedScoreItem(grade: Grade, modifier: Modifier = Modifier) {
     }
 
     Column(modifier = modifier) {
-        Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween, verticalGravity = Alignment.Bottom) {
+        Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween, verticalAlignment = Alignment.Bottom) {
             Row {
                 Text(
                     text = "$score/$possibleScore",
@@ -173,15 +173,15 @@ private fun ExtendedScoreItem(grade: Grade, modifier: Modifier = Modifier) {
 
 @Composable
 private fun DetailItem(title: String, text: String, icon: VectorAsset, modifier: Modifier = Modifier) {
-    Row(verticalGravity = Alignment.CenterVertically, horizontalArrangement = Arrangement.SpaceBetween, modifier = modifier) {
-        Row(verticalGravity = Alignment.CenterVertically) {
+    Row(verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.SpaceBetween, modifier = modifier) {
+        Row(verticalAlignment = Alignment.CenterVertically) {
             Stack(
                 modifier = Modifier.size(32.dp).background(MaterialTheme.colors.primary, shape = CircleShape)
             ) {
                 Icon(
                     asset = icon.copy(defaultHeight = 16.dp, defaultWidth = 16.dp),
                     tint = Color.Black.copy(alpha = .54f),
-                    modifier = Modifier.gravity(Alignment.Center)
+                    modifier = Modifier.align(Alignment.Center)
                 )
             }
             Text(
@@ -242,7 +242,7 @@ private fun AssignmentStatistics(statistics: Assignment.Statistics){
 @Composable
 private fun StatisticItem(type: String, value: SubjectGrade, modifier: Modifier = Modifier) {
     Row(
-        verticalGravity = Alignment.CenterVertically,
+        verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.SpaceBetween,
         modifier = modifier.fillMaxWidth()
     ) {

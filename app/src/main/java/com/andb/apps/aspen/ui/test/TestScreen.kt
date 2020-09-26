@@ -27,8 +27,10 @@ import androidx.ui.tooling.preview.Preview
 import com.andb.apps.aspen.models.Subject
 import com.andb.apps.aspen.ui.common.*
 import com.andb.apps.aspen.ui.common.color.ExpandedColorPicker
+import com.andb.apps.aspen.ui.common.color.HSB
+import com.andb.apps.aspen.ui.common.color.toColor
 import com.andb.apps.aspen.ui.settings.SettingsItem
-import com.andb.apps.aspen.util.toHSB
+import com.andb.apps.aspen.ui.common.color.toHSB
 import com.andb.apps.aspen.util.toggle
 import kotlin.random.Random
 
@@ -93,12 +95,12 @@ private fun TestAnimation(moved: Boolean, onClick: () -> Unit) {
 @Preview
 @Composable
 private fun TestColorPicker() {
-    val currentColor = remember { mutableStateOf(Color(0xFF6202EE.toInt())) }
+    val currentColor = remember { mutableStateOf(HSB(0f, 1f, 1f).toColor()) }
     ExpandedColorPicker(
-        _selected = currentColor.value,
+        selected = currentColor.value,
         modifier = Modifier.padding(horizontal = 24.dp),
         onSelect = {
-            println("color updated: hsb = ${it.toHSB()}")
+            println("color updated: hsb = $it")
             currentColor.value = it
         }
     )
@@ -107,8 +109,8 @@ private fun TestColorPicker() {
             .padding(top = 16.dp)
             .size(64.dp)
             .clickable(onClick = {
-                currentColor.value = Random(21387).run {
-                    Color(nextInt(255), nextInt(255), nextInt(255))
+                currentColor.value = Random.Default.run {
+                    Color(nextInt(255), nextInt(255), nextInt(255), alpha = nextInt(255))
                 }
             }),
         backgroundColor = currentColor.value)
@@ -156,7 +158,7 @@ private fun TestInboxItem() {
 
         Row(
             modifier = Modifier.drawLayer(alpha = transitionState[oldAlpha]),
-            verticalGravity = Alignment.CenterVertically
+            verticalAlignment = Alignment.CenterVertically
         ) {
             Icon(asset = Icons.Default.UnfoldMore, modifier = Modifier.padding(24.dp))
             Text(text = "Expand", style = MaterialTheme.typography.subtitle1)
@@ -172,7 +174,7 @@ private fun TestInboxItem() {
                     )
                     .drawLayer(alpha = transitionState[newAlpha])
                     .fillMaxHeight(),
-                verticalGravity = Alignment.CenterVertically
+                verticalAlignment = Alignment.CenterVertically
             ) {
                 Icon(asset = Icons.Default.UnfoldLess, modifier = Modifier.padding(24.dp))
                 Text(text = "Expanded", style = MaterialTheme.typography.subtitle1)

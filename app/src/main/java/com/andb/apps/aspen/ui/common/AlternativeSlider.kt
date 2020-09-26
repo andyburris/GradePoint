@@ -18,31 +18,32 @@ import androidx.compose.ui.unit.dp
 fun AlternativeSlider(position: Float, orientation: Orientation = Orientation.Horizontal, modifier: Modifier = Modifier, track: @Composable() StackScope.() -> Unit, thumb: @Composable() StackScope.() -> Unit, onChange: (Float) -> Unit){
     val (trackSize, setTrackSize) = remember { mutableStateOf(0) }
     val (thumbSize, setThumbSize) = remember { mutableStateOf(0) }
-    val draggedPx = stateFor(trackSize, thumbSize) { (trackSize - thumbSize) * position }
+    val draggedPx = (trackSize - thumbSize) * position
 
-    fun update() {
-        onChange.invoke(draggedPx.value / (trackSize - thumbSize).toFloat())
+    val update: (position: Float) -> Unit = { position ->
+        val slideableWidth = (trackSize - thumbSize).toFloat()
+        val bounded = position.coerceIn(0f..slideableWidth)
+        val percent = bounded / slideableWidth
+        println("updating slider - slideable width = $slideableWidth, bounded = $bounded, percent = $percent")
+        onChange.invoke(if (!percent.isNaN()) percent else 0f)
     }
 
     Stack(
         modifier = modifier.draggable(orientation) { delta ->
-            val newPx = (draggedPx.value + delta)
-            draggedPx.value = newPx.coerceIn(0f..(trackSize - thumbSize).toFloat())
-            update()
-            delta
+            val newPx = (draggedPx + delta)
+            update(newPx)
         }.pressIndicatorGestureFilter(onStart = {
             val position = if (orientation == Orientation.Horizontal) it.x else it.y
-            val onThumb = position in draggedPx.value..(draggedPx.value + thumbSize)
+            val onThumb = position in draggedPx..(draggedPx + thumbSize)
             if (!onThumb) {
-                draggedPx.value = position.coerceIn(0f..(trackSize - thumbSize).toFloat())
-                update()
+                update(position)
             }
         })
     ) {
         Box(Modifier.onPositioned { setTrackSize(it.size.run { if(orientation == Orientation.Horizontal) width else height }) }) {
             track()
         }
-        val offset = with(DensityAmbient.current) { draggedPx.value.toDp() }
+        val offset = with(DensityAmbient.current) { draggedPx.toDp() }
         Box(
             modifier = Modifier
                 .onPositioned { setThumbSize(it.size.run { if(orientation == Orientation.Horizontal) width else height }) }

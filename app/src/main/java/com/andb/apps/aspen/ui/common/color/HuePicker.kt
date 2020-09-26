@@ -20,8 +20,6 @@ import androidx.compose.ui.graphics.ColorStop
 import androidx.compose.ui.graphics.VerticalGradient
 import androidx.compose.ui.unit.dp
 import com.andb.apps.aspen.ui.common.AlternativeSlider
-import com.andb.apps.aspen.util.HSB
-import com.andb.apps.aspen.util.toColor
 
 @Composable
 fun HuePicker(colors: List<Color>, hue: Float, modifier: Modifier = Modifier, onSelect: (hue: Float) -> Unit) {
@@ -34,7 +32,7 @@ fun HuePicker(colors: List<Color>, hue: Float, modifier: Modifier = Modifier, on
             Box(modifier = Modifier
                 .width(32.dp)
                 .fillMaxHeight()
-                .gravity(Alignment.Center)
+                .align(Alignment.Center)
                 .drawBehind {
                     val gradient = VerticalGradient(
                         colorStops = *colorStops.toTypedArray(),

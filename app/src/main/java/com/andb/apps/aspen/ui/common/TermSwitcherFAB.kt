@@ -62,7 +62,7 @@ fun TermSwitcherFAB(fabState: FabState, currentTerm: Int, possibleTerms: List<In
             Icon(asset = Icons.Default.FilterList)
         },
         text = {
-            Row(verticalGravity = Alignment.CenterVertically) {
+            Row(verticalAlignment = Alignment.CenterVertically) {
                 Text(
                     text = "Term ${if (transitionState[termExpansion] < .5f) currentTerm else " "}".toUpperCase(),
                     maxLines = 1,
@@ -106,11 +106,11 @@ fun HomeTermSwitcher(currentTerm: Int, possibleTerms: List<Int>, modifier: Modif
             modifier = Modifier
                 .padding(start = 48.dp * (transitionState[termBackgroundKey] - 1) + 6.dp)
                 .size(36.dp)
-                .gravity(Alignment.CenterStart)
+                .align(Alignment.CenterStart)
         )
         Row(
             horizontalArrangement = Arrangement.SpaceBetween,
-            modifier = Modifier.gravity(Alignment.Center)
+            modifier = Modifier.align(Alignment.Center)
         ) {
             possibleTerms.forEach {
                 TermItem(it, Modifier.clickable(onClick = { onTermSwitch.invoke(it) }))
@@ -126,7 +126,7 @@ private fun TermItem(term: Int, modifier: Modifier = Modifier) {
         Text(
             text = term.toString(),
             style = numberStyle,
-            modifier = Modifier.gravity(Alignment.Center)
+            modifier = Modifier.align(Alignment.Center)
         )
     }
 }

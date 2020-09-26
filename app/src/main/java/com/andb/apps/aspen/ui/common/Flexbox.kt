@@ -11,7 +11,7 @@ import androidx.compose.ui.geometry.Offset
 @Composable
 fun Flexbox(
     modifier: Modifier = Modifier,
-    verticalGravity: Alignment.Vertical = Alignment.Top,
+    verticalAlignment: Alignment.Vertical = Alignment.Top,
     children: @Composable() () -> Unit
 ) {
     Layout( modifier = modifier, children = children) { measurables, constraints ->
@@ -32,16 +32,16 @@ fun Flexbox(
         }
 
         layout(constraints.maxWidth, rowHeights.sumBy { it }) {
-            positions.forEach { it.placeable.place(it.getPosition(verticalGravity, rowHeights)) }
+            positions.forEach { it.placeable.place(it.getPosition(verticalAlignment, rowHeights)) }
         }
     }
 }
 
 private class FlexboxPosition(val placeable: Placeable, val x: Int, val row: Int){
-    fun getPosition(verticalGravity: Alignment.Vertical, rowHeights: List<Int>): Offset{
+    fun getPosition(verticalAlignment: Alignment.Vertical, rowHeights: List<Int>): Offset{
         val rowTop = rowHeights.slice(0 until row).sumBy { it }
         val currentRowHeight = rowHeights[row]
-        val itemOffset = when(verticalGravity){
+        val itemOffset = when(verticalAlignment){
             Alignment.Top -> 0
             Alignment.CenterVertically -> (currentRowHeight - placeable.height)/2
             Alignment.Bottom -> currentRowHeight - placeable.height

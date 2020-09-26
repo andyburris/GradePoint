@@ -24,19 +24,25 @@ import androidx.compose.ui.onPositioned
 import androidx.compose.ui.platform.DensityAmbient
 import androidx.compose.ui.unit.IntSize
 import androidx.compose.ui.unit.dp
-import com.andb.apps.aspen.util.HSB
-import com.andb.apps.aspen.util.toColor
 
 @Composable
 fun SaturationBrightnessPicker(hue: Float, saturation: Float, brightness: Float, modifier: Modifier = Modifier, onChange: (saturation: Float, lightness: Float) -> Unit) {
     val (boxSize, setBoxSize) = remember { mutableStateOf(IntSize(0, 0)) }
-    val dragPosition = stateFor(boxSize) { Pair(boxSize.width * saturation, boxSize.height * (1f - brightness)) }
+//    val dragPosition = stateFor(saturation, brightness, boxSize) { Pair(boxSize.width * saturation, boxSize.height * (1f - brightness))
     val thumbSize = with(DensityAmbient.current) { 24.dp.toIntPx() }
+    val dragPosition = Offset(
+        x = (boxSize.width - thumbSize) * saturation,
+        y = (boxSize.height - thumbSize) * (1f - brightness)
+    )
 
-    fun update() {
+    val update : (newX: Float, newY: Float) -> Unit = { newX, newY ->
+        val slideableWidth = boxSize.width - thumbSize
+        val slideableHeight = boxSize.height - thumbSize
+        val boundedX = newX.coerceIn(0f..slideableWidth.toFloat())
+        val boundedY = newY.coerceIn(0f..slideableHeight.toFloat())
         //percent dragged from bottom left
-        val xPct = dragPosition.value.first / boxSize.width
-        val yPct = 1f - dragPosition.value.second / boxSize.height
+        val xPct = boundedX / slideableWidth
+        val yPct = 1f - boundedY / slideableHeight
         onChange.invoke(xPct, yPct)
     }
 
@@ -44,30 +50,18 @@ fun SaturationBrightnessPicker(hue: Float, saturation: Float, brightness: Float,
         modifier = modifier
             .dragGestureFilter(object : DragObserver {
                 override fun onDrag(dragDistance: Offset): Offset {
-                    val newX = (dragPosition.value.first + dragDistance.x).coerceIn(0f..boxSize.width.toFloat())
-                    val newY = (dragPosition.value.second + dragDistance.y).coerceIn(0f..boxSize.height.toFloat())
-                    dragPosition.value = Pair(newX, newY)
-                    update()
-                    return super.onDrag(dragDistance)
+                    val newX = (dragPosition.x + dragDistance.x).coerceIn(0f..boxSize.width.toFloat())
+                    val newY = (dragPosition.y + dragDistance.y).coerceIn(0f..boxSize.height.toFloat())
+                    //dragPosition = Pair(newX, newY)
+                    update(newX, newY)
+                    return dragDistance
                 }
             })
-/*            .draggable(Orientation.Horizontal) { delta ->
-                val newPx = (dragPosition.value.first + delta).coerceIn(0f..boxSize.width.toFloat())
-                dragPosition.value = dragPosition.value.copy(first = newPx)
-                update()
-                delta
-            }
-            .draggable(Orientation.Vertical) { delta ->
-                val newPx = (dragPosition.value.second + delta).coerceIn(0f..boxSize.height.toFloat())
-                dragPosition.value = dragPosition.value.copy(second = newPx)
-                update()
-                delta
-            }*/
             .pressIndicatorGestureFilter(onStart = { pointer ->
-                val onThumb = dragPosition.value.let { pointer.x in it.first..(it.first + thumbSize) && pointer.y in it.second..(it.second + thumbSize) }
+                val onThumb = pointer.x in dragPosition.x..(dragPosition.x + thumbSize) && pointer.y in dragPosition.y..(dragPosition.y + thumbSize)
                 if (!onThumb) {
-                    dragPosition.value = Pair(pointer.x.coerceIn(0f..boxSize.width.toFloat()), pointer.y.coerceIn(0f..boxSize.height.toFloat()))
-                    update()
+                    println()
+                    update(pointer.x, pointer.y)
                 }
             })
             .drawBehind {
@@ -87,12 +81,12 @@ fun SaturationBrightnessPicker(hue: Float, saturation: Float, brightness: Float,
                 drawRoundRect(lightnessGradient, radius = Radius(12.dp.toPx()))
             }
             .onPositioned {
-                setBoxSize(it.size.run { IntSize(width - thumbSize, height - thumbSize) })
+                setBoxSize(it.size.run { IntSize(width, height) })
             }
     ) {
         val offsetDp = with(DensityAmbient.current) {
-            val positionPx = dragPosition.value
-            Pair(positionPx.first.toDp(), positionPx.second.toDp())
+            val positionPx = dragPosition
+            Pair(positionPx.x.toDp(), positionPx.y.toDp())
         }
         Box(
             modifier = Modifier

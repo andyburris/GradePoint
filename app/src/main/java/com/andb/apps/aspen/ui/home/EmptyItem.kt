@@ -19,7 +19,7 @@ import com.andb.apps.aspen.ui.common.LoadingAssignmentsItem
 
 @Composable
 fun EmptyItem(message: String, modifier: Modifier = Modifier) {
-    Column(horizontalGravity = Alignment.CenterHorizontally, modifier = modifier.padding(64.dp)) {
+    Column(horizontalAlignment = Alignment.CenterHorizontally, modifier = modifier.padding(64.dp)) {
         Box(
             shape = RoundedCornerShape(topLeft = 8.dp, topRight = 8.dp),
             backgroundColor = MaterialTheme.colors.onBackground.copy(alpha = 0.05f)

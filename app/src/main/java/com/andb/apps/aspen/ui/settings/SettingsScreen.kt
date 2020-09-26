@@ -127,10 +127,10 @@ fun SettingsItem(
 ) {
     Row(
         horizontalArrangement = Arrangement.SpaceBetween,
-        verticalGravity = Alignment.CenterVertically,
+        verticalAlignment = Alignment.CenterVertically,
         modifier = modifier.fillMaxWidth().padding(horizontal = 24.dp, vertical = 16.dp)
     ) {
-        Row(verticalGravity = Alignment.CenterVertically, modifier = Modifier.weight(1f)) {
+        Row(verticalAlignment = Alignment.CenterVertically, modifier = Modifier.weight(1f)) {
             Icon(asset = icon)
             Column(Modifier.padding(start = 16.dp)) {
                 Text(text = title, style = MaterialTheme.typography.subtitle1)

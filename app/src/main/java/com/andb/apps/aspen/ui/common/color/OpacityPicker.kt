@@ -24,25 +24,25 @@ import androidx.compose.ui.unit.dp
 import com.andb.apps.aspen.ui.common.AlternativeSlider
 
 @Composable
-fun OpacityPicker(color: Color, alpha: Float, modifier: Modifier = Modifier, onSelect: (alpha: Float) -> Unit) {
-    Row {
-        OpacitySlider(color = color, alpha = alpha, modifier = Modifier.fillMaxWidth().weight(1f), onSelect = onSelect)
+fun OpacityPicker(color: HSB, modifier: Modifier = Modifier, onSelect: (alpha: Float) -> Unit) {
+    Row(modifier) {
+        OpacitySlider(color = color, modifier = Modifier.fillMaxWidth().weight(1f), onSelect = onSelect)
         //OpacityTextField(alpha = alpha, onSelect = onSelect, modifier = Modifier.width(56.dp))
     }
 }
 
 @Composable
-private fun OpacitySlider(color: Color, alpha: Float, modifier: Modifier = Modifier, onSelect: (alpha: Float) -> Unit){
+private fun OpacitySlider(color: HSB, modifier: Modifier = Modifier, onSelect: (alpha: Float) -> Unit){
     AlternativeSlider(
-        position = alpha,
+        position = color.alpha,
         track = {
             Box(modifier = Modifier
                 .height(32.dp)
                 .fillMaxWidth()
-                .gravity(Alignment.Center)
+                .align(Alignment.Center)
                 .drawBehind {
                     val gradient = HorizontalGradient(
-                        colors = listOf(Color.Transparent, color),
+                        colors = listOf(Color.Transparent, color.copy(alpha = 1f).toColor()),
                         startX = 0f,
                         endX = size.width
                     )
@@ -62,7 +62,7 @@ private fun OpacitySlider(color: Color, alpha: Float, modifier: Modifier = Modif
                     },
                 shape = CircleShape,
                 border = BorderStroke(3.dp, MaterialTheme.colors.background),
-                backgroundColor = color.copy(alpha = alpha)
+                backgroundColor = color.toColor()
             )
         },
         modifier = modifier,

@@ -31,7 +31,7 @@ fun LoginScreen(actionHandler: ActionHandler) {
     val titleText = mutableStateOf("GradePoint")
 
     Column(
-        horizontalGravity = Alignment.CenterHorizontally,
+        horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Center,
         modifier = Modifier.fillMaxSize()
     ) {

@@ -2,32 +2,25 @@ package com.andb.apps.aspen.ui.common
 
 import androidx.compose.animation.animate
 import androidx.compose.foundation.*
-import androidx.compose.foundation.gestures.draggable
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.MaterialTheme
-import androidx.compose.material.TextField
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Colorize
 import androidx.compose.material.icons.filled.Done
 import androidx.compose.material.icons.filled.KeyboardArrowDown
-import androidx.compose.runtime.*
-import androidx.compose.ui.*
-import androidx.compose.ui.geometry.RRect
-import androidx.compose.ui.geometry.Radius
-import androidx.compose.ui.geometry.toRect
-import androidx.compose.ui.gesture.scrollorientationlocking.Orientation
-import androidx.compose.ui.graphics.*
-import androidx.compose.ui.platform.DensityAmbient
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.drawLayer
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.util.toHexString
-import androidx.core.graphics.ColorUtils
-import androidx.core.graphics.toColorInt
 import com.andb.apps.aspen.models.Subject
-import com.andb.apps.aspen.ui.common.color.HuePicker
-import com.andb.apps.aspen.util.HSB
-import com.andb.apps.aspen.util.toColor
-import com.andb.apps.aspen.util.toHSL
+import com.andb.apps.aspen.ui.common.color.*
 
 
 @Composable
@@ -40,7 +33,7 @@ fun ColorPicker(selected: Int, modifier: Modifier = Modifier, onSelect: (color: 
             modifier = Modifier.padding(bottom = 16.dp)
         )
 
-        Flexbox(verticalGravity = Alignment.CenterVertically) {
+        Flexbox(verticalAlignment = Alignment.CenterVertically) {
             if (!expanded.value) {
                 for (color in Subject.COLOR_PRESETS) {
                     Box(shape = CircleShape,
@@ -61,7 +54,7 @@ fun ColorPicker(selected: Int, modifier: Modifier = Modifier, onSelect: (color: 
             } else {
                 HuePicker(
                     colors = Subject.COLOR_PRESETS.map { Color(it) },
-                    hue = selected.toHSL().first,
+                    hue = Color(selected).toHSB().hue,
                     onSelect = { onSelect.invoke(HSB(it, 1f, 1f).toColor().toArgb()) }
                 )
             }

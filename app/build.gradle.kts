@@ -19,8 +19,8 @@ android {
         applicationId = "com.andb.apps.aspen"
         minSdkVersion(Versions.min_sdk)
         targetSdkVersion(Versions.target_sdk)
-        versionCode = 10
-        versionName = "0.2.0-internal02"
+        versionCode = 11
+        versionName = "0.3.0-internal01"
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
 
         resValue("string", "app_name", "GradePoint")
@@ -31,8 +31,8 @@ android {
     buildTypes {
         getByName("release") {
             isMinifyEnabled = false
-            buildConfigField("String", "TEST_USERNAME", "")
-            buildConfigField("String", "TEST_PASSWORD", "")
+            buildConfigField("String", "TEST_USERNAME", "\"\"")
+            buildConfigField("String", "TEST_PASSWORD", "\"\"")
             proguardFiles(
                 getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro"

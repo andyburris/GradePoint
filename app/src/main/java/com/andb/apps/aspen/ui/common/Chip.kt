@@ -32,7 +32,7 @@ fun Chip(
     ) {
         Row(
             modifier = Modifier.fillMaxHeight().padding(horizontal = 8.dp),
-            verticalGravity = Alignment.CenterVertically
+            verticalAlignment = Alignment.CenterVertically
         ) {
             if (icon != null){
                 Icon(asset = icon.copy(defaultWidth = 20.dp, defaultHeight = 20.dp), modifier = Modifier.padding(end = 8.dp))

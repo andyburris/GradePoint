@@ -22,11 +22,11 @@ import com.andb.apps.aspen.util.*
 fun SubjectItem(config: Subject.Config, name: String, teacher: String, grade: SubjectGrade, modifier: Modifier = Modifier) {
     Box(modifier) {
         Row(
-            verticalGravity = Alignment.CenterVertically,
+            verticalAlignment = Alignment.CenterVertically,
             horizontalArrangement = Arrangement.SpaceBetween,
             modifier = Modifier.fillMaxWidth().padding(vertical = 8.dp, horizontal = 24.dp)
         ) {
-            Row(verticalGravity = Alignment.CenterVertically, modifier = Modifier.weight(1f)) {
+            Row(verticalAlignment = Alignment.CenterVertically, modifier = Modifier.weight(1f)) {
                 Stack(modifier = Modifier.padding(end = 16.dp)) {
 
                     Box(
@@ -37,7 +37,7 @@ fun SubjectItem(config: Subject.Config, name: String, teacher: String, grade: Su
                     Icon(
                         asset = config.icon.toVectorAsset(),
                         tint = Color.Black.copy(alpha = 0.54f),
-                        modifier = Modifier.gravity(Alignment.Center)
+                        modifier = Modifier.align(Alignment.Center)
                     )
                 }
                 Column {
@@ -68,11 +68,11 @@ fun SubjectItem(config: Subject.Config, name: String, teacher: String, grade: Su
 @Composable
 fun LoadingSubjectsItem(modifier: Modifier = Modifier) {
     Row(
-        verticalGravity = Alignment.CenterVertically,
+        verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.SpaceBetween,
         modifier = Modifier.fillMaxWidth().padding(vertical = 8.dp, horizontal = 24.dp) + modifier
     ) {
-        Row(verticalGravity = Alignment.CenterVertically) {
+        Row(verticalAlignment = Alignment.CenterVertically) {
             Box(
                 shape = CircleShape,
                 modifier = Modifier.size(48.dp),

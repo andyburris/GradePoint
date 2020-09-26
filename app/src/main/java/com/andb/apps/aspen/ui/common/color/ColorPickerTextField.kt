@@ -19,8 +19,8 @@ import androidx.core.graphics.toColorInt
 
 
 @Composable
-fun ColorPickerTextField(selected: Color, modifier: Modifier = Modifier, onValid: (color: Color) -> Unit) {
-    val currentText = stateFor(selected) { selected.toArgb().toHexString().replace("0x", "#") }
+fun ColorPickerTextField(selected: HSB, modifier: Modifier = Modifier, onValid: (color: Color) -> Unit) {
+    val currentText = stateFor(selected) { selected.toColor().toArgb().toHexString().replace("0x", "#") }
 
     TextField(
         value = currentText.value.toUpperCase(),
@@ -32,7 +32,7 @@ fun ColorPickerTextField(selected: Color, modifier: Modifier = Modifier, onValid
         label = { Text(text = "Hex Color") },
         leadingIcon = { Icon(asset = Icons.Filled.Colorize) },
         modifier = modifier.padding(top = 16.dp).fillMaxWidth(),
-        activeColor = selected,
+        activeColor = selected.toColor(),
         isErrorValue = currentText.value.toColorIntOrNull() == null
     )
 }

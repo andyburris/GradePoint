@@ -30,7 +30,7 @@ fun AssignmentItem(assignment: Assignment, summaryText: String, modifier: Modifi
     Row(
         horizontalArrangement = Arrangement.SpaceBetween,
         modifier = modifier.padding(horizontal = 24.dp, vertical = 12.dp).fillMaxWidth(),
-        verticalGravity = Alignment.CenterVertically
+        verticalAlignment = Alignment.CenterVertically
     ) {
         Column(modifier = Modifier.padding(end = 16.dp).weight(1f)) {
             Text(
@@ -48,7 +48,7 @@ fun AssignmentItem(assignment: Assignment, summaryText: String, modifier: Modifi
         )*/
 
         Row(
-            verticalGravity = Alignment.CenterVertically,
+            verticalAlignment = Alignment.CenterVertically,
             horizontalArrangement = Arrangement.End
         ) {
             when (assignment.grade) {
@@ -74,7 +74,7 @@ fun AssignmentItem(assignment: Assignment, summaryText: String, modifier: Modifi
                             text = letter,
                             style = TextStyle(fontWeight = FontWeight.Medium, fontSize = 14.sp),
                             textAlign = TextAlign.Center,
-                            modifier = Modifier.gravity(Alignment.Center)
+                            modifier = Modifier.align(Alignment.Center)
                         )
                     }
                 }
@@ -94,13 +94,13 @@ fun LoadingAssignmentsItem(modifier: Modifier = Modifier, color: Color = Materia
     Row(
         modifier = modifier.fillMaxWidth(),
         horizontalArrangement = Arrangement.SpaceBetween,
-        verticalGravity = Alignment.CenterVertically
+        verticalAlignment = Alignment.CenterVertically
     ) {
         Column {
             Box(Modifier.size(width = 120.dp, height = 14.dp), backgroundColor = color, shape = CircleShape)
             Box(Modifier.padding(top = 4.dp).size(width = 72.dp, height = 14.dp), backgroundColor = color, shape = CircleShape)
         }
-        Row(verticalGravity = Alignment.CenterVertically) {
+        Row(verticalAlignment = Alignment.CenterVertically) {
             Box(modifier = Modifier.padding(end = 8.dp).size(width = 32.dp, height = 14.dp), backgroundColor = color, shape = CircleShape)
             Box(Modifier.size(32.dp), backgroundColor = color, shape = CircleShape)
         }

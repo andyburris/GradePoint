@@ -37,8 +37,8 @@ fun EditSubjectDialog(subject: Subject, onClose: () -> Unit, onConfigChange: (Su
     AlertDialog(
         onDismissRequest = { onClose.invoke() },
         title = {
-            Row(horizontalArrangement = Arrangement.SpaceBetween, verticalGravity = Alignment.CenterVertically, modifier = Modifier.fillMaxWidth()) {
-                Row(verticalGravity = Alignment.CenterVertically, modifier = Modifier.weight(1f)) {
+            Row(horizontalArrangement = Arrangement.SpaceBetween, verticalAlignment = Alignment.CenterVertically, modifier = Modifier.fillMaxWidth()) {
+                Row(verticalAlignment = Alignment.CenterVertically, modifier = Modifier.weight(1f)) {
                     Stack(modifier = Modifier.padding(end = 16.dp)) {
                         Box(
                             shape = CircleShape,
@@ -48,7 +48,7 @@ fun EditSubjectDialog(subject: Subject, onClose: () -> Unit, onConfigChange: (Su
                         Icon(
                             asset = currentConfig.icon.toVectorAsset(),
                             tint = Color.Black.copy(alpha = 0.54f),
-                            modifier = Modifier.gravity(Alignment.Center)
+                            modifier = Modifier.align(Alignment.Center)
                         )
                     }
                     Column {

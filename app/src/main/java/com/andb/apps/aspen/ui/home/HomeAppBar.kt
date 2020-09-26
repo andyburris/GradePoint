@@ -39,7 +39,7 @@ fun HomeAppBar(
             icon = { Icon(asset = Icons.Default.School) },
             label = { Text(text = "Subjects", color = MaterialTheme.colors.onPrimary, maxLines = 1) },
             selected = selectedTab == HomeTab.SUBJECTS,
-            onSelect = { onItemSelected.invoke(HomeTab.SUBJECTS) },
+            onClick = { onItemSelected.invoke(HomeTab.SUBJECTS) },
             alwaysShowLabels = false
         )
         BottomNavigationItem(
@@ -47,7 +47,7 @@ fun HomeAppBar(
             icon = { Icon(asset = Icons.Default.AccessTime) },
             label = { Text(text = "Recents", color = MaterialTheme.colors.onPrimary, maxLines = 1) },
             selected = selectedTab == HomeTab.RECENTS,
-            onSelect = { onItemSelected.invoke(HomeTab.RECENTS) },
+            onClick = { onItemSelected.invoke(HomeTab.RECENTS) },
             alwaysShowLabels = false
         )
         BottomNavigationItem(
@@ -55,7 +55,7 @@ fun HomeAppBar(
             icon = { Icon(asset = Icons.Default.Settings) },
             label = { Text(text = "Settings", color = MaterialTheme.colors.onPrimary, maxLines = 1) },
             selected = selectedTab == HomeTab.SETTINGS,
-            onSelect = { onItemSelected.invoke(HomeTab.SETTINGS) },
+            onClick = { onItemSelected.invoke(HomeTab.SETTINGS) },
             alwaysShowLabels = false
         )
 

@@ -87,7 +87,7 @@ fun CategoriesCard(categories: List<Category>, termGrade: SubjectGrade) {
         Column(modifier = Modifier.padding(top = 16.dp, bottom = 12.dp)) {
             Row(
                 horizontalArrangement = Arrangement.SpaceBetween,
-                verticalGravity = Alignment.CenterVertically,
+                verticalAlignment = Alignment.CenterVertically,
                 modifier = Modifier.padding(start = 16.dp, end = 16.dp, bottom = 12.dp)
                     .fillMaxWidth()
             ) {
@@ -106,7 +106,7 @@ fun CategoriesCard(categories: List<Category>, termGrade: SubjectGrade) {
                     .fillMaxWidth()
                     .padding(start = 16.dp, end = 16.dp, top = 12.dp, bottom = 8.dp),
                 horizontalArrangement = Arrangement.SpaceBetween,
-                verticalGravity = Alignment.CenterVertically
+                verticalAlignment = Alignment.CenterVertically
             ) {
                 Text(text = "Total", style = MaterialTheme.typography.subtitle1, color = MaterialTheme.colors.onSecondary)
                 Text(text = termGrade.toString(), style = MaterialTheme.typography.subtitle1)
@@ -119,11 +119,11 @@ fun CategoriesCard(categories: List<Category>, termGrade: SubjectGrade) {
 fun CategoryItem(category: Category) {
     Row(
         horizontalArrangement = Arrangement.SpaceBetween,
-        verticalGravity = Alignment.CenterVertically,
+        verticalAlignment = Alignment.CenterVertically,
         modifier = Modifier.fillMaxWidth().padding(horizontal = 16.dp, vertical = 4.dp)
     ) {
         Row(
-            verticalGravity = Alignment.CenterVertically,
+            verticalAlignment = Alignment.CenterVertically,
             modifier = Modifier.weight(1f),
             horizontalArrangement = Arrangement.Start
         ) {
@@ -173,7 +173,7 @@ fun AssignmentTable(assignments: List<Assignment>, onAssignmentClick: (Assignmen
 fun AssignmentHeader() {
     Row(
         horizontalArrangement = Arrangement.SpaceBetween,
-        verticalGravity = Alignment.CenterVertically,
+        verticalAlignment = Alignment.CenterVertically,
         modifier = Modifier.fillMaxWidth().padding(start = 24.dp, end = 24.dp, top = 24.dp, bottom = 12.dp)
     ) {
         Text(

@@ -12,7 +12,7 @@ import androidx.compose.ui.unit.dp
 fun HomeHeader(title: String, actions: @Composable() RowScope.() -> Unit = {}) {
     Row(
         horizontalArrangement = Arrangement.SpaceBetween,
-        verticalGravity = Alignment.CenterVertically,
+        verticalAlignment = Alignment.CenterVertically,
         modifier = Modifier.fillMaxWidth()
             .padding(top = 24.dp, bottom = 16.dp, start = 24.dp, end = 24.dp)
     ) {
@@ -20,6 +20,6 @@ fun HomeHeader(title: String, actions: @Composable() RowScope.() -> Unit = {}) {
             text = title,
             style = MaterialTheme.typography.h3
         )
-        Row(verticalGravity = Alignment.CenterVertically, children = actions)
+        Row(verticalAlignment = Alignment.CenterVertically, children = actions)
     }
 }
